@@ -1,0 +1,68 @@
+/* OpenLayers Map Styles */
+
+/* Override OpenLayers default controls styling to match Bahrain theme */
+.ol-control {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border-radius: 12px !important;
+  padding: 4px !important;
+  backdrop-filter: blur(10px) !important;
+}
+
+.ol-control button {
+  background-color: white !important;
+  border-radius: 8px !important;
+  width: 32px !important;
+  height: 32px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.2s ease !important;
+}
+
+.ol-control button:hover {
+  background-color: #f5f5f5 !important;
+}
+
+.ol-control button:focus {
+  outline: 2px solid #ED1C24 !important;
+  outline-offset: 2px !important;
+}
+
+/* Attribution styling */
+.ol-attribution {
+  background-color: rgba(255, 255, 255, 0.8) !important;
+  border-radius: 8px !important;
+  font-size: 10px !important;
+  padding: 4px 8px !important;
+  max-width: 200px !important;
+}
+
+.ol-attribution ul {
+  font-size: 10px !important;
+  color: #666666 !important;
+}
+
+/* Zoom controls positioning */
+.ol-zoom {
+  top: 4.5rem !important;
+  left: 1rem !important;
+}
+
+/* Ensure map fills container */
+.ol-viewport {
+  border-radius: 16px;
+}
+
+/* Drawing cursor */
+.ol-viewport.draw-cursor {
+  cursor: crosshair !important;
+}
+
+/* Feature selection styling */
+.ol-control.ol-scale-line {
+  background-color: rgba(0, 63, 114, 0.8) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  padding: 4px 8px !important;
+  font-size: 11px !important;
+}

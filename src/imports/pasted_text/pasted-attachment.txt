@@ -1,0 +1,140 @@
+Fix Spatial Mode Drawing Tools
+
+When the Spatial tab is active, enable full map drawing functionality.
+
+Drawing Tools to Enable
+
+Show a vertical drawing toolbar on the right side of the map with the following tools:
+
+Polygon Draw
+
+Rectangle Draw
+
+Circle Draw
+
+Extend Boundary
+
+Delete Selected Area
+
+Clear All Selection
+
+Drawing Behavior
+
+Admin should be able to draw boundaries directly on the map.
+
+The selected boundary should appear with:
+
+BSDI red border
+
+Semi-transparent red fill
+
+Rules
+
+Prevent drawing outside allowed map extent.
+
+If a new shape overlaps an existing shape → merge shapes automatically.
+
+Allow editing vertices of existing polygons.
+
+Allow extending existing boundaries.
+
+2️⃣ Edit Mode Behavior
+
+When admin clicks Edit icon for a role:
+
+Enter Spatial Edit Mode.
+
+Highlight the selected role in the Access Roles list.
+
+Show a role label on the map.
+
+Example:
+
+Editing Role: Electricity Authority
+
+If a boundary already exists, it should automatically appear on the map.
+
+3️⃣ Update Button
+
+When editing is active:
+
+Show Update button at the top-right corner of the map container.
+
+Button style:
+
+BSDI red
+
+Rounded
+
+Save icon
+
+Function:
+
+Saves the drawn spatial boundary.
+
+Assigns the boundary to the selected role.
+
+4️⃣ Fix UI Overlapping Issue
+
+Ensure all UI components do not overlap important map controls or layers.
+
+Alignment Rules
+
+Maintain consistent spacing from map edges (16–20px padding).
+
+Floating UI elements must have z-index priority above map tiles but below system alerts.
+
+Avoid stacking multiple panels on the same position.
+
+5️⃣ Proper UI Placement
+Top Center
+
+Show Spatial | Data tabs
+
+Top Right
+
+Show Update button only in edit mode.
+
+Right Side Vertical
+
+Show drawing tools panel.
+
+Top Center (Data Mode Only)
+
+Show Layer / Field / Operator / Value / Search filter bar.
+
+6️⃣ Layer Safety
+
+Ensure UI elements do not block:
+
+Map zoom controls
+
+Layer list
+
+Basemap switcher
+
+Drawn spatial boundaries
+
+Add transparent padding zones so map elements remain visible.
+
+7️⃣ Smooth Interaction
+
+Add these UX improvements:
+
+Smooth animation when entering edit mode.
+
+Highlight selected boundary.
+
+Auto zoom to selected role boundary.
+
+Show tooltip when hovering drawing tools.
+
+Expected Result
+
+Spatial mode should allow:
+
+✔ Drawing boundaries
+✔ Editing boundaries
+✔ Assigning boundaries to roles
+✔ No UI overlap with map layers
+✔ Clean and aligned map interface
