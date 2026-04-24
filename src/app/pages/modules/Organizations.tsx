@@ -293,9 +293,9 @@ export default function Organizations() {
       const row = document.getElementById(`org-row-${org.id}`);
       if (row) {
         row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        row.classList.add('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+        row.classList.add('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         setTimeout(() => {
-          row.classList.remove('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+          row.classList.remove('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         }, 2000);
       }
     }, 100);

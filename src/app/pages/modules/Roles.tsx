@@ -645,8 +645,8 @@ export default function Roles() {
                                   onClick={(e) => e.stopPropagation()}
                                 />
                                 <div className="flex items-center gap-2">
-                                  <div className="w-6 h-6 rounded-full bg-[#ED1C24]/10 flex items-center justify-center">
-                                    <span className="text-[10px] font-bold text-[#ED1C24]">
+                                  <div className="w-6 h-6 rounded-full bg-[#EF4444]/10 flex items-center justify-center">
+                                    <span className="text-[10px] font-bold text-[#EF4444]">
                                       {user.name.split(' ').map(n => n[0]).join('')}
                                     </span>
                                   </div>
@@ -912,8 +912,8 @@ export default function Roles() {
                         className="p-4 rounded-xl border border-[#E0E0E0] hover:border-[#003F72]/30 hover:bg-gradient-to-r hover:from-[#003F72]/5 hover:to-transparent transition-all cursor-pointer group"
                       >
                         <div className="flex items-center gap-3">
-                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#ED1C24]/10 to-[#003F72]/10 flex items-center justify-center flex-shrink-0">
-                            <span className="text-sm font-bold text-[#ED1C24]">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-[#EF4444]/10 to-[#003F72]/10 flex items-center justify-center flex-shrink-0">
+                            <span className="text-sm font-bold text-[#EF4444]">
                               {user.name.split(' ').map(n => n[0]).join('')}
                             </span>
                           </div>

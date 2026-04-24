@@ -130,7 +130,7 @@ export default function MetadataManagement() {
         </div>
 
         <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-[26px] font-semibold text-[#ED1C24] mb-6">Metadata Catalog</h3>
+          <h3 className="text-[26px] font-semibold text-[#EF4444] mb-6">Metadata Catalog</h3>
           <div className="space-y-3">
             {metadata.map((item) => {
               const isExpanded = expandedId === item.id;
@@ -142,8 +142,8 @@ export default function MetadataManagement() {
                   {/* Main Row */}
                   <div className="flex items-center justify-between p-4">
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#003F72]/10 flex items-center justify-center flex-shrink-0">
-                        <Database className="w-6 h-6 text-[#ED1C24]" />
+                      <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#003F72]/10 flex items-center justify-center flex-shrink-0">
+                        <Database className="w-6 h-6 text-[#EF4444]" />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-3 mb-2">
@@ -153,7 +153,7 @@ export default function MetadataManagement() {
                             variant="secondary" 
                             className={`text-xs ${
                               item.status === 'published' ? 'bg-[#003F72] text-white' :
-                              item.status === 'review' ? 'bg-[#ED1C24] text-white' :
+                              item.status === 'review' ? 'bg-[#EF4444] text-white' :
                               'bg-[#B0AAA2] text-white'
                             }`}
                           >
@@ -191,7 +191,7 @@ export default function MetadataManagement() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-3">
                         <div className="flex items-start gap-3">
                           <span className="text-sm font-semibold text-[#252628] min-w-[140px]">Dataset Identifier</span>
-                          <span className="text-sm text-[#ED1C24] font-mono">{item.identifier}</span>
+                          <span className="text-sm text-[#EF4444] font-mono">{item.identifier}</span>
                         </div>
                         
                         <div className="flex items-start gap-3">

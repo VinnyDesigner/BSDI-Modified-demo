@@ -91,7 +91,7 @@ export default function SpatialGroupSelection() {
               <ArrowLeft className="w-5 h-5 text-[#666666]" />
             </Button>
             <div className="flex flex-col gap-0.5">
-              <h1 className="text-[26px] font-bold text-[#ED1C24]">
+              <h1 className="text-[26px] font-bold text-[#EF4444]">
                 Select Spatial Groups
               </h1>
               <p className="text-[#4A5565] text-[14px] font-normal">
@@ -102,7 +102,7 @@ export default function SpatialGroupSelection() {
           <Button
             onClick={handleConfirm}
             disabled={selectedGroups.length === 0}
-            className="bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-full h-12 px-8 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-full h-12 px-8 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle2 className="w-4 h-4 mr-2" />
             Confirm Selection
@@ -112,10 +112,10 @@ export default function SpatialGroupSelection() {
         {/* Stats Card */}
         <Card className="relative h-[106px] bg-white/90 backdrop-blur-xl border-0 rounded-[24px] shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)] hover:shadow-[12px_12px_32px_rgba(163,177,198,0.4),-12px_-12px_32px_rgba(255,255,255,1)] transition-all duration-300 overflow-hidden">
           <div className="absolute right-[24px] top-[37px] w-[30px] h-[30px] flex items-center justify-center">
-            <Layers className="w-[30px] h-[30px] text-[#ED1C24]" style={{ strokeWidth: 2 }} />
+            <Layers className="w-[30px] h-[30px] text-[#EF4444]" style={{ strokeWidth: 2 }} />
           </div>
           <div className="absolute left-[23.88px] top-[18px] flex flex-col gap-1">
-            <div className="text-[26px] font-semibold text-[#ED1C24]">
+            <div className="text-[26px] font-semibold text-[#EF4444]">
               {selectedGroups.length}
             </div>
             <div className="text-[14px] font-normal text-black/50">
@@ -134,7 +134,7 @@ export default function SpatialGroupSelection() {
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Search spatial groups by name, description, or type..."
-                className="pl-12 h-14 rounded-xl border-[#E0E0E0] bg-white focus:border-[#ED1C24] focus:ring-2 focus:ring-[#ED1C24]/20 transition-all text-base"
+                className="pl-12 h-14 rounded-xl border-[#E0E0E0] bg-white focus:border-[#EF4444] focus:ring-2 focus:ring-[#EF4444]/20 transition-all text-base"
               />
             </div>
           </div>
@@ -185,8 +185,8 @@ export default function SpatialGroupSelection() {
                     onClick={() => handleToggleGroup(group.name)}
                     className={`p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 ${
                       isSelected
-                        ? 'border-[#ED1C24] bg-gradient-to-br from-red-50 to-pink-50 shadow-lg scale-[1.02]'
-                        : 'border-[#E0E0E0] bg-white hover:border-[#ED1C24]/50 hover:shadow-md hover:scale-[1.01]'
+                        ? 'border-[#EF4444] bg-gradient-to-br from-red-50 to-pink-50 shadow-lg scale-[1.02]'
+                        : 'border-[#E0E0E0] bg-white hover:border-[#EF4444]/50 hover:shadow-md hover:scale-[1.01]'
                     }`}
                   >
                     <div className="flex items-start justify-between mb-4">
@@ -219,7 +219,7 @@ export default function SpatialGroupSelection() {
                       <Checkbox
                         checked={isSelected}
                         onCheckedChange={() => handleToggleGroup(group.name)}
-                        className="border-[#E0E0E0] data-[state=checked]:bg-[#ED1C24] data-[state=checked]:border-[#ED1C24] h-5 w-5"
+                        className="border-[#E0E0E0] data-[state=checked]:bg-[#EF4444] data-[state=checked]:border-[#EF4444] h-5 w-5"
                         onClick={(e) => e.stopPropagation()}
                       />
                     </div>
@@ -251,7 +251,7 @@ export default function SpatialGroupSelection() {
           <Button
             onClick={handleConfirm}
             disabled={selectedGroups.length === 0}
-            className="bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-full h-12 px-8 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+            className="bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-full h-12 px-8 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <CheckCircle2 className="w-4 h-4 mr-2" />
             Confirm Selection ({selectedGroups.length})
@@ -261,3 +261,5 @@ export default function SpatialGroupSelection() {
     </div>
   );
 }
+
+

@@ -380,9 +380,9 @@ export default function Departments() {
       const row = document.getElementById(`dept-row-${dept.id}`);
       if (row) {
         row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        row.classList.add('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+        row.classList.add('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         setTimeout(() => {
-          row.classList.remove('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+          row.classList.remove('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         }, 2000);
       }
     }, 100);
@@ -435,7 +435,7 @@ export default function Departments() {
           title="Departments"
           description="Manage organizational departments and their respective points of contact"
         >
-          {!isReviewer && !isOrgAdmin && (
+          {!isReviewer && (
             <Button 
               onClick={() => setCreateDeptOpen(true)}
               className="bg-[#EF4444] hover:bg-[#DC2626] text-white h-9 px-4 rounded-[10px] font-medium flex items-center gap-2"
@@ -592,7 +592,7 @@ export default function Departments() {
                           >
                             <Eye className="w-4 h-4" />
                           </Button>
-                          {!(isReviewer || isOrgAdmin) && (
+                          {!isReviewer && (
                             <Button 
                               size="icon" 
                               variant="ghost" 
@@ -844,7 +844,7 @@ export default function Departments() {
 
           <div className="sticky bottom-0 bg-white z-10 py-[16px] px-[24px] border-t border-[#F1F1F1] shrink-0 flex justify-end gap-[12px]">
             <Button variant="outline" className="h-[36px] px-[20px] rounded-[10px] border-[#E5E7EB] text-[#374151] font-medium" onClick={() => setEditDeptOpen(false)}>Cancel</Button>
-            <Button onClick={() => { setEditConfirmOpen(true); }} className="h-[36px] px-[20px] rounded-[10px] bg-[#EF4444] hover:bg-[#DC2626] text-white font-medium">Save Changes</Button>
+            <Button onClick={() => { setEditConfirmOpen(true); }} className="h-[36px] px-[20px] rounded-[10px] bg-[#EF4444] hover:bg-[#DC2626] text-white font-medium">Submit Changes</Button>
           </div>
         </DialogContent>
       </Dialog>
@@ -1001,7 +1001,7 @@ export default function Departments() {
           </div>
           
           <AlertDialogHeader className="mb-[20px] p-0 w-full">
-            <AlertDialogTitle className="text-[18px] font-semibold text-[#111827] text-center w-full">Update Department</AlertDialogTitle>
+            <AlertDialogTitle className="text-[18px] font-semibold text-[#111827] text-center w-full">Updated Changes</AlertDialogTitle>
             <AlertDialogDescription className="text-[14px] text-[#6B7280] text-center w-full mt-2">Are you sure you want to update this department's information?</AlertDialogDescription>
           </AlertDialogHeader>
 
@@ -1033,8 +1033,8 @@ export default function Departments() {
           </div>
           
           <AlertDialogHeader className="mb-[20px] p-0 w-full">
-            <AlertDialogTitle className="text-[18px] font-semibold text-[#111827] text-center w-full">Action Successful</AlertDialogTitle>
-            <AlertDialogDescription className="text-[14px] text-[#6B7280] text-center w-full mt-2">Department information has been updated successfully.</AlertDialogDescription>
+            <AlertDialogTitle className="text-[18px] font-semibold text-[#111827] text-center w-full">Changes Successfully Submitted to Super Admin</AlertDialogTitle>
+            <AlertDialogDescription className="text-[14px] text-[#6B7280] text-center w-full mt-2">Your request to update the department has been sent for approval.</AlertDialogDescription>
           </AlertDialogHeader>
 
           <AlertDialogFooter className="w-full flex-row justify-center gap-[16px] sm:space-x-0 mt-0">

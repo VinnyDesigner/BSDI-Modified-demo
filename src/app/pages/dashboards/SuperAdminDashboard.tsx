@@ -2,9 +2,10 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { 
-  Building2, Users, FileCheck, Activity, Plus, CheckCircle, 
+  Building2, Users, Activity, Plus, CheckCircle,
   Clock, AlertCircle, TrendingUp, Database, Shield, X, Check, Maximize2, Server, UsersRound, Download, Calendar, Printer, FileText, ChevronDown,
-  MapPin, Route, Construction, Network, Wind, Droplets, Waves
+  MapPin, Route, Construction, Network, Wind, Droplets, Waves,
+  Layers, User, BadgeCheck
 } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../../components/ui/dialog";
@@ -22,18 +23,19 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { Textarea } from "../../components/ui/textarea";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "../../components/ui/tabs";
 import { Checkbox } from "../../components/ui/checkbox";
+import CustomChartTooltip from "../../components/ui/CustomChartTooltip";
 import { useState } from "react";
 import { toast } from "sonner";
 
 const kpiData = [
-  { label: "Total Organizations", value: "142", change: "+12", icon: Building2, color: "#ED1C24" },
-  { label: "Registered Users", value: "2,847", change: "+156", icon: Users, color: "#FF6B6B" },
-  { label: "Pending Approvals", value: "28", change: "-5", icon: Clock, color: "#ED1C24" },
-  { label: "Data Requests Today", value: "67", change: "+18", icon: FileCheck, color: "#FF8787" },
-  { label: "Approved Services", value: "1,234", change: "+89", icon: CheckCircle, color: "#ED1C24" },
-  { label: "Total Services", value: "456", change: "+24", icon: Server, color: "#FF6B6B" },
-  { label: "Total Users", value: "3,521", change: "+342", icon: Users, color: "#ED1C24" },
-  { label: "Total Groups", value: "87", change: "+18", icon: UsersRound, color: "#FF8787" },
+  { label: "Total Organizations", value: "142",   change: "+12",  icon: Building2,  color: "#3B82F6" },
+  { label: "Registered Users",    value: "2,847",  change: "+156", icon: Users,      color: "#3B82F6" },
+  { label: "Pending Approvals",   value: "28",     change: "-5",   icon: Clock,      color: "#F59E0B" },
+  { label: "Data Requests Today", value: "67",     change: "+18",  icon: FileText,   color: "#F59E0B" },
+  { label: "Approved Services",   value: "1,234",  change: "+89",  icon: BadgeCheck, color: "#22C55E" },
+  { label: "Total Services",      value: "456",    change: "+24",  icon: Layers,     color: "#3B82F6" },
+  { label: "Total Users",         value: "3,521",  change: "+342", icon: Users,      color: "#3B82F6" },
+  { label: "Total Groups",        value: "87",     change: "+18",  icon: User,       color: "#3B82F6" },
 ];
 
 const nationalAccessData = [
@@ -52,7 +54,7 @@ const nationalAccessData = [
 ];
 
 const orgParticipationData = [
-  { id: "gov", name: "Government", value: 67, color: "#ED1C24" },
+  { id: "gov", name: "Government", value: 67, color: "#EF4444" },
   { id: "semi-gov", name: "Semi-Government", value: 45, color: "#003F72" },
   { id: "private", name: "Private", value: 30, color: "#6B6B6B" },
 ];
@@ -108,7 +110,7 @@ const apiUsageTrendData = [
 
 const errorDistributionData = [
   { id: "error-client", name: "Client Errors (4xx)", value: 612, color: "#F9A825" },
-  { id: "error-server", name: "Server Errors (5xx)", value: 267, color: "#ED1C24" },
+  { id: "error-server", name: "Server Errors (5xx)", value: 267, color: "#EF4444" },
 ];
 
 const errorCodesData = [
@@ -219,7 +221,7 @@ export default function SuperAdminDashboard() {
       <div className="max-w-[1800px] mx-auto space-y-8">
         {/* Header */}
         <div className="flex flex-col gap-0.5 mb-6">
-          <h1 className="text-[26px] font-bold text-[#ED1C24]">
+          <h1 className="text-[26px] font-bold text-[#EF4444]">
             Governance Dashboard
           </h1>
           <p className="text-[#4A5565] text-[14px] font-normal">BSDI Super Admin • National Data Infrastructure Overview</p>
@@ -254,15 +256,15 @@ export default function SuperAdminDashboard() {
                   glow: "0 0 20px rgba(245,158,11,0.20)"
                 };
               } 
-              // Yellow/Orange - Warning/Attention (Data Requests)
+              // Orange - Warning/Attention (Data Requests Today — same amber as Pending)
               else if (kpi.label.includes("Data Requests") || kpi.label.includes("Today")) {
                 return { 
-                  gradient: "linear-gradient(135deg, rgba(251,191,36,0.10) 0%, rgba(251,191,36,0.06) 100%)",
-                  hoverGradient: "linear-gradient(135deg, rgba(251,191,36,0.15) 0%, rgba(251,191,36,0.10) 100%)",
-                  iconBg: "linear-gradient(145deg, rgba(251,191,36,0.25), rgba(251,191,36,0.35))",
-                  iconInnerBg: "linear-gradient(135deg, rgba(251,191,36,0.30) 0%, rgba(251,191,36,0.50) 100%)",
-                  iconColor: "#F59E0B",
-                  glow: "0 0 20px rgba(251,191,36,0.20)"
+                  gradient: "linear-gradient(135deg, rgba(245,158,11,0.10) 0%, rgba(245,158,11,0.06) 100%)",
+                  hoverGradient: "linear-gradient(135deg, rgba(245,158,11,0.15) 0%, rgba(245,158,11,0.10) 100%)",
+                  iconBg: "linear-gradient(145deg, rgba(245,158,11,0.25), rgba(245,158,11,0.35))",
+                  iconInnerBg: "linear-gradient(135deg, rgba(245,158,11,0.30) 0%, rgba(245,158,11,0.50) 100%)",
+                  iconColor: "#D97706",
+                  glow: "0 0 20px rgba(245,158,11,0.20)"
                 };
               } 
               // Blue - Neutral/Informational (Users, Organizations, Groups, Services)
@@ -270,15 +272,16 @@ export default function SuperAdminDashboard() {
                 kpi.label.includes("Users") || 
                 kpi.label.includes("Organizations") || 
                 kpi.label.includes("Groups") || 
-                kpi.label.includes("Services")
+                kpi.label.includes("Services") ||
+                kpi.label.includes("Registered")
               ) {
                 return { 
-                  gradient: "linear-gradient(135deg, rgba(59,130,246,0.10) 0%, rgba(59,130,246,0.06) 100%)",
-                  hoverGradient: "linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(59,130,246,0.10) 100%)",
-                  iconBg: "linear-gradient(145deg, rgba(59,130,246,0.25), rgba(59,130,246,0.35))",
-                  iconInnerBg: "linear-gradient(135deg, rgba(59,130,246,0.30) 0%, rgba(59,130,246,0.50) 100%)",
+                  gradient: "linear-gradient(135deg, rgba(59,130,246,0.09) 0%, rgba(59,130,246,0.05) 100%)",
+                  hoverGradient: "linear-gradient(135deg, rgba(59,130,246,0.14) 0%, rgba(59,130,246,0.09) 100%)",
+                  iconBg: "linear-gradient(145deg, rgba(59,130,246,0.20), rgba(59,130,246,0.30))",
+                  iconInnerBg: "linear-gradient(135deg, rgba(59,130,246,0.25) 0%, rgba(59,130,246,0.45) 100%)",
                   iconColor: "#2563EB",
-                  glow: "0 0 20px rgba(59,130,246,0.20)"
+                  glow: "0 0 20px rgba(59,130,246,0.18)"
                 };
               } 
               // White/Neutral - Default
@@ -368,8 +371,8 @@ export default function SuperAdminDashboard() {
         {/* National Data Access Trends - Full Width */}
         <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
           <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-[#ED1C24]" />
+            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+              <TrendingUp className="w-6 h-6 text-[#EF4444]" />
             </div>
             <div>
               <h3 className="text-xl font-bold text-[#1a1a1a]">National Data Access Trends</h3>
@@ -383,14 +386,6 @@ export default function SuperAdminDashboard() {
               margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
             >
               <defs>
-                <linearGradient id="nationalAccessRequestGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="natl-req-start" offset="5%" stopColor="#ED1C24" stopOpacity={0.3}/>
-                  <stop key="natl-req-end" offset="95%" stopColor="#ED1C24" stopOpacity={0}/>
-                </linearGradient>
-                <linearGradient id="nationalAccessApprovedGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="natl-appr-start" offset="5%" stopColor="#FF6B6B" stopOpacity={0.3}/>
-                  <stop key="natl-appr-end" offset="95%" stopColor="#FF6B6B" stopOpacity={0}/>
-                </linearGradient>
                 <filter id="nationalAccessShadow">
                   <feDropShadow key="natl-shadow" dx="0" dy="4" stdDeviation="4" floodOpacity="0.15"/>
                 </filter>
@@ -415,17 +410,7 @@ export default function SuperAdminDashboard() {
                 tickLine={false}
                 dx={-10}
               />
-              <Tooltip 
-                key="tooltip-national"
-                contentStyle={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.98)', 
-                  border: 'none',
-                  borderRadius: '16px',
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                  padding: '12px 16px'
-                }}
-                labelStyle={{ color: '#1a1a1a', fontWeight: 600, marginBottom: '8px' }}
-              />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend 
                 key="legend-national"
                 wrapperStyle={{ 
@@ -434,40 +419,42 @@ export default function SuperAdminDashboard() {
                   fontWeight: 500
                 }} 
               />
-              <Line 
-                key="line-requests"
-                type="monotone" 
-                dataKey="requests" 
-                stroke="#ED1C24" 
-                strokeWidth={4} 
-                name="Total Requests" 
-                dot={{ fill: '#ED1C24', strokeWidth: 2, r: 6, stroke: '#fff' }}
-                activeDot={{ r: 8, stroke: '#ED1C24', strokeWidth: 2, fill: '#fff' }}
-                filter="url(#nationalAccessShadow)"
-                isAnimationActive={false}
-              />
+              {/* Approved line - solid medium red */}
               <Line 
                 key="line-approved"
                 type="monotone" 
                 dataKey="approved" 
                 stroke="#FF6B6B" 
-                strokeWidth={4} 
+                strokeWidth={3} 
                 name="Approved" 
-                dot={{ fill: '#FF6B6B', strokeWidth: 2, r: 6, stroke: '#fff' }}
-                activeDot={{ r: 8, stroke: '#FF6B6B', strokeWidth: 2, fill: '#fff' }}
-                filter="url(#nationalAccessShadow)"
+                dot={{ fill: '#FF6B6B', strokeWidth: 2, r: 5, stroke: '#fff' }}
+                activeDot={{ r: 7, stroke: '#FF6B6B', strokeWidth: 2, fill: '#fff' }}
                 isAnimationActive={false}
               />
+              {/* Pending line - dashed light pink */}
               <Line 
                 key="line-pending"
                 type="monotone" 
                 dataKey="pending" 
-                stroke="#FF8787" 
-                strokeWidth={3} 
-                strokeDasharray="8 8" 
+                stroke="#FCA5A5" 
+                strokeWidth={2} 
+                strokeDasharray="8 6" 
                 name="Pending" 
-                dot={{ fill: '#FF8787', strokeWidth: 2, r: 5, stroke: '#fff' }}
-                activeDot={{ r: 7, stroke: '#FF8787', strokeWidth: 2, fill: '#fff' }}
+                dot={{ fill: '#FCA5A5', strokeWidth: 2, r: 4, stroke: '#fff' }}
+                activeDot={{ r: 6, stroke: '#FCA5A5', strokeWidth: 2, fill: '#fff' }}
+                isAnimationActive={false}
+              />
+              {/* Total Requests line - bold dark red, on top */}
+              <Line 
+                key="line-requests"
+                type="monotone" 
+                dataKey="requests" 
+                stroke="#EF4444" 
+                strokeWidth={4} 
+                name="Total Requests" 
+                dot={{ fill: '#EF4444', strokeWidth: 2, r: 6, stroke: '#fff' }}
+                activeDot={{ r: 8, stroke: '#EF4444', strokeWidth: 2, fill: '#fff' }}
+                filter="url(#nationalAccessShadow)"
                 isAnimationActive={false}
               />
             </LineChart>
@@ -480,8 +467,8 @@ export default function SuperAdminDashboard() {
           <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                  <Server className="w-6 h-6 text-[#ED1C24]" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                  <Server className="w-6 h-6 text-[#EF4444]" />
                 </div>
                 <div>
                   <h3 className="text-xl font-bold text-[#1a1a1a]">Top 7 most used services</h3>
@@ -504,7 +491,7 @@ export default function SuperAdminDashboard() {
                     align="end" 
                     className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
                   >
-                    <DropdownMenuLabel className="text-xs font-bold text-[#ED1C24] uppercase tracking-wider px-3 py-2">
+                    <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
                       Export Options
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator className="bg-[#E5E5E5]" />
@@ -512,7 +499,7 @@ export default function SuperAdminDashboard() {
                       onClick={() => handleExportPDF("Top 7 Services")}
                       className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
                     >
-                      <FileText className="w-4 h-4 mr-2 text-[#ED1C24]" />
+                      <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
                       <span className="text-sm">Download PDF</span>
                     </DropdownMenuItem>
                   </DropdownMenuContent>
@@ -552,8 +539,8 @@ export default function SuperAdminDashboard() {
                     className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-white hover:shadow-[4px_4px_12px_rgba(163,177,198,0.2),-2px_-2px_8px_rgba(255,255,255,0.8)] transition-all duration-300 hover:translate-x-2"
                   >
                     <div className="flex items-center gap-4 flex-1">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                        <ServiceIcon className="w-5 h-5 text-[#ED1C24]" />
+                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                        <ServiceIcon className="w-5 h-5 text-[#EF4444]" />
                       </div>
                       <div>
                         <div className="font-semibold text-[#1a1a1a]">{service.serviceName}</div>
@@ -562,7 +549,7 @@ export default function SuperAdminDashboard() {
                     </div>
                     <div className="flex items-center gap-6">
                       <div className="text-sm text-[#666666]">{service.lastReview}</div>
-                      <div className="text-xl font-bold text-[#ED1C24]">{service.requests}</div>
+                      <div className="text-xl font-bold text-[#EF4444]">{service.requests}</div>
                     </div>
                   </div>
                 );
@@ -573,8 +560,8 @@ export default function SuperAdminDashboard() {
           {/* Organization Types Pie Chart */}
           <Card className="p-6 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
             <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-[#ED1C24]" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                <Building2 className="w-6 h-6 text-[#EF4444]" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-[#1a1a1a]">Organization Types</h3>
@@ -610,16 +597,7 @@ export default function SuperAdminDashboard() {
                     />
                   ))}
                 </Pie>
-                <Tooltip 
-                  key="tooltip-pie"
-                  contentStyle={{ 
-                    backgroundColor: 'rgba(255, 255, 255, 0.98)', 
-                    border: 'none',
-                    borderRadius: '16px',
-                    boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                    padding: '12px 16px'
-                  }}
-                />
+                <Tooltip content={<CustomChartTooltip />} />
                 <Legend 
                   key="legend-pie"
                   wrapperStyle={{ 
@@ -655,7 +633,7 @@ export default function SuperAdminDashboard() {
                 align="end" 
                 className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
               >
-                <DropdownMenuLabel className="text-xs font-bold text-[#ED1C24] uppercase tracking-wider px-3 py-2">
+                <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
                   Export Options
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-[#E5E5E5]" />
@@ -663,7 +641,7 @@ export default function SuperAdminDashboard() {
                   onClick={() => handleExportPDF("Services Usage Trend")}
                   className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
                 >
-                  <FileText className="w-4 h-4 mr-2 text-[#ED1C24]" />
+                  <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
                   <span className="text-sm">Download PDF</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -674,8 +652,8 @@ export default function SuperAdminDashboard() {
             <AreaChart data={topUsedServicesData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
               <defs>
                 <linearGradient id="servicesUsageColorAverage" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="avg-start" offset="5%" stopColor="#ED1C24" stopOpacity={0.3}/>
-                  <stop key="avg-end" offset="95%" stopColor="#ED1C24" stopOpacity={0.05}/>
+                  <stop key="avg-start" offset="5%" stopColor="#EF4444" stopOpacity={0.3}/>
+                  <stop key="avg-end" offset="95%" stopColor="#EF4444" stopOpacity={0.05}/>
                 </linearGradient>
                 <linearGradient id="servicesUsageColorBaseMap" x1="0" y1="0" x2="0" y2="1">
                   <stop key="base-start" offset="5%" stopColor="#FF6B6B" stopOpacity={0.3}/>
@@ -709,27 +687,13 @@ export default function SuperAdminDashboard() {
                   return value;
                 }}
               />
-              <Tooltip 
-                key="tooltip-area"
-                contentStyle={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.98)', 
-                  border: 'none',
-                  borderRadius: '16px',
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                  padding: '12px 16px'
-                }}
-                formatter={(value: number) => {
-                  if (value >= 1000000) return `${(value / 1000000).toFixed(1)}M`;
-                  if (value >= 1000) return `${(value / 1000).toFixed(0)}k`;
-                  return value;
-                }}
-              />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend key="legend-area" wrapperStyle={{ fontSize: '11px', fontWeight: 500 }} />
               <Area 
                 key="area-average"
                 type="monotone" 
                 dataKey="Average" 
-                stroke="#ED1C24" 
+                stroke="#EF4444" 
                 strokeWidth={3}
                 fill="url(#servicesUsageColorAverage)"
                 name="Average"
@@ -766,8 +730,8 @@ export default function SuperAdminDashboard() {
         <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                <Activity className="w-6 h-6 text-[#ED1C24]" />
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                <Activity className="w-6 h-6 text-[#EF4444]" />
               </div>
               <div>
                 <h3 className="text-xl font-bold text-[#1a1a1a]">Requests by Service Type</h3>
@@ -788,7 +752,7 @@ export default function SuperAdminDashboard() {
                 align="end" 
                 className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
               >
-                <DropdownMenuLabel className="text-xs font-bold text-[#ED1C24] uppercase tracking-wider px-3 py-2">
+                <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
                   Export Options
                 </DropdownMenuLabel>
                 <DropdownMenuSeparator className="bg-[#E5E5E5]" />
@@ -796,7 +760,7 @@ export default function SuperAdminDashboard() {
                   onClick={() => handleExportPDF("Requests by Service Type")}
                   className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
                 >
-                  <FileText className="w-4 h-4 mr-2 text-[#ED1C24]" />
+                  <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
                   <span className="text-sm">Download PDF</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -813,8 +777,8 @@ export default function SuperAdminDashboard() {
                   <feDropShadow key="bar-shadow" dx="0" dy="4" stdDeviation="4" floodOpacity="0.15"/>
                 </filter>
                 <linearGradient id="mapGradReqType" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="map-start" offset="5%" stopColor="#ED1C24" stopOpacity={0.9}/>
-                  <stop key="map-end" offset="95%" stopColor="#ED1C24" stopOpacity={0.7}/>
+                  <stop key="map-start" offset="5%" stopColor="#EF4444" stopOpacity={0.9}/>
+                  <stop key="map-end" offset="95%" stopColor="#EF4444" stopOpacity={0.7}/>
                 </linearGradient>
                 <linearGradient id="featureGradReqType" x1="0" y1="0" x2="0" y2="1">
                   <stop key="feature-start" offset="5%" stopColor="#003F72" stopOpacity={0.9}/>
@@ -849,17 +813,7 @@ export default function SuperAdminDashboard() {
                 tickLine={false}
                 dx={-10}
               />
-              <Tooltip 
-                key="tooltip-line"
-                contentStyle={{ 
-                  backgroundColor: 'rgba(255, 255, 255, 0.98)', 
-                  border: 'none',
-                  borderRadius: '16px',
-                  boxShadow: '0 10px 40px rgba(0,0,0,0.1)',
-                  padding: '12px 16px'
-                }}
-                labelStyle={{ color: '#1a1a1a', fontWeight: 600, marginBottom: '8px' }}
-              />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend 
                 key="legend-line"
                 wrapperStyle={{ 

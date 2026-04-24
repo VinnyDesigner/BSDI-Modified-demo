@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+import CustomChartTooltip from "../../components/ui/CustomChartTooltip";
 const kpiCards = [
   { label: "Users in Department", value: "45", icon: Users, color: "#252628" },
   { label: "Active GIS Services", value: "28", icon: Activity, color: "#666666" },
@@ -98,7 +99,7 @@ export default function DepartmentDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
               <XAxis dataKey="month" stroke="#666666" />
               <YAxis stroke="#666666" />
-              <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend />
               <Line key="requests-line" type="monotone" dataKey="requests" stroke="#ED1C24" strokeWidth={3} name="Total Requests" />
               <Line key="approved-line" type="monotone" dataKey="approved" stroke="#003F72" strokeWidth={3} name="Approved" />
@@ -125,7 +126,7 @@ export default function DepartmentDashboard() {
                   <Cell key={`role-cell-${entry.name}-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip content={<CustomChartTooltip />} />
             </PieChart>
           </ResponsiveContainer>
           <div className="mt-4 space-y-2">
@@ -150,10 +151,10 @@ export default function DepartmentDashboard() {
             <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
             <XAxis dataKey="day" stroke="#666666" />
             <YAxis stroke="#666666" />
-            <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+            <Tooltip content={<CustomChartTooltip />} />
             <Legend />
             <Bar key="logins-bar" dataKey="logins" fill="#ED1C24" name="Logins" radius={[8, 8, 0, 0]} />
-            <Bar key="actions-bar" dataKey="actions" fill="##003F72" name="Actions" radius={[8, 8, 0, 0]} />
+            <Bar key="actions-bar" dataKey="actions" fill="#003F72" name="Actions" radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </Card>

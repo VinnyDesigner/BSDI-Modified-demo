@@ -294,13 +294,13 @@ export default function Roles2() {
       <div className="max-w-[1800px] mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-            <h1 className="text-[26px] font-bold text-[#ED1C24]">Security Access Group</h1>
+            <h1 className="text-[26px] font-bold text-[#EF4444]">Security Access Group</h1>
             <p className="text-[#4A5565] text-[14px] font-normal">Manage Security Access Group assign users to Access groups</p>
           </div>
           {!isReviewer && !isOrgAdmin && (
             <Button
               onClick={() => setOpen(true)}
-              className="bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-xl h-12 px-6 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
+              className="bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-xl h-12 px-6 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
             >
               <Plus className="w-4 h-4 mr-2" />
               Create Security Access Group
@@ -311,10 +311,10 @@ export default function Roles2() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <Card className="relative h-[106px] bg-white/90 backdrop-blur-xl border-0 rounded-[24px] shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)] hover:shadow-[12px_12px_32px_rgba(163,177,198,0.4),-12px_-12px_32px_rgba(255,255,255,1)] transition-all duration-300 hover:translate-y-[-4px] overflow-hidden">
             <div className="absolute right-[24px] top-[37px] w-[30px] h-[30px] flex items-center justify-center">
-              <Shield className="w-[30px] h-[30px] text-[#ED1C24]" style={{ strokeWidth: 2 }} />
+              <Shield className="w-[30px] h-[30px] text-[#EF4444]" style={{ strokeWidth: 2 }} />
             </div>
             <div className="absolute left-[23.88px] top-[18px] flex flex-col gap-1">
-              <div className="text-[26px] font-semibold text-[#ED1C24]">
+              <div className="text-[26px] font-semibold text-[#EF4444]">
                 38
               </div>
               <div className="text-[14px] font-normal text-black/50">Total Spatial Access</div>
@@ -326,7 +326,7 @@ export default function Roles2() {
               <Users className="w-[30px] h-[30px] text-[#003F72]" style={{ strokeWidth: 2 }} />
             </div>
             <div className="absolute left-[23.88px] top-[18px] flex flex-col gap-1">
-              <div className="text-[26px] font-semibold text-[#ED1C24]">
+              <div className="text-[26px] font-semibold text-[#EF4444]">
                 811
               </div>
               <div className="text-[14px] font-normal text-black/50">
@@ -343,11 +343,11 @@ export default function Roles2() {
           <div className="p-6 border-b border-[#E5E5E5]">
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                  <Shield className="w-6 h-6 text-[#ED1C24]" />
+                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                  <Shield className="w-6 h-6 text-[#EF4444]" />
                 </div>
                 <div className="flex flex-col gap-1">
-                  <h3 className="text-[26px] font-semibold text-[#ED1C24]">Security Access Group</h3>
+                  <h3 className="text-[26px] font-semibold text-[#EF4444]">Security Access Group</h3>
                   <p className="text-[14px] font-normal text-black/50">Manage Security Access Group assign users to Access groups</p>
                 </div>
               </div>
@@ -359,22 +359,22 @@ export default function Roles2() {
             <table className="w-full">
               <thead>
                 <tr className="border-b-2 border-[#E5E5E5] bg-gradient-to-r from-gray-50 to-white">
-                  <th className="text-left py-4 px-6 text-xs font-bold text-[#ED1C24] uppercase tracking-wider">
+                  <th className="text-left py-4 px-6 text-xs font-bold text-[#EF4444] uppercase tracking-wider">
                     Security Group Name
                   </th>
-                  <th className="text-left py-4 px-6 text-xs font-bold text-[#ED1C24] uppercase tracking-wider">
+                  <th className="text-left py-4 px-6 text-xs font-bold text-[#EF4444] uppercase tracking-wider">
                     Description
                   </th>
-                  <th className="text-left py-4 px-6 text-xs font-bold text-[#ED1C24] uppercase tracking-wider">
+                  <th className="text-left py-4 px-6 text-xs font-bold text-[#EF4444] uppercase tracking-wider">
                     Assigned Users Count
                   </th>
-                  <th className="text-left py-4 px-6 text-xs font-bold text-[#ED1C24] uppercase tracking-wider">
+                  <th className="text-left py-4 px-6 text-xs font-bold text-[#EF4444] uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="text-left py-4 px-6 text-xs font-bold text-[#ED1C24] uppercase tracking-wider">
+                  <th className="text-left py-4 px-6 text-xs font-bold text-[#EF4444] uppercase tracking-wider">
                     Security Access Group
                   </th>
-                  <th className="text-center py-4 px-6 text-xs font-bold text-[#ED1C24] uppercase tracking-wider">
+                  <th className="text-center py-4 px-6 text-xs font-bold text-[#EF4444] uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
@@ -388,8 +388,8 @@ export default function Roles2() {
                   >
                     <td className="py-4 px-6">
                       <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#ED1C24]/10 to-[#003F72]/10 flex items-center justify-center flex-shrink-0">
-                          <Shield className="w-5 h-5 text-[#ED1C24]" />
+                        <div className="w-10 h-10 rounded-lg bg-gradient-to-br from-[#EF4444]/10 to-[#003F72]/10 flex items-center justify-center flex-shrink-0">
+                          <Shield className="w-5 h-5 text-[#EF4444]" />
                         </div>
                         <div>
                           <div className="font-semibold text-[#1a1a1a] text-sm">{permission.name}</div>
@@ -434,7 +434,7 @@ export default function Roles2() {
                         {isReviewer || isOrgAdmin || isDeptAdmin ? (
                           <Button
                             size="sm"
-                            className="bg-white hover:bg-gradient-to-r hover:from-[#ED1C24] hover:to-[#FF6B6B] text-[#252628] hover:text-white border border-[#ED1C24]/30 hover:border-transparent rounded-full h-8 px-3 transition-all"
+                            className="bg-white hover:bg-gradient-to-r hover:from-[#EF4444] hover:to-[#FF6B6B] text-[#252628] hover:text-white border border-[#EF4444]/30 hover:border-transparent rounded-full h-8 px-3 transition-all"
                             onClick={() => handleEditPermissionClick(permission)}
                           >
                             <Eye className="w-3.5 h-3.5" />
@@ -443,14 +443,14 @@ export default function Roles2() {
                           <>
                             <Button
                               size="sm"
-                              className="bg-white hover:bg-gradient-to-r hover:from-[#ED1C24] hover:to-[#FF6B6B] text-[#252628] hover:text-white border border-[#ED1C24]/30 hover:border-transparent rounded-full h-8 px-3 transition-all"
+                              className="bg-white hover:bg-gradient-to-r hover:from-[#EF4444] hover:to-[#FF6B6B] text-[#252628] hover:text-white border border-[#EF4444]/30 hover:border-transparent rounded-full h-8 px-3 transition-all"
                               onClick={() => handleEditPermissionClick(permission)}
                             >
                               <Edit className="w-3.5 h-3.5" />
                             </Button>
                             <Button
                               size="sm"
-                              className="bg-white hover:bg-gradient-to-r hover:from-[#ED1C24] hover:to-[#FF6B6B] text-[#252628] hover:text-white border border-[#ED1C24]/30 hover:border-transparent rounded-full h-8 px-3 transition-all"
+                              className="bg-white hover:bg-gradient-to-r hover:from-[#EF4444] hover:to-[#FF6B6B] text-[#252628] hover:text-white border border-[#EF4444]/30 hover:border-transparent rounded-full h-8 px-3 transition-all"
                               onClick={() => handleDeletePermissionClick(permission)}
                             >
                               <Trash2 className="w-3.5 h-3.5" />
@@ -638,8 +638,8 @@ export default function Roles2() {
                                   onClick={(e) => e.stopPropagation()}
                                 />
                                 <div className="flex items-center gap-2">
-                                  <div className="w-6 h-6 rounded-full bg-[#ED1C24]/10 flex items-center justify-center">
-                                    <span className="text-[10px] font-bold text-[#ED1C24]">
+                                  <div className="w-6 h-6 rounded-full bg-[#EF4444]/10 flex items-center justify-center">
+                                    <span className="text-[10px] font-bold text-[#EF4444]">
                                       {user.avatar}
                                     </span>
                                   </div>
@@ -666,7 +666,7 @@ export default function Roles2() {
                           setSelectedSpatialGroups([]);
                         }
                       }}
-                      className="border-[#E0E0E0] data-[state=checked]:bg-[#ED1C24] data-[state=checked]:border-[#ED1C24] h-5 w-5"
+                      className="border-[#E0E0E0] data-[state=checked]:bg-[#EF4444] data-[state=checked]:border-[#EF4444] h-5 w-5"
                     />
                     <Label htmlFor="enable-spatial-group" className="text-[#252628] font-medium text-sm cursor-pointer">
                       Security Access Group
@@ -677,7 +677,7 @@ export default function Roles2() {
                     variant="outline"
                     onClick={() => enableSpatialGroup && window.open("https://score-savvy-58161857.figma.site", "_blank")}
                     disabled={!enableSpatialGroup}
-                    className="w-full h-12 justify-start text-left font-normal border border-[#E0E0E0] rounded-xl px-4 hover:bg-gray-50 hover:border-[#ED1C24]/50 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-[#E0E0E0]"
+                    className="w-full h-12 justify-start text-left font-normal border border-[#E0E0E0] rounded-xl px-4 hover:bg-gray-50 hover:border-[#EF4444]/50 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-[#E0E0E0]"
                   >
                     {selectedSpatialGroups.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5 flex-1">
@@ -696,7 +696,7 @@ export default function Roles2() {
                         {enableSpatialGroup ? "Select security access group(s)" : "Enable to select security access groups"}
                       </span>
                     )}
-                    <ArrowRight className={`w-4 h-4 ml-2 transition-all ${enableSpatialGroup ? 'text-[#666666] group-hover:text-[#ED1C24] group-hover:translate-x-1' : 'text-[#cccccc]'}`} />
+                    <ArrowRight className={`w-4 h-4 ml-2 transition-all ${enableSpatialGroup ? 'text-[#666666] group-hover:text-[#EF4444] group-hover:translate-x-1' : 'text-[#cccccc]'}`} />
                   </Button>
                 </div>
               </div>
@@ -859,8 +859,8 @@ export default function Roles2() {
                                   onClick={(e) => e.stopPropagation()}
                                 />
                                 <div className="flex items-center gap-2">
-                                  <div className="w-6 h-6 rounded-full bg-[#ED1C24]/10 flex items-center justify-center">
-                                    <span className="text-[10px] font-bold text-[#ED1C24]">
+                                  <div className="w-6 h-6 rounded-full bg-[#EF4444]/10 flex items-center justify-center">
+                                    <span className="text-[10px] font-bold text-[#EF4444]">
                                       {user.avatar}
                                     </span>
                                   </div>
@@ -887,7 +887,7 @@ export default function Roles2() {
                           setEditSelectedSpatialGroups([]);
                         }
                       }}
-                      className="border-[#E0E0E0] data-[state=checked]:bg-[#ED1C24] data-[state=checked]:border-[#ED1C24] h-5 w-5"
+                      className="border-[#E0E0E0] data-[state=checked]:bg-[#EF4444] data-[state=checked]:border-[#EF4444] h-5 w-5"
                       disabled={isReviewer || isOrgAdmin}
                     />
                     <Label htmlFor="edit-enable-spatial-group" className="text-[#252628] font-medium text-sm cursor-pointer">
@@ -899,7 +899,7 @@ export default function Roles2() {
                     variant="outline"
                     onClick={() => editEnableSpatialGroup && window.open("https://score-savvy-58161857.figma.site", "_blank")}
                     disabled={!editEnableSpatialGroup || isReviewer || isOrgAdmin}
-                    className="w-full h-12 justify-start text-left font-normal border border-[#E0E0E0] rounded-xl px-4 hover:bg-gray-50 hover:border-[#ED1C24]/50 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-[#E0E0E0]"
+                    className="w-full h-12 justify-start text-left font-normal border border-[#E0E0E0] rounded-xl px-4 hover:bg-gray-50 hover:border-[#EF4444]/50 transition-all group disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-white disabled:hover:border-[#E0E0E0]"
                   >
                     {editSelectedSpatialGroups.length > 0 ? (
                       <div className="flex flex-wrap gap-1.5 flex-1">
@@ -918,7 +918,7 @@ export default function Roles2() {
                         {editEnableSpatialGroup ? "Select security access group(s)" : "Enable to select security access groups"}
                       </span>
                     )}
-                    <ArrowRight className={`w-4 h-4 ml-2 transition-all ${editEnableSpatialGroup ? 'text-[#666666] group-hover:text-[#ED1C24] group-hover:translate-x-1' : 'text-[#cccccc]'}`} />
+                    <ArrowRight className={`w-4 h-4 ml-2 transition-all ${editEnableSpatialGroup ? 'text-[#666666] group-hover:text-[#EF4444] group-hover:translate-x-1' : 'text-[#cccccc]'}`} />
                   </Button>
                 </div>
               </div>
@@ -957,10 +957,10 @@ export default function Roles2() {
                 <div className="flex justify-center">
                   <div className="relative">
                     {/* Outer glow circle */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B6B]/20 to-[#ED1C24]/20 rounded-full blur-2xl scale-150"></div>
+                    <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B6B]/20 to-[#EF4444]/20 rounded-full blur-2xl scale-150"></div>
 
                     {/* Main circle with alert triangle illustration */}
-                    <div className="relative w-24 h-24 bg-gradient-to-br from-[#FF6B6B] to-[#ED1C24] rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(237,28,36,0.4)]">
+                    <div className="relative w-24 h-24 bg-gradient-to-br from-[#FF6B6B] to-[#EF4444] rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(237,28,36,0.4)]">
                       <div className="relative">
                         <AlertTriangle className="w-10 h-10 text-white" strokeWidth={2} />
                       </div>
@@ -985,7 +985,7 @@ export default function Roles2() {
                 <div className="space-y-3">
                   <Button
                     onClick={handleDeletePermission}
-                    className="w-full bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
                   >
                     Delete Permission
                   </Button>
@@ -1044,7 +1044,7 @@ export default function Roles2() {
                 <div className="space-y-3">
                   <Button
                     onClick={() => setDeleteSuccessDialogOpen(false)}
-                    className="w-full bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
                   >
                     Done
                   </Button>
@@ -1099,7 +1099,7 @@ export default function Roles2() {
                       setSuccessOpen(false);
                       navigate("/dashboard/super-admin/roles2");
                     }}
-                    className="w-full bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
+                    className="w-full bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300"
                   >
                     Stay on This Page
                   </Button>
@@ -1141,7 +1141,7 @@ export default function Roles2() {
                   value={spatialGroupSearchQuery}
                   onChange={(e) => setSpatialGroupSearchQuery(e.target.value)}
                   placeholder="Search spatial groups by name, description, or type..."
-                  className="pl-9 h-12 rounded-xl border-[#E0E0E0] bg-white focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24] transition-all"
+                  className="pl-9 h-12 rounded-xl border-[#E0E0E0] bg-white focus:border-[#EF4444] focus:ring-1 focus:ring-[#EF4444] transition-all"
                 />
               </div>
 
@@ -1176,8 +1176,8 @@ export default function Roles2() {
                           key={group.id}
                           onClick={() => editOpen ? handleEditToggleSpatialGroup(group.name) : handleToggleSpatialGroup(group.name)}
                           className={`p-4 rounded-2xl border-2 cursor-pointer transition-all ${isSelected
-                            ? 'border-[#ED1C24] bg-gradient-to-br from-red-50 to-pink-50 shadow-md'
-                            : 'border-[#E0E0E0] bg-white hover:border-[#ED1C24]/50 hover:shadow-sm'
+                            ? 'border-[#EF4444] bg-gradient-to-br from-red-50 to-pink-50 shadow-md'
+                            : 'border-[#E0E0E0] bg-white hover:border-[#EF4444]/50 hover:shadow-sm'
                             }`}
                         >
                           <div className="flex items-start justify-between mb-3">
@@ -1208,7 +1208,7 @@ export default function Roles2() {
                             <Checkbox
                               checked={isSelected}
                               onCheckedChange={() => editOpen ? handleEditToggleSpatialGroup(group.name) : handleToggleSpatialGroup(group.name)}
-                              className="border-[#E0E0E0] data-[state=checked]:bg-[#ED1C24] data-[state=checked]:border-[#ED1C24]"
+                              className="border-[#E0E0E0] data-[state=checked]:bg-[#EF4444] data-[state=checked]:border-[#EF4444]"
                               onClick={(e) => e.stopPropagation()}
                             />
                           </div>
@@ -1244,7 +1244,7 @@ export default function Roles2() {
                     setSpatialGroupSearchQuery("");
                     toast.success(`${editOpen ? editSelectedSpatialGroups.length : selectedSpatialGroups.length} spatial group(s) selected`);
                   }}
-                  className="flex-1 bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-full h-12 shadow-lg hover:shadow-xl transition-all"
+                  className="flex-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-full h-12 shadow-lg hover:shadow-xl transition-all"
                 >
                   <CheckCircle2 className="w-4 h-4 mr-2" />
                   Confirm Selection

@@ -554,9 +554,9 @@ export default function SpatialGovernance() {
       const row = document.getElementById(`entity-row-${entity.id}`);
       if (row) {
         row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        row.classList.add('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+        row.classList.add('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         setTimeout(() => {
-          row.classList.remove('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+          row.classList.remove('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         }, 2000);
       }
     }, 100);
@@ -1001,7 +1001,7 @@ export default function SpatialGovernance() {
         {/* Header */}
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-            <h1 className="text-[26px] font-bold text-[#ED1C24]">Spatial Governance</h1>
+            <h1 className="text-[26px] font-bold text-[#EF4444]">Spatial Governance</h1>
             <p className="text-[#4A5565] text-[14px] font-normal">Manage spatial boundaries and governance frameworks</p>
           </div>
         </div>
@@ -1011,10 +1011,10 @@ export default function SpatialGovernance() {
           {/* Total Roles */}
           <Card className="relative h-[106px] bg-white/90 backdrop-blur-xl border-0 rounded-[24px] shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)] hover:shadow-[12px_12px_32px_rgba(163,177,198,0.4),-12px_-12px_32px_rgba(255,255,255,1)] transition-all duration-300 hover:translate-y-[-4px] overflow-hidden">
             <div className="absolute right-[24px] top-[37px] w-[30px] h-[30px] flex items-center justify-center">
-              <Anchor className="w-[30px] h-[30px] text-[#ED1C24]" style={{ strokeWidth: 2 }} />
+              <Anchor className="w-[30px] h-[30px] text-[#EF4444]" style={{ strokeWidth: 2 }} />
             </div>
             <div className="absolute left-[23.88px] top-[18px] flex flex-col gap-0.5">
-              <div className="text-[26px] leading-tight font-bold text-[#ED1C24]">
+              <div className="text-[26px] leading-tight font-bold text-[#EF4444]">
                 12
               </div>
               <div className="text-[14px] font-normal text-[#4A5565]">
@@ -1029,7 +1029,7 @@ export default function SpatialGovernance() {
               <MapPin className="w-[30px] h-[30px] text-[#003F72]" style={{ strokeWidth: 2 }} />
             </div>
             <div className="absolute left-[23.88px] top-[18px] flex flex-col gap-0.5">
-              <div className="text-[26px] leading-tight font-bold text-[#ED1C24]">
+              <div className="text-[26px] leading-tight font-bold text-[#EF4444]">
                 48
               </div>
               <div className="text-[14px] font-normal text-[#4A5565]">
@@ -1048,11 +1048,11 @@ export default function SpatialGovernance() {
               <div className="px-6 pt-5 pb-5 border-b border-[#E5E5E5] flex-shrink-0">
                 <div className="flex items-center justify-between gap-3 mb-4">
                   <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                      <Grid className="w-6 h-6 text-[#ED1C24]" />
+                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                      <Grid className="w-6 h-6 text-[#EF4444]" />
                     </div>
                     <div>
-                      <h3 className="text-[26px] font-bold text-[#ED1C24]">Access Area</h3>
+                      <h3 className="text-[26px] font-bold text-[#EF4444]">Access Area</h3>
                     </div>
                   </div>
                   
@@ -1064,12 +1064,12 @@ export default function SpatialGovernance() {
                       placeholder="Search..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-10 h-10 border border-[#E0E0E0] rounded-xl bg-[#F5F5F5] focus:bg-white focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24] transition-all text-sm"
+                      className="pl-10 pr-10 h-10 border border-[#E0E0E0] rounded-xl bg-[#F5F5F5] focus:bg-white focus:border-[#EF4444] focus:ring-1 focus:ring-[#EF4444] transition-all text-sm"
                     />
                     {searchQuery && (
                       <button
                         onClick={() => setSearchQuery("")}
-                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#ED1C24] transition-colors"
+                        className="absolute right-3 top-1/2 -translate-y-1/2 text-[#999999] hover:text-[#EF4444] transition-colors"
                       >
                         <X className="w-4 h-4" />
                       </button>
@@ -1109,12 +1109,12 @@ export default function SpatialGovernance() {
                 <table className="w-full border-collapse">
                   <thead className="sticky top-0 bg-white z-10">
                     <tr className="border-b-2 border-[#E5E5E5] bg-gradient-to-r from-gray-50 to-white">
-                      <th className="text-left py-3 px-4 text-xs font-bold text-[#ED1C24] uppercase tracking-wider min-w-[180px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("name")}>Name {getSortIcon("name")}</th>
-                      <th className="text-left py-3 px-4 text-xs font-bold text-[#ED1C24] uppercase tracking-wider min-w-[140px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("type")}>Permission Type {getSortIcon("type")}</th>
-                      <th className="text-left py-3 px-4 text-xs font-bold text-[#ED1C24] uppercase tracking-wider min-w-[140px]">Created By</th>
-                      <th className="text-left py-3 px-4 text-xs font-bold text-[#ED1C24] uppercase tracking-wider min-w-[120px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("lastModified")}>Updated {getSortIcon("lastModified")}</th>
-                      <th className="text-center py-3 px-4 text-xs font-bold text-[#ED1C24] uppercase tracking-wider min-w-[100px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("status")}>Status {getSortIcon("status")}</th>
-                      <th className="text-center py-3 text-xs font-bold text-[#ED1C24] uppercase tracking-wider sticky right-0 bg-gradient-to-r from-gray-50 to-white min-w-[120px] w-[120px] shadow-[-4px_0_8px_rgba(0,0,0,0.1)] z-20">
+                      <th className="text-left py-3 px-4 text-xs font-bold text-[#EF4444] uppercase tracking-wider min-w-[180px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("name")}>Name {getSortIcon("name")}</th>
+                      <th className="text-left py-3 px-4 text-xs font-bold text-[#EF4444] uppercase tracking-wider min-w-[140px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("type")}>Permission Type {getSortIcon("type")}</th>
+                      <th className="text-left py-3 px-4 text-xs font-bold text-[#EF4444] uppercase tracking-wider min-w-[140px]">Created By</th>
+                      <th className="text-left py-3 px-4 text-xs font-bold text-[#EF4444] uppercase tracking-wider min-w-[120px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("lastModified")}>Updated {getSortIcon("lastModified")}</th>
+                      <th className="text-center py-3 px-4 text-xs font-bold text-[#EF4444] uppercase tracking-wider min-w-[100px] cursor-pointer hover:bg-red-50/30 transition-colors" onClick={() => handleSort("status")}>Status {getSortIcon("status")}</th>
+                      <th className="text-center py-3 text-xs font-bold text-[#EF4444] uppercase tracking-wider sticky right-0 bg-gradient-to-r from-gray-50 to-white min-w-[120px] w-[120px] shadow-[-4px_0_8px_rgba(0,0,0,0.1)] z-20">
                         Actions
                       </th>
                     </tr>
@@ -1163,7 +1163,7 @@ export default function SpatialGovernance() {
                                 setEntityToggles(prev => ({ ...prev, [entity.id]: checked }));
                                 toast.success(`${entity.name} ${checked ? 'enabled' : 'disabled'}`);
                               }}
-                              className="data-[state=checked]:bg-[#ED1C24]"
+                              className="data-[state=checked]:bg-[#EF4444]"
                             />
                           </div>
                         </td>
@@ -1265,7 +1265,7 @@ export default function SpatialGovernance() {
                           onClick={() => setMapMode("spatial")}
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all h-[34px] flex items-center ${
                             mapMode === "spatial"
-                              ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white shadow-md"
+                              ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white shadow-md"
                               : "text-[#666666] hover:bg-gray-100"
                           }`}
                         >
@@ -1275,7 +1275,7 @@ export default function SpatialGovernance() {
                           onClick={() => setMapMode("data")}
                           className={`px-4 py-2 rounded-lg text-sm font-medium transition-all h-[34px] flex items-center ${
                             mapMode === "data"
-                              ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white shadow-md"
+                              ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white shadow-md"
                               : "text-[#666666] hover:bg-gray-100"
                           }`}
                         >Data</button>
@@ -1364,7 +1364,7 @@ export default function SpatialGovernance() {
                       <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 z-[1000] flex items-center gap-3">
                         <Button
                           onClick={handleAssignBlockClick}
-                          className="bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-lg px-6 py-2 text-sm font-medium shadow-lg transition-all"
+                          className="bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-lg px-6 py-2 text-sm font-medium shadow-lg transition-all"
                         >
                           Assign Block
                         </Button>
@@ -1398,7 +1398,7 @@ export default function SpatialGovernance() {
                     
                     {/* Drawing mode indicator overlay - Only for Spatial mode */}
                     {mapMode === "spatial" && isDrawingMode && (
-                      <div className="absolute top-20 left-4 bg-[#ED1C24] text-white rounded-xl px-6 py-3 shadow-lg z-[1000]">
+                      <div className="absolute top-20 left-4 bg-[#EF4444] text-white rounded-xl px-6 py-3 shadow-lg z-[1000]">
                         <div className="font-bold text-sm">DRAWING MODE ACTIVE</div>
                         <div className="text-xs opacity-90 mt-1">Click on the map to draw boundaries</div>
                         <div className="text-xs opacity-80">Double-click or press ESC to complete</div>
@@ -1407,7 +1407,7 @@ export default function SpatialGovernance() {
 
                     {/* Edit mode indicator overlay - Only for Spatial mode */}
                     {mapMode === "spatial" && isMapEditMode && editingRoleId !== null && (
-                      <div className="absolute top-20 left-4 bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white rounded-xl px-6 py-3 shadow-lg z-[1000]">
+                      <div className="absolute top-20 left-4 bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white rounded-xl px-6 py-3 shadow-lg z-[1000]">
                         <div className="font-bold text-sm">Boundary Editing Mode</div>
                         <div className="text-xs opacity-90 mt-1">Editing role boundary</div>
                         <div className="text-xs opacity-80">Use the tools to modify the boundary</div>
@@ -1473,7 +1473,7 @@ export default function SpatialGovernance() {
                             onClick={() => handleSelectTool("polygon")}
                             className={`justify-start gap-2 h-9 ${
                               activeTool === "polygon"
-                                ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white"
+                                ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white"
                                 : "bg-white hover:bg-gray-50 text-[#252628] border border-[#E5E5E5]"
                             }`}
                           >
@@ -1486,7 +1486,7 @@ export default function SpatialGovernance() {
                             onClick={() => handleSelectTool("edit")}
                             className={`justify-start gap-2 h-9 ${
                               activeTool === "edit"
-                                ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white"
+                                ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white"
                                 : "bg-white hover:bg-gray-50 text-[#252628] border border-[#E5E5E5]"
                             }`}
                           >
@@ -1499,7 +1499,7 @@ export default function SpatialGovernance() {
                             onClick={() => handleSelectTool("vertex")}
                             className={`justify-start gap-2 h-9 ${
                               activeTool === "vertex"
-                                ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white"
+                                ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white"
                                 : "bg-white hover:bg-gray-50 text-[#252628] border border-[#E5E5E5]"
                             }`}
                           >
@@ -1512,7 +1512,7 @@ export default function SpatialGovernance() {
                             onClick={() => handleSelectTool("merge")}
                             className={`justify-start gap-2 h-9 ${
                               activeTool === "merge"
-                                ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white"
+                                ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white"
                                 : "bg-white hover:bg-gray-50 text-[#252628] border border-[#E5E5E5]"
                             }`}
                           >
@@ -1525,7 +1525,7 @@ export default function SpatialGovernance() {
                             onClick={() => handleSelectTool("cut")}
                             className={`justify-start gap-2 h-9 ${
                               activeTool === "cut"
-                                ? "bg-gradient-to-r from-[#ED1C24] to-[#d41820] text-white"
+                                ? "bg-gradient-to-r from-[#EF4444] to-[#DC2626] text-white"
                                 : "bg-white hover:bg-gray-50 text-[#252628] border border-[#E5E5E5]"
                             }`}
                           >
@@ -1595,7 +1595,7 @@ export default function SpatialGovernance() {
                         <Button
                           onClick={handleClearBoundary}
                           variant="outline"
-                          className="bg-white hover:bg-red-50 text-[#ED1C24] border-[#E0E0E0] rounded-lg px-6 py-2 text-sm font-medium shadow-lg transition-all"
+                          className="bg-white hover:bg-red-50 text-[#EF4444] border-[#E0E0E0] rounded-lg px-6 py-2 text-sm font-medium shadow-lg transition-all"
                         >
                           <Trash2 className="w-4 h-4 mr-2" />
                           Clear Selection
@@ -1622,7 +1622,7 @@ export default function SpatialGovernance() {
                             onClick={() => setActiveTab("identify")}
                             className={`flex-1 px-2 py-2.5 text-xs font-medium transition-colors ${
                               activeTab === "identify" 
-                                ? "text-[#1A1A1A] bg-white border-b-2 border-[#ED1C24]" 
+                                ? "text-[#1A1A1A] bg-white border-b-2 border-[#EF4444]" 
                                 : "text-[#6B6B6B] hover:bg-gray-50"
                             }`}
                           >
@@ -1632,7 +1632,7 @@ export default function SpatialGovernance() {
                             onClick={() => setActiveTab("layers")}
                             className={`flex-1 px-2 py-2.5 text-xs font-medium transition-colors ${
                               activeTab === "layers" 
-                                ? "text-[#1A1A1A] bg-white border-b-2 border-[#ED1C24]" 
+                                ? "text-[#1A1A1A] bg-white border-b-2 border-[#EF4444]" 
                                 : "text-[#6B6B6B] hover:bg-gray-50"
                             }`}
                           >
@@ -1642,7 +1642,7 @@ export default function SpatialGovernance() {
                             onClick={() => setActiveTab("results")}
                             className={`flex-1 px-2 py-2.5 text-xs font-medium transition-colors ${
                               activeTab === "results" 
-                                ? "text-[#1A1A1A] bg-white border-b-2 border-[#ED1C24]" 
+                                ? "text-[#1A1A1A] bg-white border-b-2 border-[#EF4444]" 
                                 : "text-[#6B6B6B] hover:bg-gray-50"
                             }`}
                           >
@@ -1663,12 +1663,12 @@ export default function SpatialGovernance() {
                                 onClick={() => setSelectedShape("point")}
                                 className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all ${
                                   selectedShape === "point" 
-                                    ? "border-[#ED1C24] bg-[#FFF5F5]" 
-                                    : "border-[#E5E5E5] hover:border-[#ED1C24]/50 bg-white"
+                                    ? "border-[#EF4444] bg-[#FFF5F5]" 
+                                    : "border-[#E5E5E5] hover:border-[#EF4444]/50 bg-white"
                                 }`}
                               >
-                                <Circle className={selectedShape === "point" ? "w-5 h-5 mb-1.5 text-[#ED1C24]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} fill="currentColor" />
-                                <span className={selectedShape === "point" ? "text-[10px] font-medium text-[#ED1C24]" : "text-[10px] font-medium text-[#6B6B6B]"}>Point</span>
+                                <Circle className={selectedShape === "point" ? "w-5 h-5 mb-1.5 text-[#EF4444]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} fill="currentColor" />
+                                <span className={selectedShape === "point" ? "text-[10px] font-medium text-[#EF4444]" : "text-[10px] font-medium text-[#6B6B6B]"}>Point</span>
                               </button>
 
                               {/* Rectangle */}
@@ -1676,12 +1676,12 @@ export default function SpatialGovernance() {
                                 onClick={() => setSelectedShape("rectangle")}
                                 className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all ${
                                   selectedShape === "rectangle" 
-                                    ? "border-[#ED1C24] bg-[#FFF5F5]" 
-                                    : "border-[#E5E5E5] hover:border-[#ED1C24]/50 bg-white"
+                                    ? "border-[#EF4444] bg-[#FFF5F5]" 
+                                    : "border-[#E5E5E5] hover:border-[#EF4444]/50 bg-white"
                                 }`}
                               >
-                                <Square className={selectedShape === "rectangle" ? "w-5 h-5 mb-1.5 text-[#ED1C24]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
-                                <span className={selectedShape === "rectangle" ? "text-[10px] font-medium text-[#ED1C24]" : "text-[10px] font-medium text-[#6B6B6B]"}>Rectangle</span>
+                                <Square className={selectedShape === "rectangle" ? "w-5 h-5 mb-1.5 text-[#EF4444]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
+                                <span className={selectedShape === "rectangle" ? "text-[10px] font-medium text-[#EF4444]" : "text-[10px] font-medium text-[#6B6B6B]"}>Rectangle</span>
                               </button>
 
                               {/* Polygon */}
@@ -1689,12 +1689,12 @@ export default function SpatialGovernance() {
                                 onClick={() => setSelectedShape("polygon")}
                                 className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all ${
                                   selectedShape === "polygon" 
-                                    ? "border-[#ED1C24] bg-[#FFF5F5]" 
-                                    : "border-[#E5E5E5] hover:border-[#ED1C24]/50 bg-white"
+                                    ? "border-[#EF4444] bg-[#FFF5F5]" 
+                                    : "border-[#E5E5E5] hover:border-[#EF4444]/50 bg-white"
                                 }`}
                               >
-                                <Pentagon className={selectedShape === "polygon" ? "w-5 h-5 mb-1.5 text-[#ED1C24]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
-                                <span className={selectedShape === "polygon" ? "text-[10px] font-medium text-[#ED1C24]" : "text-[10px] font-medium text-[#6B6B6B]"}>Polygon</span>
+                                <Pentagon className={selectedShape === "polygon" ? "w-5 h-5 mb-1.5 text-[#EF4444]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
+                                <span className={selectedShape === "polygon" ? "text-[10px] font-medium text-[#EF4444]" : "text-[10px] font-medium text-[#6B6B6B]"}>Polygon</span>
                               </button>
 
                               {/* Circle */}
@@ -1702,12 +1702,12 @@ export default function SpatialGovernance() {
                                 onClick={() => setSelectedShape("circle")}
                                 className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all ${
                                   selectedShape === "circle" 
-                                    ? "border-[#ED1C24] bg-[#FFF5F5]" 
-                                    : "border-[#E5E5E5] hover:border-[#ED1C24]/50 bg-white"
+                                    ? "border-[#EF4444] bg-[#FFF5F5]" 
+                                    : "border-[#E5E5E5] hover:border-[#EF4444]/50 bg-white"
                                 }`}
                               >
-                                <Circle className={selectedShape === "circle" ? "w-5 h-5 mb-1.5 text-[#ED1C24]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
-                                <span className={selectedShape === "circle" ? "text-[10px] font-medium text-[#ED1C24]" : "text-[10px] font-medium text-[#6B6B6B]"}>Circle</span>
+                                <Circle className={selectedShape === "circle" ? "w-5 h-5 mb-1.5 text-[#EF4444]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
+                                <span className={selectedShape === "circle" ? "text-[10px] font-medium text-[#EF4444]" : "text-[10px] font-medium text-[#6B6B6B]"}>Circle</span>
                               </button>
 
                               {/* Line */}
@@ -1715,12 +1715,12 @@ export default function SpatialGovernance() {
                                 onClick={() => setSelectedShape("line")}
                                 className={`flex flex-col items-center justify-center p-3 rounded-lg border-2 transition-all ${
                                   selectedShape === "line" 
-                                    ? "border-[#ED1C24] bg-[#FFF5F5]" 
-                                    : "border-[#E5E5E5] hover:border-[#ED1C24]/50 bg-white"
+                                    ? "border-[#EF4444] bg-[#FFF5F5]" 
+                                    : "border-[#E5E5E5] hover:border-[#EF4444]/50 bg-white"
                                 }`}
                               >
-                                <Minus className={selectedShape === "line" ? "w-5 h-5 mb-1.5 text-[#ED1C24]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
-                                <span className={selectedShape === "line" ? "text-[10px] font-medium text-[#ED1C24]" : "text-[10px] font-medium text-[#6B6B6B]"}>Line</span>
+                                <Minus className={selectedShape === "line" ? "w-5 h-5 mb-1.5 text-[#EF4444]" : "w-5 h-5 mb-1.5 text-[#6B6B6B]"} />
+                                <span className={selectedShape === "line" ? "text-[10px] font-medium text-[#EF4444]" : "text-[10px] font-medium text-[#6B6B6B]"}>Line</span>
                               </button>
                             </div>
                           </div>
@@ -1750,12 +1750,12 @@ export default function SpatialGovernance() {
                         <div className="px-4 py-4 border-b border-[#E5E5E5] flex-shrink-0">
                           <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center gap-2">
-                              <Layers className="w-5 h-5 text-[#ED1C24]" />
+                              <Layers className="w-5 h-5 text-[#EF4444]" />
                               <h3 className="font-bold text-[#1A1A1A] text-base">Map Layers</h3>
                             </div>
                             <button
                               onClick={() => setLayersOpen(false)}
-                              className="text-[#666666] hover:text-[#ED1C24] transition-colors p-1 hover:bg-gray-100 rounded"
+                              className="text-[#666666] hover:text-[#EF4444] transition-colors p-1 hover:bg-gray-100 rounded"
                             >
                               <X className="w-5 h-5" />
                             </button>
@@ -1769,7 +1769,7 @@ export default function SpatialGovernance() {
                               placeholder="Search layers..."
                               value={layerSearch}
                               onChange={(e) => setLayerSearch(e.target.value)}
-                              className="pl-9 pr-3 h-9 bg-gray-50 border border-[#E5E5E5] rounded-lg text-sm focus:border-[#ED1C24] focus:ring-1 focus:ring-[#ED1C24]"
+                              className="pl-9 pr-3 h-9 bg-gray-50 border border-[#E5E5E5] rounded-lg text-sm focus:border-[#EF4444] focus:ring-1 focus:ring-[#EF4444]"
                             />
                           </div>
 
@@ -1780,7 +1780,7 @@ export default function SpatialGovernance() {
                                  id="select-all-layers"
                                  checked={Object.values(layerVisibility).every(v => v)}
                                  onCheckedChange={(checked) => toggleAllLayers(!!checked)}
-                                 className="border-[#B0AAA2] data-[state=checked]:bg-[#ED1C24] data-[state=checked]:border-[#ED1C24]"
+                                 className="border-[#B0AAA2] data-[state=checked]:bg-[#EF4444] data-[state=checked]:border-[#EF4444]"
                                />
                                <Label htmlFor="select-all-layers" className="text-xs font-semibold text-[#1A1A1A] cursor-pointer">
                                  Select All Layers
@@ -1808,7 +1808,7 @@ export default function SpatialGovernance() {
                                     {layer.hasSubLayers && (
                                       <button
                                         onClick={() => toggleLayerExpansion(layer.name)}
-                                        className="flex-shrink-0 text-[#666666] hover:text-[#ED1C24] transition-colors"
+                                        className="flex-shrink-0 text-[#666666] hover:text-[#EF4444] transition-colors"
                                       >
                                         {expandedLayer === layer.name ? (
                                           <ChevronDown className="w-4 h-4" />
@@ -1824,7 +1824,7 @@ export default function SpatialGovernance() {
                                     <Checkbox
                                       checked={layerVisibility[layer.name] !== false}
                                       onCheckedChange={() => toggleLayerVisibility(layer.name)}
-                                      className="border-[#B0AAA2] data-[state=checked]:bg-[#ED1C24] data-[state=checked]:border-[#ED1C24] flex-shrink-0"
+                                      className="border-[#B0AAA2] data-[state=checked]:bg-[#EF4444] data-[state=checked]:border-[#EF4444] flex-shrink-0"
                                     />
                                     
                                     <div className="flex items-center gap-2 flex-1 min-w-0">
@@ -1901,7 +1901,7 @@ export default function SpatialGovernance() {
                                 setLayerVisibility(allLayers);
                                 toast.success("All layers enabled");
                               }}
-                              className="flex-1 bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-lg px-3 py-2 text-xs font-medium shadow-md h-auto"
+                              className="flex-1 bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-lg px-3 py-2 text-xs font-medium shadow-md h-auto"
                             >
                               <Eye className="w-3 h-3 mr-1" />
                               Ok
@@ -2008,7 +2008,7 @@ export default function SpatialGovernance() {
             </Button>
             <Button
               onClick={handleSaveBoundaryChangesClick}
-              className="h-10 px-6 bg-gradient-to-r from-[#ED1C24] to-[#FF6B6B] hover:from-[#d41820] hover:to-[#e85555] text-white rounded-lg shadow-lg"
+              className="h-10 px-6 bg-gradient-to-r from-[#EF4444] to-[#FF6B6B] hover:from-[#DC2626] hover:to-[#e85555] text-white rounded-lg shadow-lg"
             >
               Save Changes
             </Button>
@@ -2088,8 +2088,8 @@ export default function SpatialGovernance() {
                           className="flex items-center justify-between p-3 bg-gray-50 rounded-lg border border-[#E5E5E5]"
                         >
                           <div className="flex items-center gap-3">
-                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ED1C24]/20 to-[#FF6B6B]/20 flex items-center justify-center">
-                              <Users className="w-5 h-5 text-[#ED1C24]" />
+                            <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#EF4444]/20 to-[#FF6B6B]/20 flex items-center justify-center">
+                              <Users className="w-5 h-5 text-[#EF4444]" />
                             </div>
                             <div>
                               <div className="text-sm font-medium text-[#1a1a1a]">{user.name}</div>
@@ -2267,8 +2267,8 @@ export default function SpatialGovernance() {
             <div className="text-center space-y-6">
               <div className="flex justify-center">
                 <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B6B]/20 to-[#ED1C24]/20 rounded-full blur-2xl scale-150"></div>
-                  <div className="relative w-24 h-24 bg-gradient-to-br from-[#FF6B6B] to-[#ED1C24] rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(237,28,36,0.4)]">
+                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF6B6B]/20 to-[#EF4444]/20 rounded-full blur-2xl scale-150"></div>
+                  <div className="relative w-24 h-24 bg-gradient-to-br from-[#FF6B6B] to-[#EF4444] rounded-full flex items-center justify-center shadow-[0_8px_32px_rgba(237,28,36,0.4)]">
                     <RotateCcw className="w-10 h-10 text-white" strokeWidth={2} />
                   </div>
                   <div className="absolute inset-0 rounded-full border-4 border-[#FF6B6B]/30 animate-ping"></div>
@@ -2283,7 +2283,7 @@ export default function SpatialGovernance() {
               <div className="space-y-3 pt-4">
                 <Button
                   onClick={handleResetBoundary}
-                  className="w-full bg-gradient-to-r from-[#ED1C24] to-[#d41820] hover:from-[#d41820] hover:to-[#c0151b] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300 font-semibold"
+                  className="w-full bg-gradient-to-r from-[#EF4444] to-[#DC2626] hover:from-[#DC2626] hover:to-[#991B1B] text-white rounded-xl h-12 shadow-[0_6px_24px_rgba(237,28,36,0.3)] hover:shadow-[0_8px_32px_rgba(237,28,36,0.4)] transition-all duration-300 font-semibold"
                 >
                   Yes, Reset
                 </Button>

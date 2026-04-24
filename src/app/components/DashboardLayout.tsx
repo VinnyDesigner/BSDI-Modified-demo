@@ -263,7 +263,7 @@ export default function DashboardLayout() {
   // Determine current role based on path
   const getRoleInfo = () => {
     const path = location.pathname;
-    if (path.includes("super-admin")) return { role: "BSDI Super Admin", name: "Mohammed Al Khalifa", initials: "MK", color: "bg-[#ED1C24]", rolePrefix: "super-admin" };
+    if (path.includes("super-admin")) return { role: "BSDI Super Admin", name: "Mohammed Al Khalifa", initials: "MK", color: "bg-[#EF4444]", rolePrefix: "super-admin" };
     if (path.includes("reviewer")) return { role: "Reviewer Role", name: "Fatima Al-Zayani", initials: "FZ", color: "bg-[#003F72]", rolePrefix: "reviewer" };
     if (path.includes("entity-admin")) return { role: "Organization Admin", name: "Ahmed Al-Mansoori", initials: "AM", color: "bg-[#003F72]", rolePrefix: "entity-admin" };
     if (path.includes("department")) return { role: "Department Admin", name: "Sarah Ibrahim", initials: "SI", color: "bg-[#666666]", rolePrefix: "department" };
@@ -330,7 +330,7 @@ export default function DashboardLayout() {
                   className={`
                     w-full flex items-center gap-3 px-4 py-3.5 rounded-xl transition-all duration-300
                     ${isActive 
-                      ? 'bg-[#ED1C24] text-white shadow-lg shadow-[#ED1C24]/30' 
+                      ? 'bg-[#EF4444] text-white shadow-lg shadow-[#EF4444]/30' 
                       : 'text-white/70 hover:bg-white/10 hover:text-white hover:translate-x-1'
                     }
                   `}
@@ -512,7 +512,7 @@ export default function DashboardLayout() {
                           case 'organization': return { label: 'Org', color: 'bg-[#003F72] text-white' };
                           case 'department': return { label: 'Dept', color: 'bg-[#666666] text-white' };
                           case 'user': return { label: 'User', color: 'bg-[#666666] text-white' };
-                          case 'request': return { label: 'Request', color: 'bg-[#ED1C24] text-white' };
+                          case 'request': return { label: 'Request', color: 'bg-[#EF4444] text-white' };
                           case 'role': return { label: 'Role', color: 'bg-purple-600 text-white' };
                           case 'permission': return { label: 'Permission', color: 'bg-amber-600 text-white' };
                           case 'service': return { label: 'Service', color: 'bg-indigo-600 text-white' };
@@ -586,7 +586,7 @@ export default function DashboardLayout() {
                 >
                   <Bell className="w-5 h-5" />
                   {notifications.filter(n => n.unread).length > 0 && (
-                    <span className="absolute top-2 right-2 w-2 h-2 bg-[#ED1C24] rounded-full"></span>
+                    <span className="absolute top-2 right-2 w-2 h-2 bg-[#EF4444] rounded-full"></span>
                   )}
                 </Button>
               </PopoverTrigger>
@@ -599,7 +599,7 @@ export default function DashboardLayout() {
                 <div className="px-5 py-4 border-b border-gray-200">
                   <div className="flex items-center justify-between">
                     <h3 className="text-lg font-bold text-[#1A1A1A]">Notifications</h3>
-                    <Badge className="bg-[#ED1C24] text-white text-xs px-2 py-1">
+                    <Badge className="bg-[#EF4444] text-white text-xs px-2 py-1">
                       {notifications.filter(n => n.unread).length} New
                     </Badge>
                   </div>
@@ -667,7 +667,7 @@ export default function DashboardLayout() {
                 <div className="px-5 py-3 border-t border-gray-200 bg-gray-50/50">
                   <button
                     onClick={() => navigate(`/dashboard/${roleInfo.rolePrefix}/data-requests1`)}
-                    className="w-full text-center text-sm font-semibold text-[#ED1C24] hover:text-[#d41820] transition-colors"
+                    className="w-full text-center text-sm font-semibold text-[#EF4444] hover:text-[#DC2626] transition-colors"
                   >
                     View All Notifications
                   </button>

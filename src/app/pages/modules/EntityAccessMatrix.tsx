@@ -11,16 +11,20 @@ import {
   Settings,
   SlidersHorizontal,
   X,
+  XCircle,
   ArrowRight,
   ArrowLeft,
   FileText,
   FileBox,
   FileUp,
   Loader2,
-  Calendar
+  Calendar,
+  Building2,
+  LayoutGrid
 } from 'lucide-react';
 import { Button } from "@/app/components/ui/button";
 import { Input } from "@/app/components/ui/input";
+import { Textarea } from "@/app/components/ui/textarea";
 import { PageHeader } from "@/app/components/PageHeader";
 import {
   Dialog,
@@ -28,6 +32,7 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
+  DialogClose,
 } from "@/app/components/ui/dialog";
 import {
   Tabs,
@@ -41,6 +46,12 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/app/components/ui/dropdown-menu";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/app/components/ui/accordion";
 import { Card } from "../../components/ui/card";
 import { toast } from 'sonner';
 
@@ -190,6 +201,7 @@ const EntityAccessMatrix: React.FC = () => {
   const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set(["5"]));
   const [isSaving, setIsSaving] = useState(false);
   const [saveUploadOpen, setSaveUploadOpen] = useState(false);
+  const [successModalOpen, setSuccessModalOpen] = useState(false);
   const [activeMatrixTab, setActiveMatrixTab] = useState("owned");
 
   const isOwnedTabReadOnly = isReadOnly || ((isOrgAdmin || isDeptAdmin) && activeMatrixTab === 'owned');
@@ -213,6 +225,12 @@ const EntityAccessMatrix: React.FC = () => {
   const [activeUploadOrg, setActiveUploadOrg] = useState<string | null>(null);
   const [grantedFilterOrgs, setGrantedFilterOrgs] = useState<string[]>([]);
   const [grantedSearchQuery, setGrantedSearchQuery] = useState("");
+  const [reasonDialogOpen, setReasonDialogOpen] = useState(false);
+  const [grantReason, setGrantReason] = useState("");
+  const [revokeReason, setRevokeReason] = useState("");
+  const [grantReasonFile, setGrantReasonFile] = useState<File | null>(null);
+  const [revokeReasonFile, setRevokeReasonFile] = useState<File | null>(null);
+  const [changeType, setChangeType] = useState<"grant" | "revoke" | "both">("grant");
 
   // --- PROGRESSIVE IMPORT WIZARD STATE ---
   const [importWizardOpen, setImportWizardOpen] = useState(false);
@@ -284,11 +302,7 @@ const EntityAccessMatrix: React.FC = () => {
     const currentValue = node.access[dIdx];
     const wasOriginallyTrue = originalNode.access[dIdx];
 
-    if (currentValue === true && wasOriginallyTrue === true) {
-      setPendingDeny({ id, dIdx });
-      setDenyDialogOpen(true);
-      return;
-    }
+
 
     const updater = (prev: ServiceNode[]) => updateNodeInTree(prev, id, (n) => {
       const newAccess = [...n.access];
@@ -331,9 +345,14 @@ const EntityAccessMatrix: React.FC = () => {
   };
 
   const saveChanges = () => {
-    setOrgUploads({});
-    setShowErrors(false);
-    setSaveUploadOpen(true);
+    setIsSaving(true);
+    setTimeout(() => {
+      if (activeMatrixTab === 'owned') setOriginalServices(JSON.parse(JSON.stringify(services)));
+      else setOriginalRequestedServices(JSON.parse(JSON.stringify(requestedServices)));
+      
+      setIsSaving(false);
+      setSuccessModalOpen(true);
+    }, 800);
   };
 
   const handleFinalSave = () => {
@@ -488,7 +507,6 @@ const EntityAccessMatrix: React.FC = () => {
   const hasOwnedChanges = JSON.stringify(services) !== JSON.stringify(originalServices);
   const hasRequestedChanges = JSON.stringify(requestedServices) !== JSON.stringify(originalRequestedServices);
 
-  // --- WIZARD NAVIGATION ---
   const resetImport = () => {
     setImportWizardOpen(false);
     setUploadedFile(null);
@@ -496,6 +514,43 @@ const EntityAccessMatrix: React.FC = () => {
     setActiveStep(0);
     setIsProcessing(false);
     setStepStatuses(['idle', 'idle', 'idle', 'idle']);
+  };
+
+  const handleSaveClick = () => {
+    let grants = false;
+    let revokes = false;
+
+    const targetSvc = activeMatrixTab === 'owned' ? services : requestedServices;
+    const originalSvc = activeMatrixTab === 'owned' ? originalServices : originalRequestedServices;
+
+    const traverse = (currNodes: typeof services, origNodes: typeof originalServices) => {
+      for (let i = 0; i < currNodes.length; i++) {
+        const cNode = currNodes[i];
+        const oNode = origNodes.find(n => n.id === cNode.id);
+        if (oNode) {
+          for (let j = 0; j < cNode.access.length; j++) {
+            if (cNode.access[j] === true && oNode.access[j] === false) grants = true;
+            if (cNode.access[j] === false && oNode.access[j] === true) revokes = true;
+          }
+        }
+        if (cNode.children && oNode?.children) {
+          traverse(cNode.children, oNode.children);
+        }
+      }
+    };
+    
+    traverse(targetSvc, originalSvc);
+
+    if (grants && revokes) setChangeType("both");
+    else if (grants) setChangeType("grant");
+    else if (revokes) setChangeType("revoke");
+    else return;
+
+    setGrantReason("");
+    setRevokeReason("");
+    setGrantReasonFile(null);
+    setRevokeReasonFile(null);
+    setReasonDialogOpen(true);
   };
 
   return (
@@ -558,6 +613,26 @@ const EntityAccessMatrix: React.FC = () => {
                   border-color: transparent;
                   box-shadow: 0 2px 6px rgba(239, 68, 68, 0.2);
                 }
+                @media print {
+                  body * {
+                    visibility: hidden;
+                  }
+                  #print-report, #print-report * {
+                    visibility: visible;
+                  }
+                  #print-report {
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    padding: 40px;
+                    background: white;
+                    color: black;
+                  }
+                  .page-break {
+                    page-break-after: always;
+                  }
+                }
               `}</style>
               <TabsList className="custom-tabs-container flex-nowrap justify-start h-auto py-1 shadow-none">
                 <TabsTrigger value="owned" className="tab-item whitespace-nowrap">Owned Services</TabsTrigger>
@@ -597,7 +672,7 @@ const EntityAccessMatrix: React.FC = () => {
                               <DropdownMenuItem 
                                 key={org} 
                                 onClick={() => setSelectedOrg(org)}
-                                className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-medium ${selectedOrg === org ? 'bg-red-50 text-[#ED1C24]' : 'text-gray-700 hover:bg-gray-50'}`}
+                                className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-medium ${selectedOrg === org ? 'bg-red-50 text-[#EF4444]' : 'text-gray-700 hover:bg-gray-50'}`}
                               >
                                 {org}
                               </DropdownMenuItem>
@@ -1082,6 +1157,27 @@ const EntityAccessMatrix: React.FC = () => {
           </TabsContent>
         </Tabs>
 
+        {/* --- BOTTOM CTAs --- Hidden for Organization Admin */}
+        {!isOrgAdmin && (
+          <div className="flex justify-end gap-3 mt-8 pb-8">
+            <Button 
+              variant="outline" 
+              onClick={cancelChanges}
+              disabled={!hasOwnedChanges && !hasRequestedChanges}
+              className="h-11 px-8 rounded-xl font-bold border-gray-200 text-gray-500 hover:bg-gray-50 transition-all"
+            >
+              Cancel
+            </Button>
+            <Button 
+              onClick={handleSaveClick}
+              disabled={!hasOwnedChanges && !hasRequestedChanges}
+              className="h-11 px-8 rounded-xl font-bold bg-[#EF4444] text-white hover:bg-[#DC2626] shadow-lg shadow-red-100 transition-all active:scale-[0.98]"
+            >
+              Save Changes
+            </Button>
+          </div>
+        )}
+
       {/* REDESIGNED CONFIGURATION UPLOAD MODAL */}
       <Dialog open={configModalOpen} onOpenChange={setConfigModalOpen}>
         <DialogContent className="max-w-[540px] bg-white rounded-[24px] border border-[#E5E7EB] shadow-2xl p-0 flex flex-col [&>button]:hidden overflow-hidden">
@@ -1477,123 +1573,371 @@ const EntityAccessMatrix: React.FC = () => {
       </Dialog>
       
       {/* SAVE CONFIGURATION UPLOAD DIALOG (Triggered on Save Changes) */}
-      <Dialog open={saveUploadOpen} onOpenChange={setSaveUploadOpen}>
-        <DialogContent className="max-w-[700px] h-[500px] bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl p-0 flex flex-col [&>button]:hidden overflow-hidden">
-          
-          {/* FIXED HEADER */}
-          <div className="sticky top-0 z-40 bg-white border-b border-[#E5E7EB] shrink-0">
-            <div className="pt-[24px] px-[24px] pb-[16px] relative pr-[64px]">
-              <div 
-                className="absolute top-[16px] right-[16px] w-[32px] h-[32px] rounded-[8px] bg-[#F9FAFB] hover:bg-[#F3F4F6] flex items-center justify-center cursor-pointer transition-colors z-50 px-0"
-                onClick={() => {
-                   setSaveUploadOpen(false);
-                   setOrgUploads({});
-                }}
-              >
-                <X className="w-4 h-4 text-[#6B7280]" />
-              </div>
-              <DialogTitle className="text-[18px] font-semibold text-[#EF4444]">Configuration Upload</DialogTitle>
-              <DialogDescription className="text-[#6B7280] text-[14px] font-normal mt-1 leading-tight">
-                Add your matrix file to begin automated processing
-              </DialogDescription>
-            </div>
-          </div>
-
-          {/* SCROLLABLE BODY */}
-          <div className="flex-1 overflow-y-auto px-[24px] py-[24px] custom-scrollbar bg-white">
-            <div className="flex flex-col gap-6">
-              {changedOrgs.map((org) => (
-                <div key={`${org.idx}-${org.name}`} className="flex flex-col gap-2">
-                  <label className="text-[14px] font-medium text-[#111827]">
-                    {org.name}
-                  </label>
-                  <div className="relative group">
-                    <div 
-                      className={`
-                        h-[36px] w-full border rounded-[10px] flex items-center justify-between px-[12px] transition-all
-                        ${orgUploads[org.name] ? 'border-[#E5E7EB] bg-[#F9FAFB]' : 'border-[#E5E7EB] bg-white group-hover:border-[#EF4444]'}
-                        ${showErrors && !orgUploads[org.name] ? 'border-[#EF4444]' : ''}
-                      `}
-                    >
-                      <span className={`text-[13px] truncate flex-1 ${orgUploads[org.name] ? 'text-[#374151] font-medium' : 'text-[#9CA3AF]'}`}>
-                        {orgUploads[org.name] ? orgUploads[org.name]!.name : "Select file (PDF, DOC, DOCX)"}
-                      </span>
-                      <div className="flex items-center gap-3">
-                        {orgUploads[org.name] && (
-                          <button 
-                            type="button"
-                            onClick={() => setOrgUploads(prev => ({ ...prev, [org.name]: null }))}
-                            className="text-[#6B7280] text-[12px] font-bold hover:text-[#111827] transition-colors"
-                          >
-                            Replace
-                          </button>
-                        )}
-                        <input
-                          type="file"
-                          id={`upload-${org.idx}-${org.name}`}
-                          className="hidden"
-                          accept=".pdf,.doc,.docx"
-                          onChange={(e) => {
-                            const file = e.target.files?.[0];
-                            if (file) {
-                              setOrgUploads(prev => ({ ...prev, [org.name]: file }));
-                            }
-                          }}
-                        />
-                        <Button
-                          variant="ghost"
-                          size="sm"
-                          type="button"
-                          className="h-[28px] px-3 gap-2 bg-[#F3F4F6] hover:bg-[#E5E7EB] rounded-[6px] text-[#374151] transition-all flex items-center shrink-0"
-                          onClick={() => document.getElementById(`upload-${org.idx}-${org.name}`)?.click()}
-                        >
-                          <FileUp className="w-3.5 h-3.5 text-[#EF4444]" />
-                          <span className="text-[12px] font-bold">Upload file</span>
-                        </Button>
-                      </div>
-                    </div>
-                    {showErrors && !orgUploads[org.name] && (
-                      <span className="text-[12px] text-[#EF4444] mt-1 font-medium">Please upload a document to proceed</span>
-                    )}
-                  </div>
+      {/* SUCCESS MODAL (Replaces Configuration Upload) */}
+      <Dialog open={successModalOpen} onOpenChange={setSuccessModalOpen}>
+        <DialogContent className="p-0 overflow-hidden" style={{maxWidth:'450px', borderRadius:'24px'}}>
+          <DialogClose className="absolute right-4 top-4 rounded-sm opacity-70 transition-opacity hover:opacity-100 focus:outline-none disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+            <X className="h-4 w-4 text-gray-400" />
+          </DialogClose>
+          <div className="p-10 pb-10 flex flex-col items-center text-center relative">
+            <div className="relative w-24 h-24 mb-6">
+              <div className="absolute inset-0 bg-[#00C07F] rounded-full flex items-center justify-center shadow-[0_8px_30px_rgba(0,192,127,0.25)]">
+                <div className="w-12 h-12 rounded-full border-4 border-white flex items-center justify-center">
+                  <Check className="w-7 h-7 text-white" strokeWidth={4} />
                 </div>
-              ))}
+              </div>
             </div>
-          </div>
+            
+            <h3 className="text-[22px] font-bold text-[#1A1A1A] mb-2">Changes Saved!</h3>
+            <p className="text-[15px] text-[#6B7280] mb-8 leading-relaxed max-w-[320px]">
+              Access matrix permissions have been updated and synchronized successfully across all departments.
+            </p>
 
-          {/* FOOTER ACTION BAR */}
-          <div className="sticky bottom-0 z-40 bg-white py-[16px] px-[24px] border-t border-[#E5E7EB] shrink-0 flex justify-end gap-[12px] mt-auto">
-            <Button 
-              variant="outline" 
-              onClick={() => {
-                setSaveUploadOpen(false);
-                setOrgUploads({});
-              }}
-              className="h-[36px] px-[16px] rounded-[10px] border border-[#E5E7EB] bg-white text-[14px] font-medium text-[#374151] hover:bg-gray-50 transition-colors shadow-none"
+            <Button
+              onClick={() => setSuccessModalOpen(false)}
+              className="w-full bg-[#00C07F] hover:bg-[#00A86F] text-white rounded-full h-[52px] px-10 font-bold transition-all border-0 shadow-[0_8px_20px_rgba(0,192,127,0.2)] text-[16px] active:scale-95"
             >
-              Cancel
-            </Button>
-            <Button 
-              type="button"
-              onClick={() => {
-                const allUploaded = changedOrgs.every(org => orgUploads[org.name]);
-                if (!allUploaded) {
-                  setShowErrors(true);
-                  return;
-                }
-                handleFinalSave();
-              }}
-              disabled={!changedOrgs.every(org => orgUploads[org.name]) || isSaving}
-              className={`
-                h-[36px] px-[16px] rounded-[10px] text-[14px] font-semibold flex items-center gap-2 transition-all shadow-md
-                ${changedOrgs.every(org => orgUploads[org.name]) ? 'bg-[#EF4444] text-white hover:bg-[#DC2626]' : 'bg-[#F3F4F6] text-[#9CA3AF] cursor-not-allowed shadow-none'}
-              `}
-            >
-              {isSaving ? "Saving..." : "Submit Changes"}
+              Great, thank you!
             </Button>
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* REASON FOR CHANGE DIALOG */}
+      <Dialog open={reasonDialogOpen} onOpenChange={setReasonDialogOpen}>
+        <DialogContent className="max-w-[500px] min-h-[500px] h-[500px] bg-white rounded-[24px] border border-[#E5E7EB] shadow-2xl p-0 flex flex-col [&>button]:hidden overflow-hidden">
+          <div className="pt-8 px-8 pb-6 relative shrink-0">
+            <div 
+              className="absolute top-6 right-6 w-8 h-8 rounded-lg bg-[#F9FAFB] hover:bg-[#F3F4F6] flex items-center justify-center cursor-pointer transition-colors z-50"
+              onClick={() => setReasonDialogOpen(false)}
+            >
+              <X className="w-4 h-4 text-[#6B7280]" />
+            </div>
+            <DialogTitle className="text-[22px] font-bold text-[#EF4444]">Reason for Change</DialogTitle>
+            <DialogDescription className="text-[#6B7280] text-[15px] font-medium mt-1.5">
+              Please provide a reason for updating the access matrix permissions.
+            </DialogDescription>
+          </div>
+
+          <div className="flex-1 overflow-y-auto px-1 pb-8 custom-scrollbar">
+            <Accordion type="multiple" defaultValue={[]} className="w-full">
+              {(changeType === 'grant' || changeType === 'both') && (
+                <AccordionItem value="grant-section" className="border border-transparent rounded-[12px] px-7 transition-all duration-200 hover:border-green-200 hover:bg-green-50/30">
+                  <AccordionTrigger className="hover:no-underline py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-green-50 flex items-center justify-center">
+                        <Check className="w-4 h-4 text-green-600" />
+                      </div>
+                      <span className="text-[16px] font-bold text-[#111827]">Granting Access</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6 pt-2">
+                    <div className="flex flex-col gap-6">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-[14px] font-bold text-[#374151]">Reason for granting access</label>
+                        <Textarea 
+                          placeholder="Enter the reason for granting access permissions..."
+                          className="min-h-[100px] rounded-[16px] border-[#E5E7EB] focus:ring-[#EF4444]/10 focus:border-[#EF4444] text-[14px] font-medium p-4 bg-gray-50/30"
+                          value={grantReason}
+                          onChange={(e) => setGrantReason(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-[14px] font-bold text-[#374151]">Supporting Document</label>
+                          <span className="text-[12px] font-medium text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded-md">Optional</span>
+                        </div>
+                        
+                        <div 
+                          className={`
+                            w-full border-2 border-dashed rounded-[20px] bg-[#F9FAFB]/30 flex flex-col items-center justify-center gap-4 py-8 transition-all cursor-pointer group relative
+                            ${grantReasonFile ? 'border-[#059669]/30 bg-[#ECFDF5]/30' : 'border-[#E5E7EB] hover:border-[#EF4444]/30 hover:bg-red-50/5'}
+                          `}
+                          onClick={() => document.getElementById('grant-file-upload')?.click()}
+                        >
+                          {grantReasonFile ? (
+                            <div className="flex flex-col items-center gap-3 w-full px-6 text-center animate-in fade-in zoom-in-95 duration-300">
+                              <div className="w-12 h-12 bg-white rounded-2xl border border-green-100 flex items-center justify-center text-[#059669] shadow-sm group-hover:scale-105 transition-transform">
+                                <Check className="w-6 h-6 stroke-[3px]" />
+                              </div>
+                              <div className="flex flex-col gap-1 items-center">
+                                 <span className="text-[14px] font-bold text-[#065F46] max-w-[320px] truncate">{grantReasonFile.name}</span>
+                                 <div className="flex items-center gap-1.5">
+                                    <span className="text-[11px] font-bold text-[#059669] uppercase tracking-tight">File ready</span>
+                                    <div className="w-1 h-1 rounded-full bg-[#059669]/30" />
+                                    <span className="text-[11px] font-medium text-[#6B7280]">{(grantReasonFile.size / 1024 / 1024).toFixed(2)} MB</span>
+                                 </div>
+                              </div>
+                              <div className="flex items-center gap-4 mt-2">
+                                <button 
+                                   onClick={(e) => { e.stopPropagation(); setGrantReasonFile(null); }}
+                                   className="text-[12px] font-bold text-red-500 hover:text-red-700 transition-colors"
+                                >
+                                   Remove
+                                </button>
+                                <div className="w-px h-3 bg-gray-200" />
+                                <button 
+                                   onClick={(e) => { e.stopPropagation(); document.getElementById('grant-file-upload')?.click(); }}
+                                   className="text-[12px] font-bold text-[#374151] hover:text-[#EF4444] transition-colors"
+                                >
+                                   Replace File
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-center gap-4 py-2">
+                              <div className="w-12 h-12 bg-white rounded-2xl border border-[#E5E7EB] flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                <FileUp className="w-7 h-7 text-[#EF4444]" />
+                              </div>
+                              <div className="flex flex-col items-center gap-2 text-center px-4">
+                                <span className="text-[15px] font-bold text-[#374151]">Drag & drop file or <span className="text-[#EF4444]">browse</span></span>
+                                <div className="px-4 py-1.5 bg-white border border-[#E5E7EB] rounded-full shadow-sm">
+                                  <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">PDF, DOC, DOCX, TXT (MAX 10MB)</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          <input type="file" id="grant-file-upload" className="hidden" onChange={(e) => setGrantReasonFile(e.target.files?.[0] || null)} />
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+
+              {(changeType === 'revoke' || changeType === 'both') && (
+                <AccordionItem value="revoke-section" className="border border-transparent rounded-[12px] px-7 transition-all duration-200 hover:border-red-200 hover:bg-red-50/30">
+                  <AccordionTrigger className="hover:no-underline py-4">
+                    <div className="flex items-center gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+                        <X className="w-4 h-4 text-red-600" />
+                      </div>
+                      <span className="text-[16px] font-bold text-[#111827]">Removing Access</span>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent className="pb-6 pt-2">
+                    <div className="flex flex-col gap-6">
+                      <div className="flex flex-col gap-2">
+                        <label className="text-[14px] font-bold text-[#374151]">Reason for removing access</label>
+                        <Textarea 
+                          placeholder="Enter the reason for removing access permissions..."
+                          className="min-h-[100px] rounded-[16px] border-[#E5E7EB] focus:ring-[#EF4444]/10 focus:border-[#EF4444] text-[14px] font-medium p-4 bg-gray-50/30"
+                          value={revokeReason}
+                          onChange={(e) => setRevokeReason(e.target.value)}
+                        />
+                      </div>
+
+                      <div className="flex flex-col gap-2">
+                        <div className="flex items-center justify-between">
+                          <label className="text-[14px] font-bold text-[#374151]">Supporting Document</label>
+                          <span className="text-[12px] font-medium text-[#6B7280] bg-[#F3F4F6] px-2 py-0.5 rounded-md">Optional</span>
+                        </div>
+                        
+                        <div 
+                          className={`
+                            w-full border-2 border-dashed rounded-[20px] bg-[#F9FAFB]/30 flex flex-col items-center justify-center gap-4 py-8 transition-all cursor-pointer group relative
+                            ${revokeReasonFile ? 'border-[#059669]/30 bg-[#ECFDF5]/30' : 'border-[#E5E7EB] hover:border-[#EF4444]/30 hover:bg-red-50/5'}
+                          `}
+                          onClick={() => document.getElementById('revoke-file-upload')?.click()}
+                        >
+                          {revokeReasonFile ? (
+                            <div className="flex flex-col items-center gap-3 w-full px-6 text-center animate-in fade-in zoom-in-95 duration-300">
+                              <div className="w-12 h-12 bg-white rounded-2xl border border-green-100 flex items-center justify-center text-[#059669] shadow-sm group-hover:scale-105 transition-transform">
+                                <Check className="w-6 h-6 stroke-[3px]" />
+                              </div>
+                              <div className="flex flex-col gap-1 items-center">
+                                 <span className="text-[14px] font-bold text-[#065F46] max-w-[320px] truncate">{revokeReasonFile.name}</span>
+                                 <div className="flex items-center gap-1.5">
+                                    <span className="text-[11px] font-bold text-[#059669] uppercase tracking-tight">File ready</span>
+                                    <div className="w-1 h-1 rounded-full bg-[#059669]/30" />
+                                    <span className="text-[11px] font-medium text-[#6B7280]">{(revokeReasonFile.size / 1024 / 1024).toFixed(2)} MB</span>
+                                 </div>
+                              </div>
+                              <div className="flex items-center gap-4 mt-2">
+                                <button 
+                                   onClick={(e) => { e.stopPropagation(); setRevokeReasonFile(null); }}
+                                   className="text-[12px] font-bold text-red-500 hover:text-red-700 transition-colors"
+                                >
+                                   Remove
+                                </button>
+                                <div className="w-px h-3 bg-gray-200" />
+                                <button 
+                                   onClick={(e) => { e.stopPropagation(); document.getElementById('revoke-file-upload')?.click(); }}
+                                   className="text-[12px] font-bold text-[#374151] hover:text-[#EF4444] transition-colors"
+                                >
+                                   Replace File
+                                </button>
+                              </div>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-center gap-4 py-2">
+                              <div className="w-12 h-12 bg-white rounded-2xl border border-[#E5E7EB] flex items-center justify-center shadow-sm group-hover:scale-110 transition-transform duration-300">
+                                <FileUp className="w-7 h-7 text-[#EF4444]" />
+                              </div>
+                              <div className="flex flex-col items-center gap-2 text-center px-4">
+                                <span className="text-[15px] font-bold text-[#374151]">Drag & drop file or <span className="text-[#EF4444]">browse</span></span>
+                                <div className="px-4 py-1.5 bg-white border border-[#E5E7EB] rounded-full shadow-sm">
+                                  <span className="text-[11px] text-[#6B7280] font-bold uppercase tracking-wider">PDF, DOC, DOCX, TXT (MAX 10MB)</span>
+                                </div>
+                              </div>
+                            </div>
+                          )}
+                          <input type="file" id="revoke-file-upload" className="hidden" onChange={(e) => setRevokeReasonFile(e.target.files?.[0] || null)} />
+                        </div>
+                      </div>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              )}
+            </Accordion>
+          </div>
+
+          <div className="px-8 py-6 border-t border-[#E5E7EB] bg-[#F9FAFB]/50 flex justify-end gap-3 shrink-0">
+             <Button 
+                variant="outline" 
+                onClick={() => setReasonDialogOpen(false)}
+                className="h-[42px] px-8 rounded-xl border-[#E5E7EB] text-[14px] font-bold text-[#374151] hover:bg-white"
+             >
+                Cancel
+             </Button>
+             <Button 
+                onClick={() => {
+                  setReasonDialogOpen(false);
+                  saveChanges();
+                }}
+                disabled={
+                  (changeType === 'grant' && !grantReason.trim()) ||
+                  (changeType === 'revoke' && !revokeReason.trim()) ||
+                  (changeType === 'both' && (!grantReason.trim() || !revokeReason.trim()))
+                }
+                className="h-[42px] px-8 rounded-xl bg-[#EF4444] text-white text-[14px] font-bold hover:bg-[#DC2626] shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+             >
+                Confirm & Save
+             </Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+      {/* Print Report Section (Only visible during printing) */}
+      <div id="print-report" className="hidden print:block font-sans">
+        <div className="flex flex-col gap-8">
+          {/* Report Header */}
+          <div className="flex justify-between items-start border-b-2 border-slate-200 pb-6">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Service Access Request Report</h1>
+              <div className="flex items-center gap-3 text-slate-600 mt-1">
+                <Building2 className="w-5 h-5" />
+                <span className="text-lg font-semibold">{selectedOrg}</span>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-sm font-bold text-slate-500 uppercase tracking-widest">Report Date</p>
+              <p className="text-lg font-semibold text-slate-900 mt-1">{new Date().toLocaleDateString('en-GB')}</p>
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-12 py-2">
+            <div>
+              <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Module</p>
+              <p className="text-sm font-semibold text-slate-700">Entity Access Matrix</p>
+            </div>
+            <div className="text-right">
+               <p className="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Status</p>
+               <p className="text-sm font-semibold text-[#EF4444]">Pending Submission</p>
+            </div>
+          </div>
+
+          {/* Requested Changes Details */}
+          <div>
+            <div className="flex items-center gap-2 mb-4">
+              <LayoutGrid className="w-5 h-5 text-[#EF4444]" />
+              <h2 className="text-xl font-bold text-slate-800">Detailed Request Configuration</h2>
+            </div>
+            
+            <div className="border border-slate-200 rounded-xl overflow-hidden shadow-sm">
+              <table className="w-full">
+                <thead className="bg-slate-50 border-b border-slate-200">
+                  <tr>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">#</th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Service Description</th>
+                    <th className="px-6 py-4 text-left text-xs font-bold text-slate-500 uppercase tracking-wider">Department / Unit</th>
+                    <th className="px-6 py-4 text-center text-xs font-bold text-slate-500 uppercase tracking-wider">Requested Action</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 bg-white">
+                  {(() => {
+                    const printChanges: { service: string, dept: string, action: string }[] = [];
+                    const collectChanges = (nodes: ServiceNode[], originals: ServiceNode[]) => {
+                      nodes.forEach(node => {
+                        const original = originals.find(o => o.id === node.id);
+                        if (!original) return;
+                        
+                        node.access.forEach((access, idx) => {
+                          if (access !== original.access[idx]) {
+                            printChanges.push({
+                              service: node.resource,
+                              dept: DEPARTMENTS[idx],
+                              action: access ? 'Grant Access' : 'Revoke Access'
+                            });
+                          }
+                        });
+                        
+                        if (node.children && original.children) {
+                          collectChanges(node.children, original.children);
+                        }
+                      });
+                    };
+                    
+                    collectChanges(requestedServices, originalRequestedServices);
+                    
+                    if (printChanges.length === 0) {
+                      return (
+                        <tr>
+                          <td colSpan={4} className="px-6 py-12 text-center text-slate-400 italic">
+                            No pending configuration changes found for printing.
+                          </td>
+                        </tr>
+                      );
+                    }
+
+                    return printChanges.map((change, idx) => (
+                      <tr key={idx} className="hover:bg-slate-50/50">
+                        <td className="px-6 py-4 text-sm text-slate-500 font-mono">{String(idx + 1).padStart(2, '0')}</td>
+                        <td className="px-6 py-4">
+                          <p className="text-sm font-bold text-slate-900">{change.service}</p>
+                        </td>
+                        <td className="px-6 py-4">
+                          <p className="text-sm font-medium text-slate-600">{change.dept}</p>
+                        </td>
+                        <td className="px-6 py-4 text-center">
+                          <span className={`inline-flex px-3 py-1 rounded-full text-[11px] font-bold uppercase tracking-tight ${change.action === 'Grant Access' ? 'bg-green-50 text-green-700 border border-green-100' : 'bg-red-50 text-red-700 border border-red-100'}`}>
+                            {change.action}
+                          </span>
+                        </td>
+                      </tr>
+                    ));
+                  })()}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* Footer Disclaimer */}
+          <div className="mt-12 border-t border-slate-100 pt-6">
+            <div className="flex justify-between items-center text-[10px] text-slate-400 uppercase tracking-[2px] font-medium">
+              <span>BSDI Management Console • Internal Audit Copy</span>
+              <span>Proprietary & Confidential</span>
+            </div>
+            <div className="mt-20 flex justify-end">
+              <div className="flex flex-col items-center">
+                <div className="w-56 h-[1.5px] bg-slate-900 mb-3"></div>
+                <p className="text-[11px] text-slate-900 font-bold uppercase tracking-[3px]">Authorizer Signature</p>
+                <p className="text-[9px] text-slate-400 mt-1 italic font-medium">BSDI Approval Authority</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 
       <style>{`
         .custom-scrollbar::-webkit-scrollbar {

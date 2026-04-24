@@ -705,7 +705,7 @@ export default function Permissions() {
                         <Button
                           size="sm"
                           onClick={resetLayers}
-                          className="bg-gradient-to-r from-[#EF4444] to-[#D91B22] hover:from-[#D91B22] hover:to-[#c0151b] text-white rounded-lg px-3 py-1.5 text-xs shadow-md transition-all h-auto"
+                          className="bg-gradient-to-r from-[#EF4444] to-[#D91B22] hover:from-[#D91B22] hover:to-[#991B1B] text-white rounded-lg px-3 py-1.5 text-xs shadow-md transition-all h-auto"
                         >
                           Reset Layers
                         </Button>
@@ -806,3 +806,4 @@ export default function Permissions() {
     </div>
   );
 }
+

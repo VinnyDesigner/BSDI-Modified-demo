@@ -9,7 +9,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../../components/ui/dialog";
 import { Textarea } from "../../components/ui/textarea";
 import { Label } from "../../components/ui/label";
-import { FileText, CheckCircle, Clock, XCircle, Search, X, ChevronDown, ChevronUp, Upload, Trash2, Download, Calendar, Hand, Map, Forward } from "lucide-react";
+import { FileText, CheckCircle, Clock, XCircle, Search, X, ChevronDown, ChevronUp, Upload, Trash2, Download, Calendar, Hand, Map, Forward, Globe } from "lucide-react";
 import { MetricCard } from "../../components/ui/MetricCard";
 import { Input } from "../../components/ui/input";
 import { Popover, PopoverContent, PopoverTrigger } from "../../components/ui/popover";
@@ -896,6 +896,7 @@ export default function DataAccessRequests() {
   // Approval dialog state
   const [approvalDialogOpen, setApprovalDialogOpen] = useState(false);
   const [approvalComments, setApprovalComments] = useState("");
+  const [serviceUrl, setServiceUrl] = useState("");
   const [pendingApprovalId, setPendingApprovalId] = useState<string | null>(null);
   
   // Rejection dialog state
@@ -1008,17 +1009,30 @@ export default function DataAccessRequests() {
 
   // Handle approve button click - open dialog
   const handleApproveClick = (requestId: string) => {
+    // Find if it's a service request to pre-fill URL
+    const serviceReq = servicesCreationPendingRequests.find(r => r.id === requestId);
+    if (serviceReq) {
+      setServiceUrl(serviceReq.url || "");
+    } else {
+      setServiceUrl("");
+    }
+    
     setPendingApprovalId(requestId);
     setApprovalDialogOpen(true);
   };
 
   // Handle approval confirmation
   const handleApprovalConfirm = () => {
-    toast.success(`Approved ${pendingApprovalId} successfully`);
+    const successMsg = serviceUrl 
+      ? `Approved ${pendingApprovalId} successfully with URL: ${serviceUrl}`
+      : `Approved ${pendingApprovalId} successfully`;
+      
+    toast.success(successMsg);
     
     // Reset state
     setApprovalDialogOpen(false);
     setApprovalComments("");
+    setServiceUrl("");
     setPendingApprovalId(null);
   };
 
@@ -1026,6 +1040,7 @@ export default function DataAccessRequests() {
   const handleApprovalCancel = () => {
     setApprovalDialogOpen(false);
     setApprovalComments("");
+    setServiceUrl("");
     setPendingApprovalId(null);
   };
 
@@ -3939,6 +3954,27 @@ export default function DataAccessRequests() {
                 <p className="text-[#6B6B6B] text-sm">
                   Are you sure you want to approve request {pendingApprovalId}?
                 </p>
+                
+                {/* Conditional URL Input for Services Creation */}
+                {activeTab === "services-creation" && (
+                  <div className="text-left space-y-2 pt-2">
+                    <Label htmlFor="service-url" className="text-sm font-semibold text-[#1A1A1A]">
+                      Add URL <span className="text-[#ED1C24]">*</span>
+                    </Label>
+                    <div className="relative group">
+                      <div className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] group-focus-within:text-[#ED1C24] transition-colors">
+                        <Globe className="w-4 h-4" />
+                      </div>
+                      <Input
+                        id="service-url"
+                        placeholder="https://mapservices.bsdi.gov.bh/..."
+                        value={serviceUrl}
+                        onChange={(e) => setServiceUrl(e.target.value)}
+                        className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] focus:border-[#ED1C24] rounded-xl h-11 text-[14px] transition-all"
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Action Buttons */}
@@ -4321,7 +4357,7 @@ export default function DataAccessRequests() {
 
       {/* Map Preview Dialog */}
       <Dialog open={mapPreviewOpen} onOpenChange={setMapPreviewOpen}>
-        <DialogContent className="w-[60vw] max-w-none sm:max-w-none h-[85vh] bg-white rounded-2xl border border-[#B0AAA2]/20 shadow-2xl p-0 flex flex-col">
+        <DialogContent className="w-[95vw] max-w-[1400px] sm:w-[95vw] h-[600px] bg-white rounded-2xl border border-[#B0AAA2]/20 shadow-2xl p-0 flex flex-col">
           <div className="px-8 pt-8 pb-4 border-b border-[#E5E5E5]">
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">

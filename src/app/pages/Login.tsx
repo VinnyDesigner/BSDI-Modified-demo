@@ -77,7 +77,7 @@ export default function Login() {
                 id="userId"
                 value={userId}
                 onChange={(e) => setUserId(e.target.value)}
-                className="h-14 bg-[#F8F9FA] border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#ED1C24] px-6 text-lg"
+                className="h-14 bg-[#F8F9FA] border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#EF4444] px-6 text-lg"
                 placeholder="Enter your user ID"
               />
             </div>
@@ -91,14 +91,14 @@ export default function Login() {
                 type="password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                className="h-14 bg-[#F8F9FA] border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#ED1C24] px-6 text-lg"
+                className="h-14 bg-[#F8F9FA] border-gray-200 rounded-2xl focus:ring-2 focus:ring-[#EF4444] px-6 text-lg"
                 placeholder="Enter your password"
               />
             </div>
 
             <Button 
               type="submit" 
-              className="w-full h-14 bg-gradient-to-r from-[#ED1C24] to-[#003F72] hover:opacity-90 text-white text-xl font-bold rounded-2xl shadow-xl transition-all duration-300"
+              className="w-full h-14 bg-gradient-to-r from-[#EF4444] to-[#003F72] hover:opacity-90 text-white text-xl font-bold rounded-2xl shadow-xl transition-all duration-300"
             >
               Sign In
             </Button>
@@ -120,9 +120,9 @@ export default function Login() {
                 className="w-full group relative p-5 rounded-2xl bg-white/5 border border-white/10 hover:bg-white/10 transition-all duration-300 text-left overflow-hidden"
               >
                 {/* Red Dot Indicator */}
-                <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-[#ED1C24]"></div>
+                <div className="absolute top-4 right-4 w-2 h-2 rounded-full bg-[#EF4444]"></div>
                 
-                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#ED1C24] transition-colors">
+                <h3 className="text-lg font-bold text-white mb-2 group-hover:text-[#EF4444] transition-colors">
                   {cred.role}
                 </h3>
                 <div className="space-y-1">

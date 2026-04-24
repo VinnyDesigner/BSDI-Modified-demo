@@ -461,7 +461,7 @@ export default function SecurityAccessGroup() {
                     <div className="relative">
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                       <Input 
-                        className="h-[32px] bg-white border border-[#E5E7EB] rounded-[8px] pl-9 pr-4 text-[13px] focus:border-[#ED1C24] transition-all"
+                        className="h-[32px] bg-white border border-[#E5E7EB] rounded-[8px] pl-9 pr-4 text-[13px] focus:border-[#EF4444] transition-all"
                         placeholder="Search users..."
                         value={userSearchQuery}
                         onChange={(e) => setUserSearchQuery(e.target.value)}
@@ -687,3 +687,4 @@ export default function SecurityAccessGroup() {
     </div>
   );
 }
+

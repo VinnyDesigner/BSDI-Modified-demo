@@ -17,10 +17,10 @@ export default function RolesPermissions() {
       <div className="max-w-[1800px] mx-auto space-y-8">
         <div className="flex items-center justify-between">
           <div className="flex flex-col gap-0.5">
-            <h1 className="text-[26px] font-bold text-[#ED1C24]">Roles & Permissions</h1>
+            <h1 className="text-[26px] font-bold text-[#EF4444]">Roles & Permissions</h1>
             <p className="text-[#4A5565] text-[14px] font-normal">Manage user roles and access control</p>
           </div>
-          <Button className="bg-[#ED1C24] hover:bg-[#d41820] text-white rounded-full shadow-lg">
+          <Button className="bg-[#EF4444] hover:bg-[#DC2626] text-white rounded-full shadow-lg">
             <Plus className="w-4 h-4 mr-2" />
             Create Custom Role
           </Button>
@@ -29,11 +29,11 @@ export default function RolesPermissions() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
             <div className="flex items-center gap-4">
-              <div className="w-12 h-12 rounded-xl bg-[#ED1C24]/10 flex items-center justify-center">
-                <Shield className="w-6 h-6 text-[#ED1C24]" />
+              <div className="w-12 h-12 rounded-xl bg-[#EF4444]/10 flex items-center justify-center">
+                <Shield className="w-6 h-6 text-[#EF4444]" />
               </div>
               <div className="flex flex-col gap-1">
-                <div className="text-[26px] font-semibold text-[#ED1C24]">45</div>
+                <div className="text-[26px] font-semibold text-[#EF4444]">45</div>
                 <div className="text-[14px] font-normal text-black/50">Total Roles</div>
               </div>
             </div>
@@ -45,7 +45,7 @@ export default function RolesPermissions() {
                 <Users className="w-6 h-6 text-[#003F72]" />
               </div>
               <div className="flex flex-col gap-1">
-                <div className="text-[26px] font-semibold text-[#ED1C24]">2,847</div>
+                <div className="text-[26px] font-semibold text-[#EF4444]">2,847</div>
                 <div className="text-[14px] font-normal text-black/50">Assigned Users</div>
               </div>
             </div>
@@ -53,7 +53,7 @@ export default function RolesPermissions() {
         </div>
 
         <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-[26px] font-semibold text-[#ED1C24] mb-6">Roles Directory</h3>
+          <h3 className="text-[26px] font-semibold text-[#EF4444] mb-6">Roles Directory</h3>
           <div className="space-y-3">
             {roles.map((role) => (
               <div 
@@ -61,8 +61,8 @@ export default function RolesPermissions() {
                 className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white to-[#EBECE8]/50 border border-[#B0AAA2]/20 hover:shadow-md transition-all"
               >
                 <div className="flex items-center gap-4 flex-1">
-                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#ED1C24]/10 to-[#003F72]/10 flex items-center justify-center">
-                    <Shield className="w-6 h-6 text-[#ED1C24]" />
+                  <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#003F72]/10 flex items-center justify-center">
+                    <Shield className="w-6 h-6 text-[#EF4444]" />
                   </div>
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">

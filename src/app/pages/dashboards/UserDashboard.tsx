@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { PieChart, Pie, Cell, BarChart, Bar, LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+import CustomChartTooltip from "../../components/ui/CustomChartTooltip";
 const quickActions = [
   { icon: Plus, label: "Request GIS Data Access", color: "#ED1C24" },
   { icon: Download, label: "Request Data Download", color: "#003F72" },
@@ -125,7 +126,7 @@ export default function UserDashboard() {
                   <Cell key={`request-cell-${entry.name}-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip content={<CustomChartTooltip />} />
             </PieChart>
           </ResponsiveContainer>
         </Card>
@@ -137,7 +138,7 @@ export default function UserDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
               <XAxis dataKey="month" stroke="#666666" />
               <YAxis stroke="#666666" />
-              <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend />
               <Bar key="downloads-bar" dataKey="downloads" fill="#ED1C24" name="Downloads" radius={[8, 8, 0, 0]} />
               <Bar key="views-bar" dataKey="views" fill="#003F72" name="Views" radius={[8, 8, 0, 0]} />

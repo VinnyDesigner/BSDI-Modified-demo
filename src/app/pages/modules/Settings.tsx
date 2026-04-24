@@ -11,7 +11,7 @@ export default function Settings() {
     <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-10 py-6">
       <div className="max-w-[1800px] mx-auto space-y-8">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-[26px] font-bold text-[#ED1C24]">
+          <h1 className="text-[26px] font-bold text-[#EF4444]">
             Settings
           </h1>
           <p className="text-[#4A5565] text-[14px] font-normal">Configure system preferences and parameters</p>
@@ -40,7 +40,7 @@ export default function Settings() {
 
             <TabsContent value="profile" className="space-y-6">
               <div className="space-y-4">
-                <h3 className="text-[26px] font-semibold text-[#ED1C24]">Profile Information</h3>
+                <h3 className="text-[26px] font-semibold text-[#EF4444]">Profile Information</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="space-y-2">
                     <Label>Full Name</Label>
@@ -59,7 +59,7 @@ export default function Settings() {
                     <Input placeholder="Your department" className="rounded-xl" />
                   </div>
                 </div>
-                <Button className="bg-[#ED1C24] hover:bg-[#d41820] text-white rounded-full">
+                <Button className="bg-[#EF4444] hover:bg-[#DC2626] text-white rounded-full">
                   Save Changes
                 </Button>
               </div>
@@ -67,7 +67,7 @@ export default function Settings() {
 
             <TabsContent value="notifications" className="space-y-6">
               <div className="space-y-4">
-                <h3 className="text-[26px] font-semibold text-[#ED1C24]">Notification Preferences</h3>
+                <h3 className="text-[26px] font-semibold text-[#EF4444]">Notification Preferences</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 rounded-xl border border-[#B0AAA2]/20">
                     <div>
@@ -96,7 +96,7 @@ export default function Settings() {
 
             <TabsContent value="security" className="space-y-6">
               <div className="space-y-4">
-                <h3 className="text-[26px] font-semibold text-[#ED1C24]">Security Settings</h3>
+                <h3 className="text-[26px] font-semibold text-[#EF4444]">Security Settings</h3>
                 <div className="space-y-4">
                   <div className="space-y-2">
                     <Label>Current Password</Label>
@@ -111,7 +111,7 @@ export default function Settings() {
                     <Input type="password" placeholder="Confirm new password" className="rounded-xl" />
                   </div>
                 </div>
-                <Button className="bg-[#ED1C24] hover:bg-[#d41820] text-white rounded-full">
+                <Button className="bg-[#EF4444] hover:bg-[#DC2626] text-white rounded-full">
                   Update Password
                 </Button>
               </div>
@@ -119,7 +119,7 @@ export default function Settings() {
 
             <TabsContent value="system" className="space-y-6">
               <div className="space-y-4">
-                <h3 className="text-[26px] font-semibold text-[#ED1C24]">System Configuration</h3>
+                <h3 className="text-[26px] font-semibold text-[#EF4444]">System Configuration</h3>
                 <div className="space-y-4">
                   <div className="flex items-center justify-between p-4 rounded-xl border border-[#B0AAA2]/20">
                     <div>

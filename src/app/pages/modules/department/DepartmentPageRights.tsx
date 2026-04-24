@@ -711,10 +711,10 @@ export default function DepartmentPageRights() {
     if (isActionRequired) {
       return {
         label: "Action Required",
-        color: "bg-[#ED1C24]", // Red for action
-        textColor: "text-[#ED1C24]",
-        bgColor: "bg-[#ED1C24]/10",
-        indicator: "bg-[#ED1C24]"
+        color: "bg-[#EF4444]", // Red for action
+        textColor: "text-[#EF4444]",
+        bgColor: "bg-[#EF4444]/10",
+        indicator: "bg-[#EF4444]"
       };
     }
 
@@ -905,7 +905,7 @@ export default function DepartmentPageRights() {
     const statusConfig: Record<string, string> = {
       approved: "bg-[#00A651] text-white",
       pending: "bg-[#FFA500] text-white",
-      rejected: "bg-[#ED1C24] text-white",
+      rejected: "bg-[#EF4444] text-white",
     };
     return statusConfig[status] || "bg-[#666666] text-white";
   };
@@ -3917,7 +3917,7 @@ export default function DepartmentPageRights() {
                 />
                 {groupUploadedFile && (
                   <div className="mt-3 flex items-center gap-2 text-sm text-[#1a1a1a] bg-white px-3 py-2 rounded-lg border border-[#E0E0E0]">
-                    <FileText className="w-4 h-4 text-[#ED1C24]" />
+                    <FileText className="w-4 h-4 text-[#EF4444]" />
                     <span className="font-medium">{groupUploadedFile.name}</span>
                     <span className="text-[#666666]">({(groupUploadedFile.size / 1024).toFixed(2)} KB)</span>
                   </div>
@@ -4056,7 +4056,7 @@ export default function DepartmentPageRights() {
 
               {/* Data Owner Multi-Select */}
               <div className="space-y-2">
-                <label className="text-sm font-semibold text-[#252628]"><span className="text-[#ED1C24]">Data Owners*</span></label>
+                <label className="text-sm font-semibold text-[#252628]"><span className="text-[#EF4444]">Data Owners*</span></label>
                 <div className="space-y-3 p-4 border border-[#E5E5E5] rounded-xl bg-white max-h-[200px] overflow-y-auto">
                   {[
                     { id: 'ministry-works', name: 'Ministry of Works' },
@@ -4095,7 +4095,7 @@ export default function DepartmentPageRights() {
                       >
                         {owner}
                         <X 
-                          className="w-3 h-3 cursor-pointer hover:text-[#ED1C24]" 
+                          className="w-3 h-3 cursor-pointer hover:text-[#EF4444]" 
                           onClick={() => setSelectedDataOwners(selectedDataOwners.filter(o => o !== owner))}
                         />
                       </Badge>
@@ -4170,7 +4170,7 @@ export default function DepartmentPageRights() {
 
       {/* Map Preview Dialog */}
       <Dialog open={mapPreviewOpen} onOpenChange={setMapPreviewOpen}>
-        <DialogContent className="w-[60vw] max-w-none sm:max-w-none h-[85vh] bg-white rounded-2xl border border-[#B0AAA2]/20 shadow-2xl p-0 flex flex-col">
+        <DialogContent className="w-[95vw] max-w-[1400px] sm:w-[95vw] h-[600px] bg-white rounded-2xl border border-[#B0AAA2]/20 shadow-2xl p-0 flex flex-col">
           <div className="px-8 pt-8 pb-4 border-b border-[#E5E5E5]">
             <DialogHeader>
               <div className="flex items-center gap-3 mb-2">
@@ -4258,7 +4258,7 @@ export default function DepartmentPageRights() {
               {/* Organization Name */}
               <div className="space-y-2">
                 <Label className="text-[#4A4A4A] font-medium text-sm">
-                  Organization Name <span className="text-[#ED1C24]">*</span>
+                  Organization Name <span className="text-[#EF4444]">*</span>
                 </Label>
                 <Input 
                   value={viewingOrganization?.organization || ''} 
@@ -4270,7 +4270,7 @@ export default function DepartmentPageRights() {
               {/* Organization Name (Arabic) */}
               <div className="space-y-2">
                 <Label className="text-[#4A4A4A] font-medium text-sm">
-                  Organization Name (Arabic) <span className="text-[#ED1C24]">*</span>
+                  Organization Name (Arabic) <span className="text-[#EF4444]">*</span>
                 </Label>
                 <Input 
                   value="هيئة التخطيط العمراني"
@@ -4295,7 +4295,7 @@ export default function DepartmentPageRights() {
               {/* Point of Contact */}
               <div className="space-y-2">
                 <Label className="text-[#4A4A4A] font-medium text-sm">
-                  Point of Contact <span className="text-[#ED1C24]">*</span>
+                  Point of Contact <span className="text-[#EF4444]">*</span>
                 </Label>
                 <Input 
                   value="Jawaher Rashed"
@@ -4307,7 +4307,7 @@ export default function DepartmentPageRights() {
               {/* Email */}
               <div className="space-y-2">
                 <Label className="text-[#4A4A4A] font-medium text-sm">
-                  Email <span className="text-[#ED1C24]">*</span>
+                  Email <span className="text-[#EF4444]">*</span>
                 </Label>
                 <Input 
                   value="ahmed.alkhalifa@upa.gov.bh"
@@ -4319,7 +4319,7 @@ export default function DepartmentPageRights() {
               {/* Phone Number */}
               <div className="space-y-2">
                 <Label className="text-[#4A4A4A] font-medium text-sm">
-                  Phone Number <span className="text-[#ED1C24]">*</span>
+                  Phone Number <span className="text-[#EF4444]">*</span>
                 </Label>
                 <Input 
                   value="+973 1729 8888"
@@ -4331,7 +4331,7 @@ export default function DepartmentPageRights() {
               {/* Business Description */}
               <div className="space-y-2">
                 <Label className="text-[#4A4A4A] font-medium text-sm">
-                  Business Description <span className="text-[#ED1C24]">*</span>
+                  Business Description <span className="text-[#EF4444]">*</span>
                 </Label>
                 <Textarea 
                   value="The Urban Planning Authority is responsible for comprehensive urban development planning, land use regulation, and sustainable growth strategies across the Kingdom of Bahrain."

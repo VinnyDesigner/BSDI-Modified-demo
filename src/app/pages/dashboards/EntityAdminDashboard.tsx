@@ -6,6 +6,7 @@ import {
 } from "lucide-react";
 import { BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+import CustomChartTooltip from "../../components/ui/CustomChartTooltip";
 const kpiCards = [
   { label: "Organization Structure", value: "8", subtitle: "Departments", icon: Building2, color: "#ED1C24" },
   { label: "Active Users", value: "142", subtitle: "+12 this month", icon: Users, color: "#003F72" },
@@ -101,7 +102,7 @@ export default function EntityAdminDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
               <XAxis type="number" stroke="#666666" />
               <YAxis dataKey="name" type="category" stroke="#666666" width={100} />
-              <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend />
               <Bar key="requests-bar" dataKey="requests" fill="#ED1C24" name="Requests" radius={[0, 8, 8, 0]} />
               <Bar key="users-bar" dataKey="users" fill="#003F72" name="Users" radius={[0, 8, 8, 0]} />
@@ -128,7 +129,7 @@ export default function EntityAdminDashboard() {
                   <Cell key={`dataset-cell-${entry.name}-${index}`} fill={entry.color} />
                 ))}
               </Pie>
-              <Tooltip />
+              <Tooltip content={<CustomChartTooltip />} />
             </PieChart>
           </ResponsiveContainer>
           <div className="mt-4 space-y-2">
@@ -153,7 +154,7 @@ export default function EntityAdminDashboard() {
             <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
             <XAxis dataKey="month" stroke="#666666" />
             <YAxis stroke="#666666" />
-            <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+            <Tooltip content={<CustomTooltip />} />
             <Legend />
             <Bar key="approved-bar" dataKey="approved" fill="#003F72" stackId="a" name="Approved" radius={[0, 0, 0, 0]} />
             <Bar key="pending-bar" dataKey="pending" fill="#ED1C24" stackId="a" name="Pending" radius={[0, 0, 0, 0]} />

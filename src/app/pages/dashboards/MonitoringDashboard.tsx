@@ -6,6 +6,8 @@ import {
 } from "lucide-react";
 import { LineChart, Line, BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 
+import CustomChartTooltip from "../../components/ui/CustomChartTooltip";
+
 const kpiCards = [
   { label: "Security Alerts", value: "3", change: "-2", icon: AlertTriangle, color: "#ED1C24" },
   { label: "Platform Activity", value: "2.8K", change: "+342", icon: Activity, color: "#003F72" },
@@ -120,7 +122,7 @@ export default function MonitoringDashboard() {
             <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
             <XAxis dataKey="time" stroke="#666666" />
             <YAxis stroke="#666666" />
-            <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+            <Tooltip content={<CustomChartTooltip />} />
             <Legend />
             <Line key="logins-line" type="monotone" dataKey="logins" stroke="#003F72" strokeWidth={3} name="User Logins" />
             <Line key="requests-line" type="monotone" dataKey="requests" stroke="#ED1C24" strokeWidth={3} name="API Requests" />
@@ -142,7 +144,7 @@ export default function MonitoringDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
               <XAxis dataKey="day" stroke="#666666" />
               <YAxis stroke="#666666" />
-              <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+              <Tooltip content={<CustomChartTooltip />} />
               <Legend />
               <Bar key="events-bar" dataKey="events" fill="#ED1C24" name="Events" radius={[8, 8, 0, 0]} />
               <Bar key="resolved-bar" dataKey="resolved" fill="#003F72" name="Resolved" radius={[8, 8, 0, 0]} />
@@ -161,7 +163,7 @@ export default function MonitoringDashboard() {
               <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
               <XAxis type="number" stroke="#666666" />
               <YAxis dataKey="category" type="category" stroke="#666666" width={100} />
-              <Tooltip contentStyle={{ backgroundColor: 'white', border: '1px solid #B0AAA2', borderRadius: '12px' }} />
+              <Tooltip content={<CustomTooltip />} />
               <Legend />
               <Bar key="approved-bar" dataKey="approved" fill="#003F72" name="Approved" stackId="a" />
               <Bar key="pending-bar" dataKey="pending" fill="#ED1C24" name="Pending" stackId="a" />

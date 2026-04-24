@@ -4,6 +4,7 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { PageHeader } from "../../components/PageHeader";
 import { Badge } from "../../components/ui/badge";
+import { generateAccessFormHtml, AccessFormPrintData } from "../../lib/printTemplate";
 import { MetricCard } from "../../components/ui/MetricCard";
 import { Input } from "../../components/ui/input";
 import { Label } from "../../components/ui/label";
@@ -117,7 +118,20 @@ export default function Users() {
   const [userEmployeeID, setUserEmployeeID] = useState("");
   const [userStartDate, setUserStartDate] = useState("");
   const [userEndDate, setUserEndDate] = useState("");
-  const [addedUsers, setAddedUsers] = useState<Array<{nameEn: string; nameAr: string; email: string}>>([]);
+  const [addedUsers, setAddedUsers] = useState<Array<{
+    nameEn: string; 
+    nameAr: string; 
+    email: string;
+    employeeID: string;
+    designation: string;
+    org: string;
+    department: string;
+    cpr: string;
+    mobile: string;
+    startDate: string;
+    endDate: string;
+    roles: string[];
+  }>>([]);
   const [isRenewal, setIsRenewal] = useState(false);
   const [isAutoRenewal, setIsAutoRenewal] = useState(false);
   const [selectedUserIndices, setSelectedUserIndices] = useState<number[]>([]);
@@ -304,7 +318,20 @@ export default function Users() {
       toast.error("Maximum 10 users can be added");
       return;
     }
-    setAddedUsers([...addedUsers, { nameEn: userNameEn, nameAr: userNameAr, email: userEmail }]);
+    setAddedUsers([...addedUsers, { 
+      nameEn: userNameEn, 
+      nameAr: userNameAr, 
+      email: userEmail,
+      employeeID: userEmployeeID,
+      designation: userDesignation,
+      org: userOrg,
+      department: userDepartment,
+      cpr: userCPR,
+      mobile: userMobile,
+      startDate: userStartDate,
+      endDate: userEndDate,
+      roles: [...userRole]
+    }]);
     toast.success("✔ User added to list!");
     clearCreateUserForm();
   };
@@ -334,9 +361,9 @@ export default function Users() {
         id: Date.now() + index,
         name: user.nameEn,
         email: user.email,
-        role: Array.isArray(userRole) ? userRole.join(', ') : userRole || "Organization User",
-        department: userDepartment || "IT Department",
-        phone: userMobile || "+973 0000 0000"
+        role: user.roles.join(', '),
+        department: user.department,
+        phone: user.mobile
       }))
     };
     
@@ -372,7 +399,33 @@ export default function Users() {
 
   const handlePrintSelected = () => {
     if (selectedAddedUserIndices.length === 0) return;
-    window.print();
+    
+    // Construct the standardized print data structure
+    const printData: AccessFormPrintData = {
+      requesterName: "BSDI System", // Since these are newly added users
+      designation: "Admin Panel",
+      contactNumber: "System Generated",
+      emailId: "admin@bsdi.gov.bh",
+      ministryOrganization: "BSDI",
+      users: addedUsers
+        .filter((_, idx) => selectedAddedUserIndices.includes(idx))
+        .map(u => ({
+          cpr: u.cpr || "",
+          name: u.nameEn || "",
+          contactNumber: u.mobile || "",
+          email: u.email || "",
+          designation: u.designation || "",
+          department: u.department || "",
+          role: u.roles ? u.roles.join(", ") : ""
+        }))
+    };
+
+    const html = generateAccessFormHtml(printData);
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(html);
+      printWindow.document.close();
+    }
   };
 
   const handleRemoveAddedUser = (idxToRemove: number) => {
@@ -567,9 +620,9 @@ export default function Users() {
       const row = document.getElementById(`user-row-${user.id}`);
       if (row) {
         row.scrollIntoView({ behavior: 'smooth', block: 'center' });
-        row.classList.add('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+        row.classList.add('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         setTimeout(() => {
-          row.classList.remove('ring-2', 'ring-[#ED1C24]', 'ring-offset-2');
+          row.classList.remove('ring-2', 'ring-[#EF4444]', 'ring-offset-2');
         }, 2000);
       }
     }, 100);
@@ -948,8 +1001,8 @@ export default function Users() {
                               <PopoverContent className="w-80 bg-white rounded-xl border border-[#E0E0E0] shadow-lg p-4">
                                 <div className="space-y-3">
                                   <div className="flex items-center gap-2 pb-3 border-b border-[#E0E0E0]">
-                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                                      <span className="text-sm font-bold text-[#ED1C24]">
+                                    <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
+                                      <span className="text-sm font-bold text-[#EF4444]">
                                         {user.name.split(' ').map(n => n[0]).join('')}
                                       </span>
                                     </div>
@@ -1203,7 +1256,7 @@ export default function Users() {
                                         {user.role.split(', ').length > 2 && (
                                           <Popover>
                                             <PopoverTrigger asChild>
-                                              <button className="bg-[#ED1C24]/10 text-[#ED1C24] border border-[#ED1C24]/20 text-xs px-2 py-0.5 rounded-full font-medium cursor-pointer hover:bg-[#ED1C24]/20 transition-all">
+                                              <button className="bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/20 text-xs px-2 py-0.5 rounded-full font-medium cursor-pointer hover:bg-[#EF4444]/20 transition-all">
                                                 +{user.role.split(', ').length - 2} more
                                               </button>
                                             </PopoverTrigger>
@@ -2243,63 +2296,7 @@ export default function Users() {
             </div>
           </DialogContent>
         </Dialog>
-
-        {/* Printable Area - Hidden by default, visible only in print */}
-        <div id="printable-area" className="hidden">
-          <div className="p-10 text-[#111827]">
-            <div className="flex justify-between items-end border-b-2 border-[#EF4444] pb-5 mb-8">
-              <div>
-                <h1 className="text-2xl font-bold text-[#DC2626] m-0">Added Users List</h1>
-                <p className="text-sm text-[#6B7280] m-0 mt-1">BSDI System - User Creation Report</p>
-              </div>
-              <div className="text-sm text-[#6B7280]">Date: {new Date().toLocaleDateString('en-GB')}</div>
-            </div>
-            
-            <table className="w-full border-collapse">
-              <thead>
-                <tr>
-                  <th className="text-left bg-[#F9FAFB] p-3 border border-[#E5E7EB] text-xs uppercase tracking-wider font-semibold text-[#4B5563]">#</th>
-                  <th className="text-left bg-[#F9FAFB] p-3 border border-[#E5E7EB] text-xs uppercase tracking-wider font-semibold text-[#4B5563]">Name</th>
-                  <th className="text-left bg-[#F9FAFB] p-3 border border-[#E5E7EB] text-xs uppercase tracking-wider font-semibold text-[#4B5563]">Email Address</th>
-                </tr>
-              </thead>
-              <tbody>
-                {addedUsers.filter((_, idx) => selectedAddedUserIndices.includes(idx)).map((user, i) => (
-                  <tr key={i} className={i % 2 === 1 ? 'bg-[#FDFDFD]' : ''}>
-                    <td className="p-3 border border-[#E5E7EB] text-sm">{i + 1}</td>
-                    <td className="p-3 border border-[#E5E7EB] text-sm font-medium">{user.nameEn}</td>
-                    <td className="p-3 border border-[#E5E7EB] text-sm">{user.email}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-            
-            <div className="mt-10 pt-5 border-t border-[#E5E7EB] flex justify-between text-xs text-[#6B7280]">
-              <div>Generated by BSDI Admin Panel</div>
-              <div>Total Selected Users: <span className="bg-[#FEE2E2] text-[#DC2626] px-2 py-0.5 rounded-full font-bold">{addedUsers.filter((_, idx) => selectedAddedUserIndices.includes(idx)).length}</span></div>
-            </div>
-          </div>
-        </div>
-
-        <style dangerouslySetInnerHTML={{ __html: `
-          @media print {
-            body * {
-              visibility: hidden !important;
-            }
-            #printable-area, #printable-area * {
-              visibility: visible !important;
-            }
-            #printable-area {
-              display: block !important;
-              position: absolute !important;
-              left: 0 !important;
-              top: 0 !important;
-              width: 100% !important;
-              background: white !important;
-            }
-          }
-        `}} />
       </div>
     </div>
   );
-}
+}
