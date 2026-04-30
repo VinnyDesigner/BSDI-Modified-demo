@@ -26,7 +26,7 @@ export default function RolesPermissions() {
           </Button>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
           <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
             <div className="flex items-center gap-4">
               <div className="w-12 h-12 rounded-xl bg-[#EF4444]/10 flex items-center justify-center">

@@ -1,9 +1,17 @@
 import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
-import { Download, Database, CheckCircle, Clock, Activity } from "lucide-react";
+import { Download, Database, CheckCircle, Clock, Activity, Search } from "lucide-react";
 import { PageHeader } from "../../components/PageHeader";
 import { MetricCard } from "../../components/ui/MetricCard";
+import { Input } from "../../components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 
 const downloads = [
   { id: 1, user: "Jawaher Rashed", dataset: "Transportation Network", org: "Ministry of Works", size: "45.2 MB", date: "2024-03-04", status: "completed" },
@@ -22,7 +30,7 @@ export default function Downloads() {
         />
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard 
             value="142" 
             label="Total Downloads" 
@@ -53,8 +61,38 @@ export default function Downloads() {
           />
         </div>
 
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 w-full">
+          <div className="flex flex-col gap-1">
+            <h3 className="text-xl font-bold text-[#111827]">Download History</h3>
+            <p className="text-sm text-[#6B7280]">Track and manage all data download requests</p>
+          </div>
+
+          <div className="flex flex-col md:flex-row items-center gap-3 w-full lg:w-auto">
+            <div className="relative w-full md:w-64">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+              <Input
+                type="text"
+                placeholder="Search history..."
+                className="w-full h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-white text-sm focus:border-[#EF4444] transition-all"
+              />
+            </div>
+
+            <div className="grid grid-cols-2 gap-3 w-full md:w-auto">
+              <Select defaultValue="all">
+                <SelectTrigger className="w-full md:w-[140px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                  <SelectValue placeholder="Status" />
+                </SelectTrigger>
+                <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                  <SelectItem value="all">All Status</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                  <SelectItem value="processing">Processing</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
+          </div>
+        </div>
+
         <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-[26px] font-semibold text-[#ED1C24] mb-6">Download History</h3>
           <div className="space-y-3">
             {downloads.map((download) => (
               <div 

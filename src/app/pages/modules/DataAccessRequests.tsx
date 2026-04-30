@@ -1116,7 +1116,7 @@ export default function DataAccessRequests() {
         />
 
         {/* KPI Cards Grid */}
-        <div className="grid grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
           <MetricCard
             label="Today"
             value="0"
@@ -1279,29 +1279,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
-                          placeholder="Search pending departments..."
+                          placeholder="Search pending requests..."
                           value={deptPendingSearch}
                           onChange={(e) => setDeptPendingSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={deptPendingDateRange.from}
                           onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={deptPendingDateRange.to}
                           onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -1403,29 +1405,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search completed departments..."
                           value={deptCompletedSearch}
                           onChange={(e) => setDeptCompletedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={deptCompletedDateRange.from}
                           onChange={(e) => setDeptCompletedDateRange({ ...deptCompletedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={deptCompletedDateRange.to}
                           onChange={(e) => setDeptCompletedDateRange({ ...deptCompletedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -1515,29 +1519,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
-                          placeholder="Search pending groups..."
+                          placeholder="Search pending requests..."
                           value={userPendingSearch}
                           onChange={(e) => setUserPendingSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={userPendingDateRange.from}
                           onChange={(e) => setUserPendingDateRange({ ...userPendingDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={userPendingDateRange.to}
                           onChange={(e) => setUserPendingDateRange({ ...userPendingDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -1959,29 +1965,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search pending requests..."
                           value={dataAccessPendingSearch}
                           onChange={(e) => setDataAccessPendingSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={dataAccessPendingDateRange.from}
                           onChange={(e) => setDataAccessPendingDateRange({ ...dataAccessPendingDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={dataAccessPendingDateRange.to}
                           onChange={(e) => setDataAccessPendingDateRange({ ...dataAccessPendingDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -2233,29 +2241,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search completed requests..."
                           value={dataAccessCompletedSearch}
                           onChange={(e) => setDataAccessCompletedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={dataAccessCompletedDateRange.from}
                           onChange={(e) => setDataAccessCompletedDateRange({ ...dataAccessCompletedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={dataAccessCompletedDateRange.to}
                           onChange={(e) => setDataAccessCompletedDateRange({ ...dataAccessCompletedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -2374,29 +2384,31 @@ export default function DataAccessRequests() {
                     </AccordionTrigger>
                     <AccordionContent className="px-0 pb-0 bg-white/50">
                       {/* Search and Date Range */}
-                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                        <div className="flex-1 relative">
+                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                        <div className="flex-1 relative w-full">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                           <Input
                             placeholder="Search pending requests..."
                             value={spatialPendingSearch}
                             onChange={(e) => setSpatialPendingSearch(e.target.value)}
-                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                           <Input
                             type="date"
                             value={spatialPendingDateRange.from}
                             onChange={(e) => setSpatialPendingDateRange({ ...spatialPendingDateRange, from: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
-                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          <div className="hidden md:flex items-center px-1">
+                            <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          </div>
                           <Input
                             type="date"
                             value={spatialPendingDateRange.to}
                             onChange={(e) => setSpatialPendingDateRange({ ...spatialPendingDateRange, to: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
                       </div>
@@ -2525,29 +2537,31 @@ export default function DataAccessRequests() {
                     </AccordionTrigger>
                     <AccordionContent className="px-0 pb-0 bg-white/50">
                       {/* Search and Date Range */}
-                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                        <div className="flex-1 relative">
+                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                        <div className="flex-1 relative w-full">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                           <Input
                             placeholder="Search completed requests..."
                             value={spatialCompletedSearch}
                             onChange={(e) => setSpatialCompletedSearch(e.target.value)}
-                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                           <Input
                             type="date"
                             value={spatialCompletedDateRange.from}
                             onChange={(e) => setSpatialCompletedDateRange({ ...spatialCompletedDateRange, from: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
-                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          <div className="hidden md:flex items-center px-1">
+                            <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          </div>
                           <Input
                             type="date"
                             value={spatialCompletedDateRange.to}
                             onChange={(e) => setSpatialCompletedDateRange({ ...spatialCompletedDateRange, to: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
                       </div>
@@ -2642,29 +2656,31 @@ export default function DataAccessRequests() {
                     </AccordionTrigger>
                     <AccordionContent className="px-0 pb-0 bg-white/50">
                       {/* Search and Date Range */}
-                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                        <div className="flex-1 relative">
+                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                        <div className="flex-1 relative w-full">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                           <Input
                             placeholder="Search user updates..."
                             value={spatialUserPendingSearch}
                             onChange={(e) => setSpatialUserPendingSearch(e.target.value)}
-                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                           <Input
                             type="date"
                             value={spatialUserPendingDateRange.from}
                             onChange={(e) => setSpatialUserPendingDateRange({ ...spatialUserPendingDateRange, from: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
-                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          <div className="hidden md:flex items-center px-1">
+                            <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          </div>
                           <Input
                             type="date"
                             value={spatialUserPendingDateRange.to}
                             onChange={(e) => setSpatialUserPendingDateRange({ ...spatialUserPendingDateRange, to: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
                       </div>
@@ -2793,29 +2809,31 @@ export default function DataAccessRequests() {
                     </AccordionTrigger>
                     <AccordionContent className="px-0 pb-0 bg-white/50">
                       {/* Search and Date Range */}
-                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                        <div className="flex-1 relative">
+                      <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                        <div className="flex-1 relative w-full">
                           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                           <Input
                             placeholder="Search completed logs..."
                             value={spatialUserCompletedSearch}
                             onChange={(e) => setSpatialUserCompletedSearch(e.target.value)}
-                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                           <Input
                             type="date"
                             value={spatialUserCompletedDateRange.from}
                             onChange={(e) => setSpatialUserCompletedDateRange({ ...spatialUserCompletedDateRange, from: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
-                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          <div className="hidden md:flex items-center px-1">
+                            <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                          </div>
                           <Input
                             type="date"
                             value={spatialUserCompletedDateRange.to}
                             onChange={(e) => setSpatialUserCompletedDateRange({ ...spatialUserCompletedDateRange, to: e.target.value })}
-                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                           />
                         </div>
                       </div>
@@ -3029,29 +3047,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search completed services..."
                           value={servicesCompletedSearch}
                           onChange={(e) => setServicesCompletedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={servicesCompletedDateRange.from}
                           onChange={(e) => setServicesCompletedDateRange({ ...servicesCompletedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={servicesCompletedDateRange.to}
                           onChange={(e) => setServicesCompletedDateRange({ ...servicesCompletedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -3123,31 +3143,34 @@ export default function DataAccessRequests() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search pending downloads..."
                           value={downloadPendingSearch}
                           onChange={(e) => setDownloadPendingSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={downloadPendingDateRange.from}
                           onChange={(e) => setDownloadPendingDateRange({ ...downloadPendingDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={downloadPendingDateRange.to}
                           onChange={(e) => setDownloadPendingDateRange({ ...downloadPendingDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
+                    </div>
                                         {filteredDownloadPending.map((request) => (
                         <div key={request.id} className="group relative flex bg-white border border-[#E5E7EB] rounded-[10px] transition-all duration-300 hover:shadow-md hover:border-[#ED1C24]/30 overflow-hidden items-center py-[14px]">
                           {/* Fixed Left - ID */}
@@ -3274,31 +3297,34 @@ export default function DataAccessRequests() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search forwarded downloads..."
                           value={downloadForwardedSearch}
                           onChange={(e) => setDownloadForwardedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#F97316] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#F97316] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={downloadForwardedDateRange.from}
                           onChange={(e) => setDownloadForwardedDateRange({ ...downloadForwardedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#F97316] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#F97316] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={downloadForwardedDateRange.to}
                           onChange={(e) => setDownloadForwardedDateRange({ ...downloadForwardedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#F97316] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#F97316] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
+                    </div>
                                         {dataDownloadForwardedList.map((request) => (
                         <div key={request.id} className="group relative flex bg-white border border-[#E5E7EB] rounded-[10px] transition-all duration-300 hover:shadow-md hover:border-[#F97316]/30 overflow-hidden items-center py-[14px] transition-all duration-300 hover:shadow-md hover:border-[#F97316]/30">
                           
@@ -3365,29 +3391,31 @@ export default function DataAccessRequests() {
                     </div>
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0 bg-white/50">
-                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E7EB] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
                         <Input
                           placeholder="Search completed downloads..."
                           value={downloadCompletedSearch}
                           onChange={(e) => setDownloadCompletedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={downloadCompletedDateRange.from}
                           onChange={(e) => setDownloadCompletedDateRange({ ...downloadCompletedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={downloadCompletedDateRange.to}
                           onChange={(e) => setDownloadCompletedDateRange({ ...downloadCompletedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -3467,29 +3495,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666666]" />
                         <Input
                           placeholder="Search requests..."
                           value={metadataPendingSearch}
                           onChange={(e) => setMetadataPendingSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={metadataPendingDateRange.from}
                           onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={metadataPendingDateRange.to}
                           onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -3587,29 +3617,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666666]" />
                         <Input
                           placeholder="Search requests..."
                           value={metadataCompletedSearch}
                           onChange={(e) => setMetadataCompletedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={metadataCompletedDateRange.from}
                           onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={metadataCompletedDateRange.to}
                           onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -3687,29 +3719,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666666]" />
                         <Input
                           placeholder="Search requests..."
                           value={appUserPendingSearch}
                           onChange={(e) => setAppUserPendingSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={appUserPendingDateRange.from}
                           onChange={(e) => setAppUserPendingDateRange({ ...appUserPendingDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={appUserPendingDateRange.to}
                           onChange={(e) => setAppUserPendingDateRange({ ...appUserPendingDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -3820,29 +3854,31 @@ export default function DataAccessRequests() {
                   </AccordionTrigger>
                   <AccordionContent className="px-0 pb-0">
                     {/* Search and Date Range */}
-                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex items-center gap-4">
-                      <div className="flex-1 relative">
+                    <div className="px-6 py-4 border-t border-[#E5E5E5] bg-[#F8F9FA] flex flex-col lg:flex-row lg:items-center gap-4">
+                      <div className="flex-1 relative w-full">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#666666]" />
                         <Input
                           placeholder="Search requests..."
                           value={appUserCompletedSearch}
                           onChange={(e) => setAppUserCompletedSearch(e.target.value)}
-                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="pl-10 bg-[#F9FAFB] border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
-                      <div className="flex items-center gap-2">
+                      <div className="grid grid-cols-2 md:flex items-center gap-2 w-full lg:w-auto">
                         <Input
                           type="date"
                           value={appUserCompletedDateRange.from}
                           onChange={(e) => setAppUserCompletedDateRange({ ...appUserCompletedDateRange, from: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
-                        <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        <div className="hidden md:flex items-center px-1">
+                          <span className="text-[#6B7280] font-bold text-xs uppercase">to</span>
+                        </div>
                         <Input
                           type="date"
                           value={appUserCompletedDateRange.to}
                           onChange={(e) => setAppUserCompletedDateRange({ ...appUserCompletedDateRange, to: e.target.value })}
-                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px]"
+                          className="bg-white border-[#E5E7EB] focus:ring-[#ED1C24] rounded-[10px] h-[36px] text-[14px] w-full"
                         />
                       </div>
                     </div>
@@ -4376,7 +4412,7 @@ export default function DataAccessRequests() {
             </DialogHeader>
 
             {/* Request Details */}
-            <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
               <div className="p-3 bg-[#F5F5F5] rounded-xl">
                 <div className="text-xs font-semibold text-[#666666] mb-1">Request ID</div>
                 <div className="text-sm font-medium text-[#252628]">{previewingRequest?.id}</div>

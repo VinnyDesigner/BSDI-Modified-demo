@@ -174,6 +174,26 @@ export default function DashboardLayout() {
   const [notificationsOpen, setNotificationsOpen] = useState(false);
   const [selectedOrg, setSelectedOrg] = useState("Ministry of Works");
   const [selectedDept, setSelectedDept] = useState("Urban Planning Department");
+  const [isMobile, setIsMobile] = useState(false);
+
+  // Handle window resize to detect mobile
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 1024;
+      setIsMobile(mobile);
+      if (mobile) {
+        setSidebarOpen(false);
+      } else {
+        setSidebarOpen(true);
+      }
+    };
+    
+    // Initial check
+    handleResize();
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   // Handle search suggestions
   useEffect(() => {
@@ -285,11 +305,20 @@ export default function DashboardLayout() {
   };
 
   return (
-    <div className="h-screen flex overflow-hidden bg-[#F5F7FA]">
+    <div className="h-screen flex overflow-hidden bg-[#F5F7FA] relative">
+      {/* Mobile Sidebar Overlay/Backdrop */}
+      {isMobile && sidebarOpen && (
+        <div 
+          className="fixed inset-0 bg-black/50 z-[40] transition-opacity duration-300"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
       {/* Sidebar */}
       <aside 
         className={`
-          ${sidebarOpen ? 'w-72' : 'w-20'} 
+          ${isMobile ? 'fixed inset-y-0 left-0 z-[50] shadow-2xl' : 'relative'}
+          ${sidebarOpen ? (isMobile ? 'w-72 translate-x-0' : 'w-72') : (isMobile ? 'w-72 -translate-x-full' : 'w-20')} 
           bg-gradient-to-b from-[#252628] to-[#003F72] 
           text-white transition-all duration-300 flex flex-col
         `}
@@ -384,7 +413,18 @@ export default function DashboardLayout() {
       {/* Main Content */}
       <div className="flex-1 flex flex-col overflow-hidden">
         {/* Top Navbar */}
-        <header className="h-20 bg-gradient-to-r from-[#252628] to-[#003F72] flex items-center justify-between px-8 relative overflow-hidden">
+        <header className="h-14 md:h-20 bg-gradient-to-r from-[#252628] to-[#003F72] flex items-center justify-between px-3 md:px-8 relative overflow-hidden shrink-0">
+          {/* Mobile Menu Toggle */}
+          {isMobile && (
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+              className="mr-2 text-white hover:bg-white/10 z-[1001]"
+            >
+              {sidebarOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </Button>
+          )}
           {/* Decorative Merged Shape Effect */}
           <div className="absolute inset-0 pointer-events-none opacity-5">
             <div
@@ -451,19 +491,19 @@ export default function DashboardLayout() {
             </div>
           </div>
 
-          <div className="flex items-center gap-6 flex-1 relative z-[1000]">
+          <div className="flex items-center gap-2 md:gap-6 flex-1 relative z-[1000]">
             {['super-admin', 'reviewer', 'entity-admin', 'department'].includes(roleInfo.rolePrefix) ? (
               <div className="flex flex-col justify-center ml-2">
                 {roleInfo.rolePrefix === 'super-admin' ? (
-                  <h1 className="text-[18px] font-semibold text-white">BSDI Management Console</h1>
+                  <h1 className="text-[14px] sm:text-[16px] md:text-[18px] font-bold text-white truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">BSDI Management Console</h1>
                 ) : roleInfo.rolePrefix === 'reviewer' ? (
-                  <h1 className="text-[18px] font-semibold text-white">BSDI Review Module</h1>
+                  <h1 className="text-[14px] sm:text-[16px] md:text-[18px] font-bold text-white truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">BSDI Review Module</h1>
                 ) : roleInfo.rolePrefix === 'entity-admin' ? (
-                  <h1 className="text-[18px] font-semibold text-white">Ministry of Works</h1>
+                  <h1 className="text-[14px] sm:text-[16px] md:text-[18px] font-bold text-white truncate max-w-[120px] sm:max-w-[200px] md:max-w-none">Ministry of Works</h1>
                 ) : roleInfo.rolePrefix === 'department' ? (
-                  <div className="flex flex-col">
-                    <h1 className="text-[18px] font-semibold text-white">Ministry of Works</h1>
-                    <p className="text-[13px] font-normal text-[#D1D5DB] mt-0.5">Urban Planning Department</p>
+                  <div className="flex flex-col min-w-0">
+                    <h1 className="text-[14px] sm:text-[16px] md:text-[18px] font-bold text-white truncate">Ministry of Works</h1>
+                    <p className="text-[10px] md:text-[13px] font-normal text-[#D1D5DB] mt-0.5 truncate">Urban Planning Department</p>
                   </div>
                 ) : null}
               </div>
@@ -575,7 +615,7 @@ export default function DashboardLayout() {
             )}
           </div>
 
-          <div className="flex items-center gap-4">
+          <div className="flex items-center gap-2 md:gap-4">
             {/* Notifications */}
             <Popover open={notificationsOpen} onOpenChange={setNotificationsOpen}>
               <PopoverTrigger asChild>
@@ -677,12 +717,12 @@ export default function DashboardLayout() {
 
             {/* User Profile */}
             <div className="flex items-center gap-3 pl-4 border-l border-white/20">
-              <Avatar className="h-9 w-9 border border-white/20 shadow-sm">
-                <AvatarFallback className={`${roleInfo.color} text-white text-xs font-bold`}>
+              <Avatar className="h-8 w-8 md:h-9 md:w-9 border border-white/20 shadow-sm shrink-0">
+                <AvatarFallback className={`${roleInfo.color} text-white text-[10px] md:text-xs font-bold`}>
                   {roleInfo.initials}
                 </AvatarFallback>
               </Avatar>
-              <div className="text-left">
+              <div className="text-left hidden lg:block">
                 <p className="text-sm font-semibold text-white">{roleInfo.name}</p>
                 <p className="text-[11px] font-medium text-white/70 tracking-wide uppercase mt-0.5">{roleInfo.role}</p>
               </div>

@@ -464,7 +464,7 @@ export default function ServicesAPIs() {
         </PageHeader>
 
         {/* Summary Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 shrink-0">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 shrink-0">
           <MetricCard 
             value={adminOrgServices.length} 
             label={isDeptAdmin ? "Organization Services" : (isOrgAdmin ? "Services Owned" : "Total Services")} 
@@ -494,14 +494,14 @@ export default function ServicesAPIs() {
         {/* Main Content Card - Expands naturally with browser scroll */}
         <Card className="bg-white border border-[#F1F5F9] rounded-[20px] shadow-[0px_4px_20px_rgba(0,0,0,0.03)]" style={{ padding: '24px 28px' }}>
           {/* Card Header (Fixed) */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-3 shrink-0">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-3 shrink-0">
             <div>
               <h2 className="text-[18px] font-semibold text-[#111827]">Manage Services</h2>
               <p className="text-[13px] text-[#6B7280] mt-0.5">Manage and monitor all registered services and APIs</p>
             </div>
 
-            <div className="flex flex-wrap items-center gap-3">
-              <div className="relative" ref={searchRef}>
+            <div className="flex flex-col md:flex-row items-center gap-3 w-full lg:w-auto">
+              <div className="relative w-full md:w-[280px]" ref={searchRef}>
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                 <Input
                   type="text"
@@ -512,7 +512,7 @@ export default function ServicesAPIs() {
                     setShowSuggestions(true);
                   }}
                   onFocus={() => searchQuery && setShowSuggestions(true)}
-                  className="w-64 h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
+                  className="w-full h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
                 />
 
                 {showSuggestions && searchSuggestions.length > 0 && (
@@ -541,41 +541,49 @@ export default function ServicesAPIs() {
                 )}
               </div>
 
-              <Select value={filterOrg} onValueChange={setFilterOrg}>
-                <SelectTrigger className="w-[160px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
-                  <SelectValue placeholder="Organization" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
-                  <SelectItem value="all">Organization</SelectItem>
-                  {organizations.map(org => (
-                    <SelectItem key={org} value={org}>{org}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 md:flex md:items-center gap-2 md:gap-3 w-full md:w-auto">
+                <div className="col-span-1">
+                  <Select value={filterOrg} onValueChange={setFilterOrg}>
+                    <SelectTrigger className="w-full md:w-[160px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                      <SelectValue placeholder="Organization" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
+                      <SelectItem value="all">Organization</SelectItem>
+                      {organizations.map(org => (
+                        <SelectItem key={org} value={org}>{org}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Select value={filterType} onValueChange={setFilterType}>
-                <SelectTrigger className="w-[150px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
-                  <SelectValue placeholder="Service Type" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
-                  <SelectItem value="all">Service Type</SelectItem>
-                  {serviceTypes.map(type => (
-                    <SelectItem key={type} value={type}>{type}</SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <div className="col-span-1">
+                  <Select value={filterType} onValueChange={setFilterType}>
+                    <SelectTrigger className="w-full md:w-[150px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                      <SelectValue placeholder="Service Type" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
+                      <SelectItem value="all">Service Type</SelectItem>
+                      {serviceTypes.map(type => (
+                        <SelectItem key={type} value={type}>{type}</SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Select value={filterStatus} onValueChange={setFilterStatus}>
-                <SelectTrigger className="w-[130px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
-                  <SelectItem value="all">Status</SelectItem>
-                  <SelectItem value="ACTIVE">Active</SelectItem>
-                  <SelectItem value="INACTIVE">Inactive</SelectItem>
-                  <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
-                </SelectContent>
-              </Select>
+                <div className="col-span-2 md:col-span-1">
+                  <Select value={filterStatus} onValueChange={setFilterStatus}>
+                    <SelectTrigger className="w-full md:w-[130px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
+                      <SelectItem value="all">Status</SelectItem>
+                      <SelectItem value="ACTIVE">Active</SelectItem>
+                      <SelectItem value="INACTIVE">Inactive</SelectItem>
+                      <SelectItem value="MAINTENANCE">Maintenance</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
           </div>
 
@@ -586,24 +594,51 @@ export default function ServicesAPIs() {
               return (
                 <div
                   key={service.id}
-                  className="flex items-center justify-between p-4 bg-white border border-[#E5E7EB] rounded-[16px] hover:border-[#EF4444]/30 hover:shadow-sm transition-all group"
+                  className="p-5 bg-white border border-[#E5E7EB] rounded-[18px] hover:border-[#EF4444]/30 hover:shadow-sm transition-all group"
                 >
-                  <div className="flex items-center gap-4">
-                    <div className="min-w-0">
-                      {/* Top Line: Service Name (Primary) */}
-                      <p className="text-[14px] font-[700] text-[#3D72A2] leading-tight mb-1.5 hover:text-[#EF4444] transition-colors cursor-pointer">
-                        {service.name.includes('/') ? service.name.split('/')[1] : service.name}
-                      </p>
-                      
-                      {/* Bottom Line: Owner Info + Type Chip */}
-                      <div className="flex items-center gap-2">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+                    {/* Top Row (Mobile) / Left Content (Desktop) */}
+                    <div className="flex items-start justify-between sm:justify-start sm:items-center gap-4 w-full sm:w-auto">
+                      <div className="min-w-0">
+                        {/* Service Name */}
+                        <p className="text-[15px] font-[700] text-[#3D72A2] leading-tight mb-2 hover:text-[#EF4444] transition-colors cursor-pointer">
+                          {service.name.includes('/') ? service.name.split('/')[1] : service.name}
+                        </p>
+                        
+                        {/* Owner Info */}
                         <div className="flex items-center gap-1.5 text-[#6B7280]">
-                          <Building2 className="w-3.5 h-3.5 text-[#9CA3AF]" />
-                          <span className="text-[13px] font-[400]">
+                          <Building2 className="w-4 h-4 text-[#9CA3AF]" />
+                          <span className="text-[13px] font-[500]">
                             {service.name.includes('/') ? service.name.split('/')[0] : service.organization}
                           </span>
                         </div>
-                        
+                      </div>
+
+                      {/* Manage Button (Top Right on Mobile) */}
+                      <div className="sm:hidden shrink-0">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-[34px] px-[12px] rounded-[10px] border-[#E5E7EB] bg-white text-[#374151] font-bold hover:bg-[#F9FAFB] hover:border-[#D1D5DB] active:bg-[#F3F4F6] transition-all flex items-center gap-1.5 shadow-sm text-[12px]"
+                          onClick={() => handleViewDetails(service)}
+                        >
+                          <Settings className="w-[14px] h-[14px]" />
+                          Manage
+                        </Button>
+                      </div>
+                    </div>
+
+                    {/* Bottom Row (Mobile) / Right Content (Desktop) */}
+                    <div className="flex flex-col items-end gap-3 sm:flex-row sm:items-center sm:gap-4 shrink-0">
+                      {(isReviewer || isDeptAdmin) && (
+                        <div className="hidden lg:block text-right min-w-[110px] mr-4">
+                          <p className="text-[14px] font-bold text-[#111827]">Usage 1.2M</p>
+                          <p className="text-[12px] text-[#6B7280] font-medium mt-0.5">updated {service.lastUpdated}</p>
+                        </div>
+                      )}
+
+                      <div className="flex items-center gap-2">
+                        {/* Service Type Chip */}
                         {(() => {
                           const typeStyles: Record<string, { bg: string; text: string }> = {
                             "REST API": { bg: "#DBEAFE", text: "#1D4ED8" },
@@ -613,44 +648,36 @@ export default function ServicesAPIs() {
                           const style = typeStyles[service.type] || { bg: "#F3E8FF", text: "#6B21A8" };
                           return (
                             <span 
-                              className="px-[10px] py-[3px] rounded-full text-[11px] font-[600] leading-none whitespace-nowrap ml-1"
+                              className="px-[12px] py-[4px] rounded-full text-[11px] font-[700] leading-none whitespace-nowrap"
                               style={{ backgroundColor: style.bg, color: style.text }}
                             >
                               {service.type}
                             </span>
                           );
                         })()}
-                      </div>
-                    </div>
-                  </div>
 
-                  <div className={`flex items-center transition-all ${isReviewer || isDeptAdmin ? 'gap-12' : 'gap-6'}`}>
-                    {/* Only show usage/updated info for Reviewer/DeptAdmin */}
-                    {(isReviewer || isDeptAdmin) && (
-                      <div className="hidden lg:block text-right min-w-[100px]">
-                        <p className="text-[14px] font-bold text-[#111827]">Usage 1.2M</p>
-                        <p className="text-[12px] text-[#6B7280] font-medium mt-0.5">updated {service.lastUpdated}</p>
-                      </div>
-                    )}
-
-                    <div className="flex items-center gap-4 shrink-0">
-                      <div className={`px-[10px] py-[4px] rounded-full text-[12px] font-medium ${
-                        service.status === "ACTIVE" 
-                          ? "bg-[#D1FAE5] text-[#065F46]" 
-                          : "bg-[#FEE2E2] text-[#B91C1C]"
-                      }`}>
-                        {service.status === "ACTIVE" ? "Active" : (service.status === "MAINTENANCE" ? "Maintenance" : "Inactive")}
+                        {/* Status Chip */}
+                        <div className={`px-[12px] py-[5px] rounded-full text-[11px] font-[700] leading-none whitespace-nowrap ${
+                          service.status === "ACTIVE" 
+                            ? "bg-[#D1FAE5] text-[#065F46]" 
+                            : "bg-[#FEE2E2] text-[#B91C1C]"
+                        }`}>
+                          {service.status === "ACTIVE" ? "Active" : (service.status === "MAINTENANCE" ? "Maintenance" : "Inactive")}
+                        </div>
                       </div>
 
-                      <Button
-                        variant="outline"
-                        size="sm"
-                        className="h-[32px] px-[14px] rounded-[8px] border-[#E5E7EB] bg-white text-[#374151] font-medium hover:bg-[#F9FAFB] hover:border-[#D1D5DB] active:bg-[#F3F4F6] transition-all flex items-center gap-1.5 shadow-sm"
-                        onClick={() => handleViewDetails(service)}
-                      >
-                        <Settings className="w-[14px] h-[14px]" />
-                        Manage
-                      </Button>
+                      {/* Manage Button (Desktop Only) */}
+                      <div className="hidden sm:block">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="h-[34px] px-[16px] rounded-[10px] border-[#E5E7EB] bg-white text-[#374151] font-bold hover:bg-[#F9FAFB] hover:border-[#D1D5DB] active:bg-[#F3F4F6] transition-all flex items-center gap-2 shadow-sm text-[13px]"
+                          onClick={() => handleViewDetails(service)}
+                        >
+                          <Settings className="w-[14px] h-[14px]" />
+                          Manage
+                        </Button>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -659,7 +686,8 @@ export default function ServicesAPIs() {
           </div>
 
           {/* Pagination (Fixed) */}
-          <div className="flex items-center justify-between mt-4 pt-4 border-t border-[#F3F4F6] shrink-0">
+          {/* Desktop Pagination */}
+          <div className="hidden md:flex items-center justify-between mt-4 pt-4 border-t border-[#F3F4F6] shrink-0">
             <div className="text-sm font-medium text-[#6B7280]">
               Showing {filteredServices.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}-
               {Math.min(currentPage * ITEMS_PER_PAGE, filteredServices.length)} of {filteredServices.length} Services
@@ -688,11 +716,45 @@ export default function ServicesAPIs() {
               </Button>
             </div>
           </div>
+
+          {/* Mobile Pagination */}
+          <div className="flex flex-col items-center justify-center gap-4 mt-4 pt-4 border-t border-[#F3F4F6] shrink-0 md:hidden">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+              >
+                {currentPage}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage >= totalPages || totalPages === 0}
+              >
+                Next
+              </Button>
+            </div>
+            <div className="text-sm font-medium text-[#6B7280]">
+              Showing <span className="font-bold text-[#111827]">{filteredServices.length}</span> results
+            </div>
+          </div>
         </Card>
 
         {/* Create Service Dialog */}
         <Dialog open={createServiceOpen} onOpenChange={setCreateServiceOpen}>
-          <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-2xl h-[500px] flex flex-col p-0 bg-white rounded-[16px] border-0 shadow-2xl overflow-hidden">
+          <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] md:max-w-2xl h-[90vh] md:h-[500px] flex flex-col p-0 bg-white rounded-[16px] border-0 shadow-2xl">
             {/* Sticky Header */}
             <div className="sticky top-0 z-10 bg-white px-5 py-4 border-b border-[#F1F5F9] shrink-0 relative">
               <button 
@@ -798,7 +860,7 @@ export default function ServicesAPIs() {
                         <SelectTrigger className="h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm px-3 focus:border-[#EF4444] transition-all focus:ring-0">
                           <SelectValue placeholder="Select a type" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl">
+                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl z-[100]">
                           <SelectItem value="WMS Service">WMS Service</SelectItem>
                           <SelectItem value="REST API">REST API</SelectItem>
                           <SelectItem value="Feature Layer">Feature Layer</SelectItem>
@@ -840,7 +902,7 @@ export default function ServicesAPIs() {
                         <SelectTrigger className="h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm px-3 focus:border-[#EF4444] transition-all focus:ring-0">
                           <SelectValue placeholder="Select Organization" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl">
+                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl z-[100]">
                           {organizations.map(org => (
                             <SelectItem key={org} value={org}>{org}</SelectItem>
                           ))}
@@ -854,7 +916,7 @@ export default function ServicesAPIs() {
                         <SelectTrigger className="h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm px-3 focus:border-[#EF4444] transition-all focus:ring-0">
                           <SelectValue placeholder="Select Department" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl">
+                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl z-[100]">
                           <SelectItem value="GIS Department">GIS Department</SelectItem>
                           <SelectItem value="IT Department">IT Department</SelectItem>
                           <SelectItem value="Operation Department">Operation Department</SelectItem>
@@ -900,7 +962,7 @@ export default function ServicesAPIs() {
                         </button>
                         
                         {applicationDropdownOpen && (
-                          <div className="absolute z-50 w-full mt-1 bg-white border border-[#F1F5F9] rounded-xl shadow-xl max-h-40 overflow-y-auto scrollbar-hide">
+                          <div className="relative lg:absolute z-[100] w-full mt-1 bg-white border border-[#F1F5F9] rounded-xl shadow-xl max-h-40 overflow-y-auto scrollbar-hide">
                             {["BSDI Portal", "GIS Platform", "Data Hub", "Analytics Dashboard", "Mobile App"].map((app) => (
                               <label
                                 key={app}
@@ -930,7 +992,7 @@ export default function ServicesAPIs() {
             </div>
 
             {/* Sticky Footer */}
-            <div className="sticky bottom-0 z-10 bg-white px-5 py-3 border-t border-[#F1F5F9] flex items-center justify-end gap-3 shrink-0">
+            <div className="sticky bottom-0 z-10 bg-white px-5 py-3 border-t border-[#F1F5F9] flex items-center justify-end gap-3 shrink-0 w-full">
               <Button 
                 variant="outline" 
                 className="h-[36px] px-5 rounded-[10px] border-[#E5E7EB] text-sm font-medium hover:bg-gray-50"
@@ -949,7 +1011,7 @@ export default function ServicesAPIs() {
         </Dialog>
         {/* Service Detail Dialog (View Mode) */}
         <Dialog open={serviceDetailOpen} onOpenChange={setServiceDetailOpen}>
-          <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 max-w-2xl h-[500px] flex flex-col p-0 bg-white rounded-[16px] border-0 shadow-2xl overflow-hidden">
+          <DialogContent className="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[95vw] md:max-w-2xl h-[90vh] md:h-[500px] flex flex-col p-0 bg-white rounded-[16px] border-0 shadow-2xl">
             {/* Sticky Header */}
             <div className="sticky top-0 z-10 bg-white px-5 py-4 border-b border-[#F1F5F9] shrink-0 relative">
               <button 
@@ -1099,7 +1161,7 @@ export default function ServicesAPIs() {
                         <SelectTrigger className="h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm px-3 focus:border-[#EF4444] transition-all focus:ring-0">
                           <SelectValue placeholder="Select a type" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl">
+                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl z-[100]">
                           <SelectItem value="WMS Service">WMS Service</SelectItem>
                           <SelectItem value="REST API">REST API</SelectItem>
                           <SelectItem value="Feature Layer">Feature Layer</SelectItem>
@@ -1142,7 +1204,7 @@ export default function ServicesAPIs() {
                         <SelectTrigger className="h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm px-3 focus:border-[#EF4444] transition-all focus:ring-0">
                           <SelectValue placeholder="Select Organization" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl">
+                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl z-[100]">
                           {organizations.map(org => (
                             <SelectItem key={org} value={org}>{org}</SelectItem>
                           ))}
@@ -1155,7 +1217,7 @@ export default function ServicesAPIs() {
                         <SelectTrigger className="h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm px-3 focus:border-[#EF4444] transition-all focus:ring-0">
                           <SelectValue placeholder="Select Department" />
                         </SelectTrigger>
-                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl">
+                        <SelectContent className="rounded-xl border-[#F1F5F9] shadow-xl z-[100]">
                           <SelectItem value="GIS Department">GIS Department</SelectItem>
                           <SelectItem value="IT Operations">IT Operations</SelectItem>
                           <SelectItem value="IT Department">IT Department</SelectItem>
@@ -1202,7 +1264,7 @@ export default function ServicesAPIs() {
                         </button>
                         
                         {detailApplicationDropdownOpen && (
-                          <div className="absolute z-50 w-full mt-1 bg-white border border-[#F1F5F9] rounded-xl shadow-xl max-h-40 overflow-y-auto scrollbar-hide">
+                          <div className="relative lg:absolute z-[100] w-full mt-1 bg-white border border-[#F1F5F9] rounded-xl shadow-xl max-h-40 overflow-y-auto scrollbar-hide">
                             {["BSDI Management Console", "GIS Platform", "Data Hub", "Analytics Dashboard", "Mobile App"].map((app) => (
                               <label
                                 key={app}
@@ -1232,7 +1294,7 @@ export default function ServicesAPIs() {
             </div>
 
             {/* Sticky Footer */}
-            <div className="sticky bottom-0 z-10 bg-white px-5 py-3 border-t border-[#F1F5F9] flex justify-end gap-3 shrink-0">
+            <div className="sticky bottom-0 z-10 bg-white px-5 py-3 border-t border-[#F1F5F9] flex items-center justify-end gap-3 shrink-0 w-full">
               {isDeptAdmin || isReviewer ? (
                 <Button 
                   variant="default" 

@@ -3,7 +3,7 @@ import React from 'react';
 const CustomChartTooltip = ({ active, payload, label }: any) => {
   if (active && payload && payload.length) {
     return (
-      <div className="bg-white/95 backdrop-blur-md border border-gray-100 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] p-3 px-4 min-w-[200px] pointer-events-none">
+      <div className="bg-white/95 backdrop-blur-md border border-gray-100 rounded-xl shadow-[0_10px_30px_rgba(0,0,0,0.15)] p-2.5 md:p-3 px-3 md:px-4 min-w-[160px] md:min-w-[200px] pointer-events-none z-50">
         <p className="text-[#1a1a1a] font-bold mb-2 border-b border-gray-100 pb-1.5">{label}</p>
         <div className="space-y-2">
           {payload.map((entry: any, index: number) => {

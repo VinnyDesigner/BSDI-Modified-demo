@@ -68,25 +68,30 @@ export default function EntityAdminDashboard() {
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
         {kpiCards.map((kpi, index) => {
           const Icon = kpi.icon;
           return (
             <Card 
               key={index} 
-              className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+              className="p-4 sm:p-6 bg-white border border-[#B0AAA2]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4"
+              style={{ background: kpi.color + "08" }}
             >
-              <div className="flex items-start justify-between mb-4">
+              <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">
+                {kpi.label}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex flex-col">
+                  <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">{kpi.value}</div>
+                  {kpi.subtitle && <div className="text-[10px] sm:text-xs text-[#B0AAA2] font-medium">{kpi.subtitle}</div>}
+                </div>
                 <div 
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
-                  style={{ backgroundColor: kpi.color + "15" }}
+                  className="w-10 sm:w-14 h-10 sm:h-14 rounded-full flex items-center justify-center shadow-lg shrink-0"
+                  style={{ backgroundColor: kpi.color + "20", color: kpi.color }}
                 >
-                  <Icon className="w-6 h-6" style={{ color: kpi.color }} />
+                  <Icon className="w-5 sm:w-7 h-5 sm:h-7" />
                 </div>
               </div>
-              <div className="text-2xl font-bold text-[#252628] mb-1">{kpi.value}</div>
-              <div className="text-sm text-[#666666] mb-1">{kpi.label}</div>
-              <div className="text-xs text-[#B0AAA2]">{kpi.subtitle}</div>
             </Card>
           );
         })}

@@ -3,12 +3,20 @@ import { Card } from "../../components/ui/card";
 import { Button } from "../../components/ui/button";
 import { Badge } from "../../components/ui/badge";
 import { Checkbox } from "../../components/ui/checkbox";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../../components/ui/select";
 import { 
   MapPin, Anchor, AlertTriangle, Grid, ChevronRight, Edit,
   ZoomIn, ZoomOut, Layers, ChevronDown, Square, Circle, Minus, Pentagon, Search, X, Eye, EyeOff, Plus, Server, Shield, Activity
 } from "lucide-react";
 import { PageHeader } from "../../components/PageHeader";
 import { MetricCard } from "../../components/ui/MetricCard";
+import { Input } from "../../components/ui/input";
 import mapImage from "figma:asset/151aba0cecdc8f627ff198c217fe8b1fec102886.png";
 
 const entities = [
@@ -221,7 +229,7 @@ export default function Permissions() {
         </PageHeader>
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard 
             value="12" 
             label="Total Roles" 
@@ -723,15 +731,40 @@ export default function Permissions() {
           <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-[#EF4444] via-[#F87171] to-[#EF4444]" />
           
           {/* Table Header */}
-          <div className="mb-6 flex items-center justify-between">
+          <div className="mb-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6">
             <div>
               <h2 className="text-xl font-bold text-[#1a1a1a]">Spatial Boundaries Registry</h2>
               <p className="text-sm text-[#666666] mt-1">Manage and monitor boundary entities</p>
             </div>
-            <Button className="bg-gradient-to-r from-[#EF4444] to-[#F87171] hover:from-[#D91B22] hover:to-[#F87171] text-white rounded-full shadow-md">
-              <Plus className="w-4 h-4 mr-2" />
-              Add Boundary
-            </Button>
+            
+            <div className="flex flex-col md:flex-row items-center gap-4 w-full lg:w-auto">
+              <div className="relative w-full md:w-64">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+                <Input
+                  type="text"
+                  placeholder="Search boundaries..."
+                  className="w-full h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3 w-full md:w-auto">
+                <Select defaultValue="all">
+                  <SelectTrigger className="w-full md:w-[140px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="pending">Pending</SelectItem>
+                  </SelectContent>
+                </Select>
+
+                <Button className="bg-gradient-to-r from-[#EF4444] to-[#F87171] hover:from-[#D91B22] hover:to-[#F87171] text-white rounded-full shadow-md h-[36px] px-6">
+                  <Plus className="w-4 h-4 mr-2" />
+                  Add Boundary
+                </Button>
+              </div>
+            </div>
           </div>
 
           <div className="overflow-x-auto">

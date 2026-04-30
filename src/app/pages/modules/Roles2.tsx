@@ -308,7 +308,7 @@ export default function Roles2() {
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
           <Card className="relative h-[106px] bg-white/90 backdrop-blur-xl border-0 rounded-[24px] shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)] hover:shadow-[12px_12px_32px_rgba(163,177,198,0.4),-12px_-12px_32px_rgba(255,255,255,1)] transition-all duration-300 hover:translate-y-[-4px] overflow-hidden">
             <div className="absolute right-[24px] top-[37px] w-[30px] h-[30px] flex items-center justify-center">
               <Shield className="w-[30px] h-[30px] text-[#EF4444]" style={{ strokeWidth: 2 }} />
@@ -466,7 +466,8 @@ export default function Roles2() {
 
           {/* Pagination */}
           <div className="p-6 border-t border-[#E5E5E5] bg-gray-50/30">
-            <div className="flex items-center justify-between">
+            {/* Desktop Pagination */}
+            <div className="hidden md:flex items-center justify-between">
               <div className="text-sm text-[#666666]">
                 Showing {permissions.length} of {permissions.length} permissions
               </div>
@@ -490,6 +491,38 @@ export default function Roles2() {
                 >
                   Next
                 </Button>
+              </div>
+            </div>
+
+            {/* Mobile Pagination */}
+            <div className="flex flex-col items-center justify-center gap-4 md:hidden">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                  disabled
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+                >
+                  1
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                  disabled
+                >
+                  Next
+                </Button>
+              </div>
+              <div className="text-sm font-medium text-[#6B7280]">
+                Showing <span className="font-bold text-[#111827]">{permissions.length}</span> results
               </div>
             </div>
           </div>

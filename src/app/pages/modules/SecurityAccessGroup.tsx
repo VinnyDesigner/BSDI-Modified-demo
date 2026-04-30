@@ -93,7 +93,7 @@ export default function SecurityAccessGroup() {
         </PageHeader>
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard 
             value="38" 
             label="Total Spatial Access" 
@@ -129,42 +129,44 @@ export default function SecurityAccessGroup() {
               <p className="text-[14px] text-[#6B7280]">Manage security access groups and assign users to access groups</p>
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full lg:w-auto">
               {/* Search Filter */}
-              <div className="relative">
+              <div className="relative w-full lg:w-[240px]">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] pointer-events-none" />
                 <Input
-                  className="pl-9 pr-3 h-9 w-[240px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
+                  className="pl-9 pr-3 h-9 w-full border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
                   placeholder="Search group"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
-              {/* Organization Filter */}
-              <Select defaultValue="all">
-                <SelectTrigger className="w-[180px] h-9 border border-[#E5E7EB] bg-white rounded-[10px] px-3 text-[14px]">
-                  <SelectValue placeholder="Organization" />
-                </SelectTrigger>
-                <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
-                  <SelectItem value="all">Organization</SelectItem>
-                  <SelectItem value="mow">Ministry of Works</SelectItem>
-                  <SelectItem value="upa">Urban Planning Authority</SelectItem>
-                  <SelectItem value="tra">Transport Authority</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 md:flex items-center gap-3 w-full lg:w-auto">
+                {/* Organization Filter */}
+                <Select defaultValue="all">
+                  <SelectTrigger className="w-full md:w-[180px] h-9 border border-[#E5E7EB] bg-white rounded-[10px] px-3 text-[14px]">
+                    <SelectValue placeholder="Organization" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">Organization</SelectItem>
+                    <SelectItem value="mow">Ministry of Works</SelectItem>
+                    <SelectItem value="upa">Urban Planning Authority</SelectItem>
+                    <SelectItem value="tra">Transport Authority</SelectItem>
+                  </SelectContent>
+                </Select>
 
-              {/* Status Filter */}
-              <Select defaultValue="all">
-                <SelectTrigger className="w-[130px] h-9 border border-[#E5E7EB] bg-white rounded-[10px] px-3 text-[14px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
-                  <SelectItem value="all">Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
+                {/* Status Filter */}
+                <Select defaultValue="all">
+                  <SelectTrigger className="w-full md:w-[130px] h-9 border border-[#E5E7EB] bg-white rounded-[10px] px-3 text-[14px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                   <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -269,7 +271,8 @@ export default function SecurityAccessGroup() {
             </div>
           </div>
 
-          <div className="pt-6 flex items-center justify-between border-t border-[#F3F4F6] mt-4">
+          {/* Desktop Pagination */}
+          <div className="hidden md:flex pt-6 items-center justify-between border-t border-[#F3F4F6] mt-4">
             <div className="text-[13px] text-[#6B7280]">
               Showing <span className="font-semibold text-[#111827]">{filteredGroups.length}</span> to <span className="font-semibold text-[#111827]">{groups.length}</span> of <span className="font-semibold text-[#111827]">{groups.length}</span> results
             </div>
@@ -298,6 +301,38 @@ export default function SecurityAccessGroup() {
                 Next
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
+            </div>
+          </div>
+
+          {/* Mobile Pagination */}
+          <div className="flex flex-col items-center justify-center gap-4 pt-6 border-t border-[#F3F4F6] mt-4 md:hidden">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                disabled
+              >
+                Previous
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+              >
+                1
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                disabled
+              >
+                Next
+              </Button>
+            </div>
+            <div className="text-sm font-medium text-[#6B7280]">
+              Showing <span className="font-bold text-[#111827]">{filteredGroups.length}</span> results
             </div>
           </div>
         </Card>

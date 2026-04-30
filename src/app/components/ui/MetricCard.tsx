@@ -19,32 +19,38 @@ interface MetricCardProps {
 const variantStyles: Record<MetricCardVariant, {
   iconBg: string;
   iconColor: string;
-  blobColor: string;
+  cardBg: string;
+  glowColor: string;
 }> = {
   blue: {
-    iconBg: "rgba(59, 130, 246, 0.1)",
-    iconColor: "#2563EB",
-    blobColor: "rgba(59, 130, 246, 0.05)",
+    iconBg: "#BFDBFE",
+    iconColor: "#1E40AF",
+    cardBg: "#EFF6FF",
+    glowColor: "rgba(59, 130, 246, 0.2)",
   },
   yellow: {
-    iconBg: "#FFF4E5",
-    iconColor: "#B26A00",
-    blobColor: "rgba(178, 106, 0, 0.05)",
+    iconBg: "#FEF3C7",
+    iconColor: "#92400E",
+    cardBg: "#FFFBEB",
+    glowColor: "rgba(245, 158, 11, 0.2)",
   },
   green: {
-    iconBg: "#E6F7EF",
-    iconColor: "#1F8A5B",
-    blobColor: "rgba(31, 138, 91, 0.05)",
+    iconBg: "#DCFCE7",
+    iconColor: "#166534",
+    cardBg: "#F0FDF4",
+    glowColor: "rgba(34, 197, 94, 0.2)",
   },
   red: {
-    iconBg: "rgba(239, 68, 68, 0.1)",
-    iconColor: "#DC2626",
-    blobColor: "rgba(239, 68, 68, 0.05)",
+    iconBg: "#FEE2E2",
+    iconColor: "#991B1B",
+    cardBg: "#FEF2F2",
+    glowColor: "rgba(239, 68, 68, 0.2)",
   },
   purple: {
-    iconBg: "rgba(139, 92, 246, 0.1)",
-    iconColor: "#7C3AED",
-    blobColor: "rgba(139, 92, 246, 0.05)",
+    iconBg: "#F3E8FF",
+    iconColor: "#6B21A8",
+    cardBg: "#FAF5FF",
+    glowColor: "rgba(168, 85, 247, 0.2)",
   },
 };
 
@@ -62,52 +68,52 @@ export const MetricCard: React.FC<MetricCardProps> = ({
   return (
     <div
       className={cn(
-        "relative flex items-center justify-between p-[24px] rounded-[24px] transition-all duration-300 cursor-default min-w-0 flex-1 h-[110px]",
-        "bg-[#FFFFFF] border border-[#E5E7EB] shadow-[0px_1px_2px_rgba(0,0,0,0.04)]",
+        "relative p-4 sm:p-6 rounded-[24px] transition-all duration-300 cursor-default min-w-0 flex-1",
+        "border border-white/50 shadow-[0_4px_20px_rgba(0,0,0,0.02)] group",
         "hover:shadow-[0_10px_30px_rgba(0,0,0,0.06)] hover:-translate-y-1",
         className
       )}
+      style={{ background: styles.cardBg }}
     >
-      {/* Decorative Blob */}
-      <div 
-        className="absolute -right-4 -top-4 w-32 h-32 rounded-full blur-3xl pointer-events-none opacity-60 z-0"
-        style={{ background: styles.blobColor }}
-      />
-
-      {/* Content Section */}
-      <div className="relative z-10 flex flex-col gap-1 min-w-0 overflow-hidden">
-        <span className="text-[13px] font-medium text-[#6B7280] tracking-tight truncate">
+      <div className="flex flex-col gap-2 sm:gap-4">
+        {/* Label on top */}
+        <span className="text-[10px] sm:text-[13px] font-bold text-[#64748B] uppercase tracking-wider opacity-80">
           {label}
         </span>
         
-        <div className="flex items-baseline gap-2">
-          <span className="text-[26px] font-extrabold text-[#111827] leading-none">
-            {typeof value === "number" ? value.toLocaleString() : value}
-          </span>
-          {trend && (
-            <span className={`text-[12px] font-bold ${trend.isPositive ? 'text-[#059669]' : 'text-[#DC2626]'}`}>
-              {trend.value}
-            </span>
-          )}
-        </div>
+        {/* Value and Icon Row */}
+        <div className="flex items-center justify-between">
+          <div className="flex flex-col">
+            <div className="flex items-baseline gap-1.5 sm:gap-2">
+              <span className="text-[22px] sm:text-[32px] font-extrabold text-[#1e293b] leading-tight">
+                {typeof value === "number" ? value.toLocaleString() : value}
+              </span>
+              {trend && (
+                <span className={`text-[10px] sm:text-[12px] font-bold ${trend.isPositive ? 'text-[#10B981]' : 'text-[#EF4444]'}`}>
+                  {trend.value}
+                </span>
+              )}
+            </div>
+            {statusText && (
+              <span className="text-[9px] sm:text-[11px] font-medium text-[#94A3B8] truncate mt-0.5">
+                {statusText}
+              </span>
+            )}
+          </div>
 
-        {statusText && (
-          <span className="text-[11px] font-medium text-[#9CA3AF] truncate">
-            {statusText}
-          </span>
-        )}
-      </div>
-
-      {/* Icon Wrapper */}
-      <div
-        className="relative z-10 flex items-center justify-center rounded-[18px] shrink-0 w-12 h-12 shadow-sm"
-        style={{
-          background: styles.iconBg,
-          color: styles.iconColor,
-        }}
-      >
-        <div className="transform transition-transform group-hover:scale-110 duration-300">
-          {icon}
+          {/* Icon Beside Number on Mobile */}
+          <div
+            className="flex items-center justify-center rounded-full shrink-0 w-10 h-10 sm:w-14 sm:h-14 transition-all duration-300 group-hover:scale-110"
+            style={{
+              background: styles.iconBg,
+              color: styles.iconColor,
+              boxShadow: `0 4px 12px ${styles.glowColor}`,
+            }}
+          >
+            <div className="[&_svg]:!w-5 [&_svg]:!h-5 sm:[&_svg]:!w-7 sm:[&_svg]:!h-7">
+              {icon}
+            </div>
+          </div>
         </div>
       </div>
     </div>

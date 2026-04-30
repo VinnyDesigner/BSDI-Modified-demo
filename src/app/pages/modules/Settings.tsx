@@ -10,29 +10,27 @@ export default function Settings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-10 py-6">
       <div className="max-w-[1800px] mx-auto space-y-8">
-        <div className="flex flex-col gap-0.5">
-          <h1 className="text-[26px] font-bold text-[#EF4444]">
-            Settings
-          </h1>
-          <p className="text-[#4A5565] text-[14px] font-normal">Configure system preferences and parameters</p>
-        </div>
+        <PageHeader 
+          title="Settings"
+          description="Configure system preferences and parameters"
+        />
 
         <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
           <Tabs defaultValue="profile" className="w-full">
-            <TabsList className="grid w-full grid-cols-4 mb-6">
-              <TabsTrigger value="profile">
+            <TabsList className="grid w-full grid-cols-2 md:grid-cols-4 mb-6 h-auto">
+              <TabsTrigger value="profile" className="py-3">
                 <User className="w-4 h-4 mr-2" />
                 Profile
               </TabsTrigger>
-              <TabsTrigger value="notifications">
+              <TabsTrigger value="notifications" className="py-3">
                 <Bell className="w-4 h-4 mr-2" />
                 Notifications
               </TabsTrigger>
-              <TabsTrigger value="security">
+              <TabsTrigger value="security" className="py-3">
                 <Shield className="w-4 h-4 mr-2" />
                 Security
               </TabsTrigger>
-              <TabsTrigger value="system">
+              <TabsTrigger value="system" className="py-3">
                 <Database className="w-4 h-4 mr-2" />
                 System
               </TabsTrigger>

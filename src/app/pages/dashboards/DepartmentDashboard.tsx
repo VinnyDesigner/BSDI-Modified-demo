@@ -53,35 +53,36 @@ const customRoles = [
 
 export default function DepartmentDashboard() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-10 py-6">
-      <div className="max-w-[1800px] mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-4 md:px-10 py-4 md:py-6">
+      <div className="max-w-[1800px] mx-auto space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-[26px] font-bold text-[#ED1C24]">Department Dashboard</h1>
-          <p className="text-[#4A5565] text-[14px] font-normal">Department Reviewer • User & Role Management</p>
+          <h1 className="text-xl md:text-[26px] font-bold text-[#ED1C24]">Department Dashboard</h1>
+          <p className="text-[#4A5565] text-xs md:text-[14px] font-normal">Department Reviewer • User & Role Management</p>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {kpiCards.map((kpi, index) => {
           const Icon = kpi.icon;
           return (
             <Card 
               key={index} 
-              className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+              className="p-4 sm:p-6 bg-white border border-[#B0AAA2]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4"
+              style={{ background: kpi.color + "08" }}
             >
-              <div className="flex items-center gap-4">
+              <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">
+                {kpi.label}
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">{kpi.value}</div>
                 <div 
-                  className="w-14 h-14 rounded-xl flex items-center justify-center shadow-md"
-                  style={{ backgroundColor: kpi.color + "15" }}
+                  className="w-10 sm:w-14 h-10 sm:h-14 rounded-full flex items-center justify-center shadow-lg shrink-0"
+                  style={{ backgroundColor: kpi.color + "20", color: kpi.color }}
                 >
-                  <Icon className="w-7 h-7" style={{ color: kpi.color }} />
-                </div>
-                <div>
-                  <div className="text-2xl font-bold text-[#252628]">{kpi.value}</div>
-                  <div className="text-sm text-[#666666]">{kpi.label}</div>
+                  <Icon className="w-5 sm:w-7 h-5 sm:h-7" />
                 </div>
               </div>
             </Card>
@@ -90,50 +91,54 @@ export default function DepartmentDashboard() {
       </div>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
         {/* Department Request Volume */}
-        <Card className="col-span-2 p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-[#252628] mb-6">Department Request Volume</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <LineChart data={departmentRequestsData} id="dept-line-chart">
-              <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
-              <XAxis dataKey="month" stroke="#666666" />
-              <YAxis stroke="#666666" />
-              <Tooltip content={<CustomChartTooltip />} />
-              <Legend />
-              <Line key="requests-line" type="monotone" dataKey="requests" stroke="#ED1C24" strokeWidth={3} name="Total Requests" />
-              <Line key="approved-line" type="monotone" dataKey="approved" stroke="#003F72" strokeWidth={3} name="Approved" />
-            </LineChart>
-          </ResponsiveContainer>
+        <Card className="lg:col-span-2 p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6">Department Request Volume</h3>
+          <div className="h-[280px] md:h-[320px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <LineChart data={departmentRequestsData} id="dept-line-chart">
+                <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
+                <XAxis dataKey="month" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={12} />
+                <Tooltip content={<CustomChartTooltip />} />
+                <Legend />
+                <Line key="requests-line" type="monotone" dataKey="requests" stroke="#ED1C24" strokeWidth={3} name="Total Requests" />
+                <Line key="approved-line" type="monotone" dataKey="approved" stroke="#003F72" strokeWidth={3} name="Approved" />
+              </LineChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
 
         {/* Role Assignments */}
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-[#252628] mb-6">Role Assignments</h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <PieChart id="dept-pie-chart">
-              <Pie
-                data={roleAssignmentsData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value }) => `${value}`}
-                outerRadius={90}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {roleAssignmentsData.map((entry, index) => (
-                  <Cell key={`role-cell-${entry.name}-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomChartTooltip />} />
-            </PieChart>
-          </ResponsiveContainer>
+        <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6">Role Assignments</h3>
+          <div className="h-[250px] md:h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart id="dept-pie-chart">
+                <Pie
+                  data={roleAssignmentsData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value }) => `${value}`}
+                  outerRadius={90}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {roleAssignmentsData.map((entry, index) => (
+                    <Cell key={`role-cell-${entry.name}-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomChartTooltip />} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
           <div className="mt-4 space-y-2">
             {roleAssignmentsData.map((role, index) => (
-              <div key={index} className="flex items-center justify-between text-sm">
+              <div key={index} className="flex items-center justify-between text-xs md:text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: role.color }}></div>
+                  <div className="w-2.5 h-2.5 rounded-full" style={{ backgroundColor: role.color }}></div>
                   <span className="text-[#666666]">{role.name}</span>
                 </div>
                 <span className="font-semibold text-[#252628]">{role.value}</span>
@@ -144,19 +149,21 @@ export default function DepartmentDashboard() {
       </div>
 
       {/* User Activity */}
-      <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-        <h3 className="text-lg font-semibold text-[#252628] mb-6">User Activity This Week</h3>
-        <ResponsiveContainer width="100%" height={280}>
-          <BarChart data={userActivityData} id="dept-bar-chart">
-            <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
-            <XAxis dataKey="day" stroke="#666666" />
-            <YAxis stroke="#666666" />
-            <Tooltip content={<CustomChartTooltip />} />
-            <Legend />
-            <Bar key="logins-bar" dataKey="logins" fill="#ED1C24" name="Logins" radius={[8, 8, 0, 0]} />
-            <Bar key="actions-bar" dataKey="actions" fill="#003F72" name="Actions" radius={[8, 8, 0, 0]} />
-          </BarChart>
-        </ResponsiveContainer>
+      <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+        <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6">User Activity This Week</h3>
+        <div className="h-[280px] md:h-[320px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={userActivityData} id="dept-bar-chart">
+              <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
+              <XAxis dataKey="day" stroke="#666666" fontSize={12} />
+              <YAxis stroke="#666666" fontSize={12} />
+              <Tooltip content={<CustomChartTooltip />} />
+              <Legend />
+              <Bar key="logins-bar" dataKey="logins" fill="#ED1C24" name="Logins" radius={[8, 8, 0, 0]} />
+              <Bar key="actions-bar" dataKey="actions" fill="#003F72" name="Actions" radius={[8, 8, 0, 0]} />
+            </BarChart>
+          </ResponsiveContainer>
+        </div>
       </Card>
 
       </div>

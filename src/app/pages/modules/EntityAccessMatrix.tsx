@@ -560,24 +560,7 @@ const EntityAccessMatrix: React.FC = () => {
       <PageHeader 
         title={isDeptAdmin ? "Service Access Matrix" : "Entity Access Matrix"}
         description="Standardize security across all modules and applications"
-      >
-        {!isReadOnly && !isOrgAdmin && !isDeptAdmin && (
-          <Button 
-            variant="outline" 
-            onClick={() => setImportWizardOpen(true)}
-            className="gap-2"
-          >
-            <Upload className="w-4 h-4" />
-            Import
-          </Button>
-        )}
-        <Button 
-          className="gap-2"
-        >
-          <Download className="w-4 h-4" />
-          Export
-        </Button>
-        </PageHeader>
+      />
 
         {/* 2. MATRIX SECTION CONTAINER */}
         <Tabs value={activeMatrixTab} onValueChange={setActiveMatrixTab} className="w-full">
@@ -642,86 +625,123 @@ const EntityAccessMatrix: React.FC = () => {
             </div>
           )}
 
-          <TabsContent value="owned" className="mt-0">
-            <div className="bg-white border-0 rounded-2xl shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden">
+          <TabsContent value="owned" className="mt-0 md:flex-1 md:flex md:flex-col">
+            <div className="bg-white border-0 rounded-2xl shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden md:flex-1 md:flex md:flex-col md:min-h-[calc(100vh-250px)]">
               {/* Header & Filters Grid */}
-              <div className="px-6 py-5 border-b border-[#F3F4F6]">
-                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-                  <div className="flex flex-col gap-1">
-                    <h3 className="text-lg font-bold text-[#111827]">Access Configuration</h3>
-                    <p className="text-sm text-[#6B7280]">Manage service access across entities, source organizations and target organizations.</p>
+              <div className="px-6 py-6 border-b border-[#F3F4F6] bg-white">
+                <div className="flex flex-col gap-6">
+                  {/* Row 1: Title & Main Actions */}
+                  <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+                    <div className="flex flex-col gap-1">
+                      <h3 className="text-[18px] font-bold text-[#111827]">Access Configuration</h3>
+                      <p className="text-sm text-[#6B7280]">Manage service access across entities, source organizations and target organizations.</p>
+                    </div>
+
+                    <div className="flex items-center gap-2">
+                      {!isReadOnly && !isOrgAdmin && !isDeptAdmin && (
+                        <Button 
+                          variant="outline" 
+                          onClick={() => setImportWizardOpen(true)}
+                          className="h-[36px] px-4 rounded-[10px] border-[#E5E7EB] text-[13px] font-semibold text-[#374151] hover:bg-gray-50 flex items-center gap-2"
+                        >
+                          <Upload className="w-4 h-4 text-[#EF4444]" />
+                          Import
+                        </Button>
+                      )}
+                      <Button 
+                        variant="outline"
+                        className="h-[36px] px-4 rounded-[10px] border-[#E5E7EB] text-[13px] font-semibold text-[#374151] hover:bg-gray-50 flex items-center gap-2"
+                      >
+                        <Download className="w-4 h-4 text-[#EF4444]" />
+                        Export
+                      </Button>
+                    </div>
                   </div>
 
-                  <div className={`flex items-center gap-4 ${isOrgAdmin || isDeptAdmin ? 'ml-auto' : ''}`}>
-                    {!(isOrgAdmin || isDeptAdmin) && (
+                  {/* Row 2: Search & Dynamic Filters */}
+                  <div className="flex flex-col lg:flex-row lg:items-center gap-4">
+                    <div className="relative w-full lg:w-72">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+                      <Input
+                        type="text"
+                        placeholder="Search services..."
+                        value={matrixSearchTerm}
+                        onChange={(e) => setMatrixSearchTerm(e.target.value)}
+                        className="w-full h-[38px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
+                      />
+                    </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:flex items-center gap-3 w-full lg:w-auto">
+                      {!(isOrgAdmin || isDeptAdmin) && (
+                        <DropdownMenu>
+                          <DropdownMenuTrigger asChild disabled={isDeptAdmin}>
+                            <Button 
+                              variant="outline" 
+                              className={`h-[38px] px-[12px] bg-white border-[#E5E7EB] rounded-[10px] text-[13px] font-semibold text-[#374151] flex items-center gap-6 w-full lg:min-w-[190px] justify-between shadow-sm hover:border-[#EF4444]/30 transition-all ${isDeptAdmin ? 'opacity-70 cursor-not-allowed' : ''}`}
+                            >
+                              <span className="truncate">
+                                {selectedOrg === "Ministry of Health" ? "Source Organization" : selectedOrg}
+                              </span>
+                              {!isDeptAdmin && <ChevronDown className="w-4 h-4 text-[#6B7280]" />}
+                            </Button>
+                          </DropdownMenuTrigger>
+                          {!isDeptAdmin && (
+                            <DropdownMenuContent className="w-[220px] rounded-xl border border-gray-100 shadow-xl p-2 bg-white z-[100]">
+                              {organizations.map((org) => (
+                                <DropdownMenuItem 
+                                  key={org} 
+                                  onClick={() => setSelectedOrg(org)}
+                                  className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-medium ${selectedOrg === org ? 'bg-red-50 text-[#EF4444]' : 'text-gray-700 hover:bg-gray-50'}`}
+                                >
+                                  {org}
+                                </DropdownMenuItem>
+                              ))}
+                            </DropdownMenuContent>
+                          )}
+                        </DropdownMenu>
+                      )}
+
                       <DropdownMenu>
-                        <DropdownMenuTrigger asChild disabled={isDeptAdmin}>
-                          <Button 
-                            variant="outline" 
-                            className={`h-[36px] px-[12px] bg-white border-[#E5E7EB] rounded-[10px] text-[14px] font-semibold text-[#374151] flex items-center gap-6 min-w-[180px] justify-between shadow-sm hover:border-gray-300 transition-all ${isDeptAdmin ? 'opacity-70 cursor-not-allowed' : ''}`}
-                          >
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="outline" className="h-[38px] px-[12px] bg-white border-[#E5E7EB] rounded-[10px] text-[13px] font-semibold text-[#374151] flex items-center gap-6 w-full lg:min-w-[170px] justify-between shadow-sm hover:border-[#EF4444]/30 transition-all">
                             <span className="truncate">
-                              {selectedOrg === "Ministry of Health" ? "Source Organization" : selectedOrg}
+                              {getLabel(selectedDepts.length, selectedDepts[0], "Target Organization")}
                             </span>
-                            {!isDeptAdmin && <ChevronDown className="w-4 h-4 text-[#6B7280]" />}
+                            <ChevronDown className="w-4 h-4 text-[#6B7280]" />
                           </Button>
                         </DropdownMenuTrigger>
-                        {!isDeptAdmin && (
-                          <DropdownMenuContent className="w-[200px] rounded-xl border border-gray-100 shadow-xl p-2 bg-white">
-                            {organizations.map((org) => (
-                              <DropdownMenuItem 
-                                key={org} 
-                                onClick={() => setSelectedOrg(org)}
-                                className={`cursor-pointer rounded-lg px-3 py-2 text-sm font-medium ${selectedOrg === org ? 'bg-red-50 text-[#EF4444]' : 'text-gray-700 hover:bg-gray-50'}`}
-                              >
-                                {org}
-                              </DropdownMenuItem>
-                            ))}
-                          </DropdownMenuContent>
-                        )}
-                      </DropdownMenu>
-                    )}
-
-                    <DropdownMenu>
-                      <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="h-[36px] px-[12px] bg-white border-[#E5E7EB] rounded-[10px] text-[14px] font-semibold text-[#374151] flex items-center gap-6 min-w-[160px] justify-between shadow-sm hover:border-gray-300 transition-all">
-                          <span className="truncate">
-                            {getLabel(selectedDepts.length, selectedDepts[0], "Target Organization")}
-                          </span>
-                          <ChevronDown className="w-4 h-4 text-[#6B7280]" />
-                        </Button>
-                      </DropdownMenuTrigger>
-                      <DropdownMenuContent align="end" className="w-[240px] rounded-xl border border-gray-100 shadow-xl p-2 bg-white max-h-64 overflow-y-auto">
-                        {DEPARTMENTS.map((d) => (
-                          <div 
-                            key={d} 
-                            className="flex items-center gap-2 px-3 py-2 hover:bg-gray-50 cursor-pointer rounded-lg transition-colors font-medium border-0"
-                            onClick={() => {
-                              setSelectedDepts(prev => 
-                                prev.includes(d) ? prev.filter(item => item !== d) : [...prev, d]
-                              );
-                            }}
-                          >
-                            <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedDepts.includes(d) ? 'bg-[#EF4444] border-none' : 'border-gray-300'}`}>
-                              {selectedDepts.includes(d) && <Check className="w-3 h-3 text-white" />}
+                        <DropdownMenuContent align="end" className="w-[240px] rounded-xl border border-gray-100 shadow-xl p-2 bg-white max-h-64 overflow-y-auto z-[100]">
+                          {DEPARTMENTS.map((d) => (
+                            <div 
+                              key={d} 
+                              className="flex items-center gap-2 px-3 py-2 hover:bg-red-50/30 cursor-pointer rounded-lg transition-colors font-medium"
+                              onClick={() => {
+                                setSelectedDepts(prev => 
+                                  prev.includes(d) ? prev.filter(item => item !== d) : [...prev, d]
+                                );
+                              }}
+                            >
+                              <div className={`w-4 h-4 rounded border flex items-center justify-center transition-all ${selectedDepts.includes(d) ? 'bg-[#EF4444] border-none' : 'border-gray-300'}`}>
+                                {selectedDepts.includes(d) && <Check className="w-3 h-3 text-white" />}
+                              </div>
+                              <span className="text-sm font-medium text-gray-700">{d}</span>
                             </div>
-                            <span className="text-sm font-medium text-gray-700">{d}</span>
-                          </div>
-                        ))}
-                      </DropdownMenuContent>
-                    </DropdownMenu>
+                          ))}
+                        </DropdownMenuContent>
+                      </DropdownMenu>
+                    </div>
                   </div>
                 </div>
               </div>
 
               {/* Matrix Content Area */}
-              <div className="px-6 pb-6 pt-2">
-                <div className="rounded-xl border border-[#F3F4F6] overflow-hidden">
-                  <div className={`overflow-auto scrollbar-thin scrollbar-thumb-gray-200 ${(isOrgAdmin || isDeptAdmin) ? 'max-h-[400px] pr-[10px]' : 'max-h-[450px]'}`}>
+              <div className="px-6 pb-6 pt-2 md:flex-1 md:flex md:flex-col">
+                <div className="rounded-xl border border-[#F3F4F6] overflow-hidden md:flex-1 md:flex md:flex-col">
+                  <div className={`overflow-auto scrollbar-thin scrollbar-thumb-gray-200 md:h-[calc(100vh-450px)] md:max-h-none ${(isOrgAdmin || isDeptAdmin) ? 'max-h-[400px] pr-[10px]' : 'max-h-[450px]'}`}>
                     <table className="w-full border-separate border-spacing-0">
                       <thead className="sticky top-0 z-40 bg-white shadow-[0_1px_0_#F3F4F6]">
                         <tr>
-                          <th className="sticky left-0 z-50 bg-white border-b border-r border-[#F3F4F6] px-4 py-4 w-[220px] min-w-[200px] max-w-[240px] text-left text-[13px] font-semibold text-[#6B7280] shadow-[1px_0_0_#F3F4F6]">
+                          <th className="lg:sticky lg:left-0 lg:z-50 bg-white border-b border-r border-[#F3F4F6] px-3 md:px-4 py-4 w-[140px] md:w-[220px] min-w-[120px] md:min-w-[200px] max-w-[240px] text-left text-[13px] font-semibold text-[#6B7280] lg:shadow-[1px_0_0_#F3F4F6]">
                              <div className="flex items-center justify-between gap-2">
                                <span>Services</span>
                                <DropdownMenu>
@@ -769,7 +789,7 @@ const EntityAccessMatrix: React.FC = () => {
                           {filteredDepts.map((d) => {
                             const allChecked = filteredList.every(s => s.access[d.idx]);
                             return (
-                              <th key={d.idx} className="border-b border-[#F3F4F6] px-4 py-4 min-w-[160px] text-center">
+                              <th key={d.idx} className="border-b border-[#F3F4F6] px-4 py-4 min-w-[185px] text-center">
                                 <div className="flex flex-col items-center gap-3">
                                   <span className="text-[12px] font-semibold text-[#6B7280] leading-tight max-w-[120px]">{d.name}</span>
                                    <div 
@@ -787,7 +807,7 @@ const EntityAccessMatrix: React.FC = () => {
                       <tbody className="bg-white text-[#111827]">
                         {filteredList.map((node) => (
                           <tr key={node.id} className={`group ${isReadOnly ? '' : 'hover:bg-[#F9FAFB]'} transition-colors border-b border-[#F3F4F6]`}>
-                            <td className={`sticky left-0 z-30 bg-white ${isReadOnly ? '' : 'group-hover:bg-[#F9FAFB]'} border-b border-r border-[#F3F4F6] py-3 pl-2 pr-4 w-[220px] min-w-[200px] max-w-[240px] transition-colors shadow-[1px_0_0_#F3F4F6]`}>
+                            <td className={`lg:sticky lg:left-0 lg:z-30 bg-white ${isReadOnly ? '' : 'group-hover:bg-[#F9FAFB]'} border-b border-r border-[#F3F4F6] py-3 pl-2 pr-3 md:pr-4 w-[140px] md:w-[220px] min-w-[120px] md:min-w-[200px] max-w-[240px] transition-colors lg:shadow-[1px_0_0_#F3F4F6]`}>
                               <div 
                                 className="flex items-center relative gap-1" 
                                 style={{ paddingLeft: `${node.level * 18}px` }}
@@ -835,10 +855,21 @@ const EntityAccessMatrix: React.FC = () => {
                   <p className="text-sm text-[#6B7280]">Toggle service access for your organization's departments across all entities</p>
                 </div>
                 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                  <div className="relative w-full md:w-64">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+                    <Input
+                      type="text"
+                      placeholder="Search requests..."
+                      value={matrixSearchTerm}
+                      onChange={(e) => setMatrixSearchTerm(e.target.value)}
+                      className="w-full h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
+                    />
+                  </div>
+
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="h-[36px] px-4 bg-white border border-[#E5E7EB] rounded-[10px] text-[14px] font-medium text-[#374151] flex items-center gap-6 min-w-[180px] justify-between shadow-sm hover:border-[#EF4444]/30 hover:bg-gray-50 transition-all focus:ring-0">
+                      <Button variant="outline" className="h-[36px] px-4 bg-white border border-[#E5E7EB] rounded-[10px] text-[14px] font-medium text-[#374151] flex items-center gap-6 w-full md:min-w-[180px] justify-between shadow-sm hover:border-[#EF4444]/30 hover:bg-gray-50 transition-all focus:ring-0">
                         <span className="truncate">
                           {getLabel(requestedSourceOrgs.length, requestedSourceOrgs[0], "Source Organization")}
                         </span>
@@ -962,7 +993,7 @@ const EntityAccessMatrix: React.FC = () => {
                           <table className="w-full border-separate border-spacing-0">
                             <thead className="sticky top-0 z-40 bg-white shadow-[0_1px_0_#F3F4F6]">
                               <tr>
-                                <th className="sticky left-0 z-50 bg-white border-b border-r border-[#F3F4F6] px-4 py-4 w-[220px] min-w-[200px] text-left text-[12px] font-semibold text-[#6B7280] shadow-[1px_0_0_#F3F4F6]">
+                                <th className="lg:sticky lg:left-0 lg:z-50 bg-white border-b border-r border-[#F3F4F6] px-3 md:px-4 py-4 w-[140px] md:w-[220px] min-w-[120px] md:min-w-[200px] text-left text-[12px] font-semibold text-[#6B7280] lg:shadow-[1px_0_0_#F3F4F6]">
                                   Services
                                 </th>
                                 {filteredRequestedDepts.map((d) => (
@@ -975,7 +1006,7 @@ const EntityAccessMatrix: React.FC = () => {
                             <tbody className="bg-white">
                               {filteredRequestedList.map((node) => (
                                 <tr key={node.id} className="hover:bg-[#F9FAFB] transition-colors border-b border-[#F3F4F6] group">
-                                  <td className="sticky left-0 z-30 bg-white group-hover:bg-[#F9FAFB] border-b border-r border-[#F3F4F6] py-3 pl-2 pr-4 w-[220px] min-w-[200px] shadow-[1px_0_0_#F3F4F6]">
+                                  <td className="lg:sticky lg:left-0 lg:z-30 bg-white group-hover:bg-[#F9FAFB] border-b border-r border-[#F3F4F6] py-3 pl-2 pr-3 md:pr-4 w-[140px] md:w-[220px] min-w-[120px] md:min-w-[200px] lg:shadow-[1px_0_0_#F3F4F6]">
                                     <div className="flex items-center gap-1" style={{ paddingLeft: `${node.level * 18}px` }}>
                                       {node.children && (
                                         <div onClick={() => toggleExpand(node.id)} className="cursor-pointer text-[#6B7280]">
@@ -1022,10 +1053,21 @@ const EntityAccessMatrix: React.FC = () => {
                   <p className="text-sm text-[#6B7280]">View all services that other organizations have shared with you.</p>
                 </div>
 
-                <div className="flex items-center gap-3">
+                <div className="flex flex-col md:flex-row items-center gap-4 w-full md:w-auto">
+                  <div className="relative w-full md:w-64">
+                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
+                    <Input
+                      type="text"
+                      placeholder="Search shared services..."
+                      value={grantedSearchQuery}
+                      onChange={(e) => setGrantedSearchQuery(e.target.value)}
+                      className="w-full h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
+                    />
+                  </div>
+
                   <DropdownMenu>
                     <DropdownMenuTrigger asChild>
-                      <Button variant="outline" className="h-[36px] px-4 bg-white border border-[#E5E7EB] rounded-[10px] text-[14px] font-medium text-[#374151] flex items-center gap-6 min-w-[200px] justify-between shadow-sm hover:border-[#EF4444]/30 hover:bg-gray-50 transition-all focus:ring-0">
+                      <Button variant="outline" className="h-[36px] px-4 bg-white border border-[#E5E7EB] rounded-[10px] text-[14px] font-medium text-[#374151] flex items-center gap-6 w-full md:min-w-[200px] justify-between shadow-sm hover:border-[#EF4444]/30 hover:bg-gray-50 transition-all focus:ring-0">
                         <span className="truncate">
                           {getLabel(grantedFilterOrgs.length, grantedFilterOrgs[0], "Source Organization")}
                         </span>
@@ -1159,7 +1201,7 @@ const EntityAccessMatrix: React.FC = () => {
 
         {/* --- BOTTOM CTAs --- Hidden for Organization Admin */}
         {!isOrgAdmin && (
-          <div className="flex justify-end gap-3 mt-8 pb-8">
+          <div className="flex justify-end gap-3 mt-8 pb-8 md:sticky md:bottom-6 md:z-50 md:bg-white/80 md:backdrop-blur-md md:p-4 md:rounded-2xl md:shadow-[0_-4px_20px_rgba(0,0,0,0.05)] md:border md:border-white/20 lg:relative lg:bottom-0 lg:z-0 lg:bg-transparent lg:backdrop-blur-none lg:p-0 lg:shadow-none lg:border-0 lg:mt-8 lg:pb-8">
             <Button 
               variant="outline" 
               onClick={cancelChanges}
@@ -1417,7 +1459,7 @@ const EntityAccessMatrix: React.FC = () => {
                       </div>
                    </div>
 
-                   <div className="grid grid-cols-3 gap-4">
+                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
                       <div className="flex flex-col bg-[#F9FAFB] p-4 rounded-[16px] border border-[#F3F4F6] shadow-sm">
                         <span className="text-[12px] font-semibold text-[#6B7280]">Services</span>
                         <span className="text-[15px] font-bold text-[#111827] mt-1">{importServices.length} Detected</span>

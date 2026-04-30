@@ -66,20 +66,20 @@ export default function AuditLogs() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] px-6 py-5">
+    <div className="min-h-screen bg-[#F5F7FA] px-4 md:px-6 py-4 md:py-5">
       <div className="max-w-[1700px] mx-auto space-y-6">
         <PageHeader
           title="Audit Logs"
           description="Monitor system activity and governance events"
         >
-          <Button variant="default" className="h-11 px-6 rounded-xl font-semibold shadow-sm bg-[#003F72] hover:bg-[#00365d] text-white">
+          <Button variant="default" className="h-11 px-6 rounded-xl font-semibold shadow-sm bg-[#003F72] hover:bg-[#00365d] text-white w-full md:w-auto">
             <Plus className="w-4 h-4 mr-2" />
             Export Logs
           </Button>
         </PageHeader>
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard 
             value={isDeptAdmin ? filteredAuditLogs.length.toString() : "486"} 
             label="Events Today" 
@@ -107,142 +107,197 @@ export default function AuditLogs() {
         </div>
 
         {/* audit logs table wrapper */}
-        <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden p-6">
+        <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden p-4 md:p-6">
           {/* Header & Filter Bar */}
-          <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div className="space-y-1">
-              <h2 className="text-xl font-bold text-[#111827]">Recent Activity Logs</h2>
-              <p className="text-[14px] text-[#6B7280]">Real-time system monitoring and event history</p>
+              <h2 className="text-lg md:text-xl font-bold text-[#111827]">Recent Activity Logs</h2>
+              <p className="text-xs md:text-[14px] text-[#6B7280]">Real-time system monitoring and event history</p>
             </div>
             
-            <div className="flex flex-wrap items-center gap-[12px]">
-              <div className="relative">
+            <div className="flex flex-col md:flex-row items-center gap-[12px] w-full lg:w-auto">
+              <div className="relative w-full md:w-[280px]">
                 <Search className="absolute left-[12px] top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] pointer-events-none" />
                 <Input 
                   placeholder="Search activity..."
-                  className="w-[240px] pl-[36px] pr-[12px] h-[36px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
+                  className="w-full pl-[36px] pr-[12px] h-[36px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
                 />
               </div>
-              <Select defaultValue="all">
-                <SelectTrigger className="w-[140px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                  <SelectValue placeholder="Application" />
-                </SelectTrigger>
-                <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
-                  <SelectItem value="all">Applications</SelectItem>
-                  <SelectItem value="auth">Authentication</SelectItem>
-                  <SelectItem value="orgs">Organizations</SelectItem>
-                  <SelectItem value="data">Data Access</SelectItem>
-                </SelectContent>
-              </Select>
-              <Select defaultValue="all">
-                <SelectTrigger className="w-[120px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
-                  <SelectItem value="all">Status</SelectItem>
-                  <SelectItem value="success">Success</SelectItem>
-                  <SelectItem value="failed">Failed</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 md:flex md:items-center gap-2 md:gap-[12px] w-full md:w-auto">
+                <Select defaultValue="all">
+                  <SelectTrigger className="w-full md:w-[140px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                    <SelectValue placeholder="Application" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">Applications</SelectItem>
+                    <SelectItem value="auth">Authentication</SelectItem>
+                    <SelectItem value="orgs">Organizations</SelectItem>
+                    <SelectItem value="data">Data Access</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Select defaultValue="all">
+                  <SelectTrigger className="w-full md:w-[120px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">Status</SelectItem>
+                    <SelectItem value="success">Success</SelectItem>
+                    <SelectItem value="failed">Failed</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
-          <div className="overflow-x-auto border border-[#F1F1F1] rounded-[12px] overflow-hidden">
-            <div className="min-w-[1100px]">
-              {/* Table Header Row */}
-              <div 
-                className="bg-[#FAFAFA] border-b border-[#E5E7EB] px-6 py-4 grid items-center" 
-                style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: '240px 1fr 140px 140px 180px 100px 80px',
-                  columnGap: '16px'
-                }}
-              >
-                <div className="text-[13px] font-semibold text-[#374151]">Activity</div>
-                <div className="text-[13px] font-semibold text-[#374151]">User</div>
-                <div className="text-[13px] font-semibold text-[#374151]">IP Address</div>
-                <div className="text-[13px] font-semibold text-[#374151]">Application</div>
-                <div className="text-[13px] font-semibold text-[#374151]">Date & Time</div>
-                <div className="text-[13px] font-semibold text-[#374151]">Status</div>
-                <div className="text-[13px] font-semibold text-[#374151] text-center">Actions</div>
+          <div className="overflow-hidden border border-[#F1F1F1] rounded-[12px]">
+            <div className="hidden md:block">
+              <div className="min-w-[1100px]">
+                {/* Table Header Row */}
+                <div 
+                  className="bg-[#FAFAFA] border-b border-[#E5E7EB] px-6 py-4 grid items-center" 
+                  style={{ 
+                    display: 'grid', 
+                    gridTemplateColumns: '240px 1fr 140px 140px 180px 100px 80px',
+                    columnGap: '16px'
+                  }}
+                >
+                  <div className="text-[13px] font-semibold text-[#374151]">Activity</div>
+                  <div className="text-[13px] font-semibold text-[#374151]">User</div>
+                  <div className="text-[13px] font-semibold text-[#374151]">IP Address</div>
+                  <div className="text-[13px] font-semibold text-[#374151]">Application</div>
+                  <div className="text-[13px] font-semibold text-[#374151]">Date & Time</div>
+                  <div className="text-[13px] font-semibold text-[#374151]">Status</div>
+                  <div className="text-[13px] font-semibold text-[#374151] text-center">Actions</div>
+                </div>
+
+                {/* Table Body Rows */}
+                <div className="divide-y divide-[#F1F5F9]">
+                  {sortedLogs.length > 0 ? (
+                    sortedLogs.map((log) => (
+                      <div 
+                        key={log.id} 
+                        className="h-[56px] px-6 grid items-center hover:bg-[#F9FAFB] transition-colors border-b border-[#F1F5F9] last:border-0"
+                        style={{ 
+                          display: 'grid', 
+                          gridTemplateColumns: '240px 1fr 140px 140px 180px 100px 80px',
+                          columnGap: '16px',
+                          fontSize: '14px',
+                          color: '#111827'
+                        }}
+                      >
+                        {/* Activity */}
+                        <div className="flex flex-col min-w-0 pr-4">
+                          <div className="text-[14px] font-semibold text-[#111827] truncate">{log.action}</div>
+                        </div>
+
+                        {/* User */}
+                        <div className="text-[#111827] font-medium truncate pr-4">{log.user}</div>
+
+                        {/* IP Address */}
+                        <div className="text-[#64748B] font-mono text-[13px] truncate pr-4">{log.ip}</div>
+
+                        {/* Application */}
+                        <div className="flex items-center min-w-0">
+                          <span className="bg-[#EFF6FF] text-[#1D4ED8] text-[12px] font-medium px-[10px] py-[4px] rounded-full whitespace-nowrap">
+                            {log.module}
+                          </span>
+                        </div>
+
+                        {/* Date & Time */}
+                        <div className="text-[#64748B] text-[13px] whitespace-nowrap">{log.time}</div>
+
+                        {/* Status */}
+                        <div className="text-left">
+                          <Badge 
+                            className={`
+                              ${log.status === 'success' 
+                                ? 'bg-emerald-50 text-emerald-700 border-emerald-100' 
+                                : 'bg-red-50 text-red-700 border-red-100'
+                              }
+                              font-bold text-[11px] rounded-full px-3 py-1 border uppercase tracking-tight
+                            `}
+                          >
+                            {log.status}
+                          </Badge>
+                        </div>
+
+                        {/* Actions */}
+                        <div className="flex items-center justify-center">
+                          <button 
+                            className="h-8 w-8 rounded-lg text-[#6B7280] hover:text-[#326594] hover:bg-[#326594]/5 flex items-center justify-center transition-colors"
+                            onClick={() => {
+                              setSelectedLog(log);
+                              setIsDetailsOpen(true);
+                            }}
+                          >
+                            <Eye className="w-4 h-4" />
+                          </button>
+                        </div>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="py-12 text-center text-[14px] text-[#6B7280]">
+                      No audit logs available for your department
+                    </div>
+                  )}
+                </div>
               </div>
+            </div>
 
-              {/* Table Body Rows */}
-              <div className="divide-y divide-[#F1F5F9]">
-                {sortedLogs.length > 0 ? (
-                  sortedLogs.map((log) => (
-                    <div 
-                      key={log.id} 
-                      className="h-[56px] px-6 grid items-center hover:bg-[#F9FAFB] transition-colors border-b border-[#F1F5F9] last:border-0"
-                      style={{ 
-                        display: 'grid', 
-                        gridTemplateColumns: '240px 1fr 140px 140px 180px 100px 80px',
-                        columnGap: '16px',
-                        fontSize: '14px',
-                        color: '#111827'
-                      }}
-                    >
-                      {/* Activity */}
-                      <div className="flex flex-col min-w-0 pr-4">
-                        <div className="text-[14px] font-semibold text-[#111827] truncate">{log.action}</div>
+            {/* Mobile View Card List */}
+            <div className="md:hidden divide-y divide-[#F1F5F9]">
+              {sortedLogs.length > 0 ? (
+                sortedLogs.map((log) => (
+                  <div 
+                    key={log.id} 
+                    className="p-4 hover:bg-[#F9FAFB] transition-colors flex flex-col gap-3"
+                    onClick={() => {
+                      setSelectedLog(log);
+                      setIsDetailsOpen(true);
+                    }}
+                  >
+                    <div className="flex justify-between items-start gap-2">
+                      <div className="flex flex-col gap-1 min-w-0">
+                        <span className="text-sm font-bold text-[#111827] truncate">{log.action}</span>
+                        <span className="text-xs text-[#6B7280] font-mono">{log.user}</span>
                       </div>
-
-                      {/* User */}
-                      <div className="text-[#111827] font-medium truncate pr-4">{log.user}</div>
-
-                      {/* IP Address */}
-                      <div className="text-[#64748B] font-mono text-[13px] truncate pr-4">{log.ip}</div>
-
-                      {/* Application */}
-                      <div className="flex items-center min-w-0">
-                        <span className="bg-[#EFF6FF] text-[#1D4ED8] text-[12px] font-medium px-[10px] py-[4px] rounded-full whitespace-nowrap">
-                          {log.module}
-                        </span>
+                      <Badge 
+                        className={`
+                          shrink-0
+                          ${log.status === 'success' 
+                            ? 'bg-emerald-50 text-emerald-700 border-emerald-100' 
+                            : 'bg-red-50 text-red-700 border-red-100'
+                          }
+                          font-bold text-[10px] rounded-full px-2 py-0.5 border uppercase tracking-tight
+                        `}
+                      >
+                        {log.status}
+                      </Badge>
+                    </div>
+                    
+                    <div className="grid grid-cols-2 gap-2 text-[11px] text-[#64748B] pt-2 border-t border-[#F1F5F9]">
+                      <div className="flex flex-col gap-0.5">
+                        <span className="uppercase text-[9px] font-semibold text-[#9CA3AF]">Application</span>
+                        <span className="text-[#1D4ED8] font-medium">{log.module}</span>
                       </div>
-
-                      {/* Date & Time */}
-                      <div className="text-[#64748B] text-[13px] whitespace-nowrap">{log.time}</div>
-
-                      {/* Status */}
-                      <div className="text-left">
-                        <Badge 
-                          className={`
-                            ${log.status === 'success' 
-                              ? 'bg-emerald-50 text-emerald-700 border-emerald-100' 
-                              : 'bg-red-50 text-red-700 border-red-100'
-                            }
-                            font-bold text-[11px] rounded-full px-3 py-1 border text-[11px] uppercase tracking-tight
-                          `}
-                        >
-                          {log.status}
-                        </Badge>
-                      </div>
-
-                      {/* Actions */}
-                      <div className="flex items-center justify-center">
-                        <button 
-                          className="h-8 w-8 rounded-lg text-[#6B7280] hover:text-[#326594] hover:bg-[#326594]/5 flex items-center justify-center transition-colors"
-                          onClick={() => {
-                            setSelectedLog(log);
-                            setIsDetailsOpen(true);
-                          }}
-                        >
-                          <Eye className="w-4 h-4" />
-                        </button>
+                      <div className="flex flex-col gap-0.5 text-right">
+                        <span className="uppercase text-[9px] font-semibold text-[#9CA3AF]">Timestamp</span>
+                        <span className="truncate">{log.time}</span>
                       </div>
                     </div>
-                  ))
-                ) : (
-                  <div className="py-12 text-center text-[14px] text-[#6B7280]">
-                    No audit logs available for your department
                   </div>
-                )}
-              </div>
+                ))
+              ) : (
+                <div className="py-12 text-center text-[13px] text-[#6B7280]">
+                  No audit logs available
+                </div>
+              )}
             </div>
           </div>
 
           {/* Table Footer / Pagination */}
-          <div className="pt-6 border-t border-[#F3F4F6] mt-6 flex items-center justify-between">
+          {/* Desktop Pagination */}
+          <div className="hidden md:flex pt-6 border-t border-[#F3F4F6] mt-6 items-center justify-between gap-4">
             <div className="text-xs font-medium text-[#6B7280]">
               Showing <span className="text-[#111827]">{sortedLogs.length}</span> results
             </div>
@@ -269,6 +324,38 @@ export default function AuditLogs() {
               >
                 Next
               </Button>
+            </div>
+          </div>
+
+          {/* Mobile Pagination */}
+          <div className="flex flex-col items-center justify-center gap-4 pt-6 border-t border-[#F3F4F6] mt-6 md:hidden">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                disabled
+              >
+                Previous
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+              >
+                1
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                disabled
+              >
+                Next
+              </Button>
+            </div>
+            <div className="text-sm font-medium text-[#6B7280]">
+              Showing <span className="font-bold text-[#111827]">{sortedLogs.length}</span> results
             </div>
           </div>
         </Card>

@@ -342,7 +342,7 @@ export default function Organizations() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] px-6 py-5">
+    <div className="min-h-screen bg-[#F5F7FA] px-4 md:px-6 py-4 md:py-5">
       <div className="max-w-[1700px] mx-auto space-y-6">
         {/* Standardized Header */}
         <PageHeader 
@@ -362,7 +362,7 @@ export default function Organizations() {
           </div>
         </PageHeader>
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 org-metric-card-container">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 org-metric-card-container">
           <style>{`.org-metric-card-container span { text-transform: capitalize !important; }`}</style>
           <MetricCard 
             value={organizations.length} 
@@ -918,19 +918,19 @@ export default function Organizations() {
       </AlertDialog>
 
       {/* Standardized Organizations Directory Table Container */}
-      <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden mt-8" style={{ padding: '20px 24px 24px' }}>
+      <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden mt-8 p-4 md:p-6 md:pb-[24px]">
         {/* Table Controls */}
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
           <div>
             <h3 className="text-lg font-semibold text-[#111827]">Organizations Directory</h3>
             <p className="text-sm text-[#6B7280]">Manage and monitor all registered entities</p>
           </div>
           
-          <div className="flex items-center gap-[12px]">
-            <div className="relative" ref={searchRef}>
+          <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 w-full lg:w-auto">
+            <div className="relative w-full lg:w-[280px]" ref={searchRef}>
               <Search className="absolute left-[12px] top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] pointer-events-none" />
               <Input
-                className="pl-[36px] pr-[12px] h-[36px] w-[240px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
+                className="pl-[36px] pr-[12px] h-[36px] w-full border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
                 placeholder="Search organization"
                 value={tableSearch}
                 onChange={(e) => {
@@ -941,34 +941,40 @@ export default function Organizations() {
               />
             </div>
 
-            <Select value={organizationFilter} onValueChange={setOrganizationFilter}>
-              <SelectTrigger className="w-[180px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                <SelectValue placeholder="Organization" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Organization</SelectItem>
-                {organizations.map(org => (
-                  <SelectItem key={org.id} value={org.name}>{org.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+            <div className="flex items-center gap-2 w-full md:w-auto">
+              <div className="flex-1 md:w-[180px]">
+                <Select value={organizationFilter} onValueChange={setOrganizationFilter}>
+                  <SelectTrigger className="w-full h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                    <SelectValue placeholder="Organization" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Organization</SelectItem>
+                    {organizations.map(org => (
+                      <SelectItem key={org.id} value={org.name}>{org.name}</SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
 
-            <Select value={statusFilter} onValueChange={setStatusFilter}>
-              <SelectTrigger className="w-[140px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                <SelectValue placeholder="Status" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">Status</SelectItem>
-                <SelectItem value="active">Active</SelectItem>
-                <SelectItem value="inactive">Inactive</SelectItem>
-              </SelectContent>
-            </Select>
+              <div className="flex-1 md:w-[140px]">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
           </div>
         </div>
 
-        {/* Standardized Table Headers */}
-        <div className="overflow-x-auto border border-[#F1F1F1] rounded-[12px] overflow-hidden">
-          <table className="w-full">
+        {/* Standardized Table Directory */}
+        <div className="overflow-hidden">
+          <table className="w-full hidden md:table border border-[#F1F1F1] rounded-[12px]">
             <thead>
               <tr className="bg-[#FAFAFA] border-b border-[#E5E7EB]">
                 <th 
@@ -1071,11 +1077,97 @@ export default function Organizations() {
               ))}
             </tbody>
           </table>
+
+          {/* Mobile Card View */}
+          <div className="md:hidden space-y-4">
+            {paginatedOrgs.map((org) => (
+              <div 
+                key={org.id} 
+                id={`org-card-${org.id}`}
+                className="bg-white border border-[#E5E7EB] rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex flex-col gap-1">
+                    <h4 className="font-bold text-[#111827] text-base">{org.name}</h4>
+                    <p className="text-xs text-[#6B7280] flex items-center gap-1">
+                      <Shield className="w-3 h-3" /> {org.code}
+                    </p>
+                  </div>
+                  <Badge variant={getStatusBadgeProps(org.status).variant}>
+                    {getStatusBadgeProps(org.status).label}
+                  </Badge>
+                </div>
+
+                <div className="grid grid-cols-2 gap-4 py-3 border-y border-[#F3F4F6]">
+                  <div className="space-y-1">
+                    <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Contact Person</p>
+                    <p className="text-sm font-medium text-[#374151]">{org.poc}</p>
+                  </div>
+                  <div className="space-y-1 text-right">
+                    <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Departments</p>
+                    <button 
+                      onClick={() => {
+                        setSelectedOrgForSheet(org);
+                        setDepartmentsSheetOpen(true);
+                      }}
+                      className="text-sm text-[#326594] font-semibold"
+                    >
+                      {org.departments}
+                    </button>
+                  </div>
+                  <div className="space-y-1">
+                    <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Team Size</p>
+                    <button 
+                      onClick={() => {
+                        setSelectedOrgForSheet(org);
+                        setUsersSheetOpen(true);
+                      }}
+                      className="text-sm text-[#326594] font-semibold flex items-center gap-1"
+                    >
+                      <Users className="w-3.5 h-3.5" /> {org.users}
+                    </button>
+                  </div>
+                  <div className="space-y-1 text-right">
+                    <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Type</p>
+                    <p className="text-sm font-medium text-[#374151]">{org.type}</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center gap-2 pt-2">
+                  <Button 
+                    variant="outline" 
+                    className="flex-1 rounded-xl h-10 gap-2 border-[#E5E7EB] text-[#374151]"
+                    onClick={() => {
+                      setSelectedOrg(org);
+                      setViewDetailsOpen(true);
+                    }}
+                  >
+                    <Eye className="w-4 h-4" />
+                    Details
+                  </Button>
+                  {!isReviewer && (
+                    <Button 
+                      variant="outline" 
+                      className="flex-1 rounded-xl h-10 gap-2 border-[#E5E7EB] text-[#374151]"
+                      onClick={() => {
+                        setSelectedOrg(org);
+                        setEditOrgOpen(true);
+                      }}
+                    >
+                      <Edit className="w-4 h-4" />
+                      Edit
+                    </Button>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
         {/* Standardized Pagination Controls */}
         <div className="pt-6 border-t border-[#F3F4F6] mt-6">
-          <div className="flex items-center justify-between">
+          {/* Desktop Pagination */}
+          <div className="hidden md:flex items-center justify-between">
             <span className="text-xs font-medium text-[#6B7280]">
               Showing <span className="text-[#111827]">{((currentPage - 1) * itemsPerPage) + 1}</span> to <span className="text-[#111827]">{Math.min(currentPage * itemsPerPage, sortedOrgs.length)}</span> of <span className="text-[#111827]">{sortedOrgs.length}</span> organizations
             </span>
@@ -1117,6 +1209,40 @@ export default function Organizations() {
                 Next
                 <ChevronRight className="w-4 h-4 ml-1" />
               </Button>
+            </div>
+          </div>
+
+          {/* Mobile Pagination */}
+          <div className="flex flex-col items-center justify-center gap-4 md:hidden">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                onClick={() => setCurrentPage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+              >
+                {currentPage}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                onClick={() => setCurrentPage(currentPage + 1)}
+                disabled={currentPage === totalPages || totalPages === 0}
+              >
+                Next
+              </Button>
+            </div>
+            <div className="text-sm font-medium text-[#6B7280]">
+              Showing <span className="font-bold text-[#111827]">{sortedOrgs.length}</span> results
             </div>
           </div>
         </div>
@@ -1193,7 +1319,7 @@ export default function Organizations() {
                             </div>
 
                             {/* Triple Metrics Card Layout */}
-                            <div className="grid grid-cols-3 gap-[12px]">
+                            <div className="grid grid-cols-2 sm:grid-cols-3 gap-[12px]">
                               <div className="bg-[#EFF6FF] rounded-[12px] py-[12px] px-[10px] flex flex-col items-center justify-center border border-[#DBEAFE] transition-all">
                                 <span className="text-[18px] font-bold text-[#1D4ED8] leading-none mb-1">{dept.users}</span>
                                 <span className="text-[10px] text-[#1D4ED8] uppercase tracking-wider font-semibold">Total</span>

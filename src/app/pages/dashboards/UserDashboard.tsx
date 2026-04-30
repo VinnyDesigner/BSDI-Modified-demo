@@ -45,113 +45,109 @@ const availableServices = [
 
 export default function UserDashboard() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-10 py-6">
-      <div className="max-w-[1800px] mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-4 md:px-10 py-4 md:py-6">
+      <div className="max-w-[1800px] mx-auto space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-[26px] font-bold text-[#ED1C24]">My Dashboard</h1>
-          <p className="text-[#4A5565] text-[14px] font-normal">Organization User • Data Access & Services</p>
+          <h1 className="text-xl md:text-[26px] font-bold text-[#ED1C24]">My Dashboard</h1>
+          <p className="text-[#4A5565] text-xs md:text-[14px] font-normal">Organization User • Data Access & Services</p>
         </div>
       </div>
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#ED1C24]/10 flex items-center justify-center">
-              <FileText className="w-6 h-6 text-[#ED1C24]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#252628]">65</div>
-              <div className="text-sm text-[#666666]">Total Requests</div>
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        <Card className="p-4 sm:p-6 bg-[#ED1C24]/05 border border-[#ED1C24]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4">
+          <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">Total Requests</div>
+          <div className="flex items-center justify-between">
+            <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">65</div>
+            <div className="w-10 sm:w-14 h-10 sm:h-14 rounded-full bg-[#ED1C24]/20 flex items-center justify-center shadow-lg shrink-0">
+              <FileText className="w-5 sm:w-7 h-5 sm:h-7 text-[#ED1C24]" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#003F72]/10 flex items-center justify-center">
-              <CheckCircle className="w-6 h-6 text-[#003F72]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#252628]">45</div>
-              <div className="text-sm text-[#666666]">Approved</div>
+        <Card className="p-4 sm:p-6 bg-[#003F72]/05 border border-[#003F72]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4">
+          <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">Approved</div>
+          <div className="flex items-center justify-between">
+            <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">45</div>
+            <div className="w-10 sm:w-14 h-10 sm:h-14 rounded-full bg-[#003F72]/20 flex items-center justify-center shadow-lg shrink-0">
+              <CheckCircle className="w-5 sm:w-7 h-5 sm:h-7 text-[#003F72]" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#ED1C24]/10 flex items-center justify-center">
-              <Clock className="w-6 h-6 text-[#ED1C24]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#252628]">12</div>
-              <div className="text-sm text-[#666666]">Pending</div>
+        <Card className="p-4 sm:p-6 bg-[#ED1C24]/05 border border-[#ED1C24]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4">
+          <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">Pending</div>
+          <div className="flex items-center justify-between">
+            <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">12</div>
+            <div className="w-10 sm:w-14 h-10 sm:h-14 rounded-full bg-[#ED1C24]/20 flex items-center justify-center shadow-lg shrink-0">
+              <Clock className="w-5 sm:w-7 h-5 sm:h-7 text-[#ED1C24]" />
             </div>
           </div>
         </Card>
 
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-xl bg-[#003F72]/10 flex items-center justify-center">
-              <Download className="w-6 h-6 text-[#003F72]" />
-            </div>
-            <div>
-              <div className="text-2xl font-bold text-[#252628]">142</div>
-              <div className="text-sm text-[#666666]">Downloads</div>
+        <Card className="p-4 sm:p-6 bg-[#003F72]/05 border border-[#003F72]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4">
+          <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">Downloads</div>
+          <div className="flex items-center justify-between">
+            <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">142</div>
+            <div className="w-10 sm:w-14 h-10 sm:h-14 rounded-full bg-[#003F72]/20 flex items-center justify-center shadow-lg shrink-0">
+              <Download className="w-5 sm:w-7 h-5 sm:h-7 text-[#003F72]" />
             </div>
           </div>
         </Card>
       </div>
 
       {/* Charts */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-[#252628] mb-6">Request Status</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <PieChart id="user-pie-chart">
-              <Pie
-                data={requestStatusData}
-                cx="50%"
-                cy="50%"
-                labelLine={false}
-                label={({ name, value }) => `${name}: ${value}`}
-                outerRadius={80}
-                fill="#8884d8"
-                dataKey="value"
-              >
-                {requestStatusData.map((entry, index) => (
-                  <Cell key={`request-cell-${entry.name}-${index}`} fill={entry.color} />
-                ))}
-              </Pie>
-              <Tooltip content={<CustomChartTooltip />} />
-            </PieChart>
-          </ResponsiveContainer>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 md:gap-6">
+        <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6">Request Status</h3>
+          <div className="h-[250px] md:h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <PieChart id="user-pie-chart">
+                <Pie
+                  data={requestStatusData}
+                  cx="50%"
+                  cy="50%"
+                  labelLine={false}
+                  label={({ name, value }) => `${name}: ${value}`}
+                  outerRadius={80}
+                  fill="#8884d8"
+                  dataKey="value"
+                >
+                  {requestStatusData.map((entry, index) => (
+                    <Cell key={`request-cell-${entry.name}-${index}`} fill={entry.color} />
+                  ))}
+                </Pie>
+                <Tooltip content={<CustomChartTooltip />} />
+              </PieChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
 
-        <Card className="col-span-2 p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-[#252628] mb-6">Services Usage Timeline</h3>
-          <ResponsiveContainer width="100%" height={250}>
-            <BarChart data={servicesUsageData} id="user-bar-chart">
-              <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
-              <XAxis dataKey="month" stroke="#666666" />
-              <YAxis stroke="#666666" />
-              <Tooltip content={<CustomChartTooltip />} />
-              <Legend />
-              <Bar key="downloads-bar" dataKey="downloads" fill="#ED1C24" name="Downloads" radius={[8, 8, 0, 0]} />
-              <Bar key="views-bar" dataKey="views" fill="#003F72" name="Views" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+        <Card className="lg:col-span-2 p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6">Services Usage Timeline</h3>
+          <div className="h-[250px] md:h-[300px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={servicesUsageData} id="user-bar-chart">
+                <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
+                <XAxis dataKey="month" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={12} />
+                <Tooltip content={<CustomChartTooltip />} />
+                <Legend />
+                <Bar key="downloads-bar" dataKey="downloads" fill="#ED1C24" name="Downloads" radius={[8, 8, 0, 0]} />
+                <Bar key="views-bar" dataKey="views" fill="#003F72" name="Views" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
       </div>
 
       {/* My Requests Table */}
       <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-[#252628]">My Data Requests</h3>
-          <Button variant="outline" className="rounded-full border-[#B0AAA2]/30">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628]">My Data Requests</h3>
+          <Button variant="outline" className="rounded-full border-[#B0AAA2]/30 w-full md:w-auto">
             View All
           </Button>
         </div>
@@ -159,7 +155,7 @@ export default function UserDashboard() {
           {myRequests.map((request) => (
             <div 
               key={request.id} 
-              className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white to-[#EBECE8]/50 border border-[#B0AAA2]/20 hover:shadow-md transition-all"
+              className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white to-[#EBECE8]/50 border border-[#B0AAA2]/20 hover:shadow-md transition-all gap-4"
             >
               <div className="flex items-center gap-4 flex-1">
                 <MapPin className="w-5 h-5 text-[#ED1C24]" />
@@ -200,7 +196,7 @@ export default function UserDashboard() {
             Browse Catalog
           </Button>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {availableServices.map((service, index) => (
             <div 
               key={index} 

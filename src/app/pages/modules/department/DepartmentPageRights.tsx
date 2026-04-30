@@ -1005,7 +1005,7 @@ export default function DepartmentPageRights() {
         />
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard 
             value="0" 
             label="Today" 
@@ -4189,7 +4189,7 @@ export default function DepartmentPageRights() {
             </DialogHeader>
 
             {/* Request Details */}
-            <div className="grid grid-cols-3 gap-4 mt-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mt-4">
               <div className="p-3 bg-[#F5F5F5] rounded-xl">
                 <div className="text-xs font-semibold text-[#666666] mb-1">Request ID</div>
                 <div className="text-sm font-medium text-[#252628]">{previewingRequest?.id}</div>

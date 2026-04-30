@@ -146,6 +146,14 @@ const rowStyles = `
     height: 2px;
     background-color: #EF4444;
   }
+  .mobile-card {
+    background: #FFFFFF;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  }
 `;
 
 // Mock data for forwarded organization requests
@@ -1653,7 +1661,7 @@ export default function DataAccessRequests1() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] px-[24px] py-[20px]">
+    <div className="min-h-screen bg-[#F5F7FA] px-4 md:px-[24px] py-4 md:py-[20px]">
       <div className="w-full space-y-4">
         <PageHeader 
           title="Request 1"
@@ -1661,7 +1669,7 @@ export default function DataAccessRequests1() {
         />
 
         {/* Requests Tabs */}
-        <div className="bg-white rounded-[16px] px-[24px] pt-[20px] pb-[24px]">
+        <div className="bg-white rounded-[16px] px-4 md:px-[24px] pt-4 md:pt-[20px] pb-6 md:pb-[24px]">
           <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
             <style>{`
               .tabs-wrapper { width: 100% !important; overflow: hidden !important; }
@@ -1914,6 +1922,44 @@ export default function DataAccessRequests1() {
                   grid-template-columns: 160px 200px 120px 200px 180px 160px 1fr !important;
                 }
               ` : ''}
+
+              /* Responsive Adjustments */
+              @media (max-width: 1024px) {
+                .tab-item {
+                  padding: 8px 16px !important;
+                  font-size: 13px !important;
+                }
+                .sub-tabs-container {
+                  gap: 10px;
+                  overflow-x: auto;
+                  scrollbar-width: none;
+                }
+                .sub-tabs-container::-webkit-scrollbar {
+                  display: none;
+                }
+              }
+
+              @media (max-width: 768px) {
+                .tab-item {
+                  padding: 6px 12px !important;
+                  height: 32px !important;
+                }
+                .scrollable-table-container {
+                  border-radius: 8px;
+                }
+                .org-completed-table th, .dept-pending-table th, .user-requests-table th {
+                  padding: 10px 12px;
+                  font-size: 12px;
+                }
+                .org-completed-table td, .dept-pending-table td, .user-requests-table td {
+                  padding: 10px 12px;
+                  font-size: 12px;
+                }
+                .status-badge {
+                  padding: 2px 8px;
+                  font-size: 10px;
+                }
+              }
             `}</style>
             <div className="mb-6 w-full overflow-x-auto custom-scrollbar pb-1">
               <TabsList className="custom-tabs-container bg-transparent flex-nowrap justify-start h-auto w-max py-1">
@@ -1933,7 +1979,7 @@ export default function DataAccessRequests1() {
             <TabsContent value="organization-creator">
               <Tabs defaultValue="org-completed">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
 <TabsList className="bg-transparent h-auto p-0 gap-0">
                      <TabsTrigger
                       value="org-pending"
@@ -1957,20 +2003,71 @@ export default function DataAccessRequests1() {
 </TabsList>
 
 
-<TabsContent value="org-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search pending requests..."
-            value={orgPendingSearch}
-            onChange={(e) => setOrgPendingSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="org-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search pending requests..."
+              value={orgPendingSearch}
+              onChange={(e) => setOrgPendingSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={orgPendingDateRange.from}
+                          onChange={(e) => setOrgPendingDateRange({ ...orgPendingDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={orgPendingDateRange.to}
+                          onChange={(e) => setOrgPendingDateRange({ ...orgPendingDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -1978,12 +2075,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={orgPendingDateRange.from}
               onChange={(e) => setOrgPendingDateRange({ ...orgPendingDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -1991,7 +2088,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={orgPendingDateRange.to}
               onChange={(e) => setOrgPendingDateRange({ ...orgPendingDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -1999,26 +2096,87 @@ export default function DataAccessRequests1() {
     </div>
 </TabsContent>
 
-<TabsContent value="org-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search completed requests..."
-            value={orgCompletedSearch}
-            onChange={(e) => setOrgCompletedSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="org-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search completed requests..."
+              value={orgCompletedSearch}
+              onChange={(e) => setOrgCompletedSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={orgCompletedDateRange.from}
+                          onChange={(e) => setOrgCompletedDateRange({ ...orgCompletedDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={orgCompletedDateRange.to}
+                          onChange={(e) => setOrgCompletedDateRange({ ...orgCompletedDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <select value={orgCompletedStatusFilter} onChange={(e) => setOrgCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" style={{cursor: 'pointer'}}>
-          <option value="All">All</option>
-          <option value="Approved">Approved</option>
-          <option value="Forwarded">Forwarded</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        
+        {/* Status Select with Chevron */}
+        <div className="relative w-full sm:w-[120px]">
+          <select 
+            value={orgCompletedStatusFilter} 
+            onChange={(e) => setOrgCompletedStatusFilter(e.target.value)} 
+            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+            style={{cursor: 'pointer'}}
+          >
+            <option value="All">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Forwarded">Forwarded</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+        </div>
+
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -2026,12 +2184,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={orgCompletedDateRange.from}
               onChange={(e) => setOrgCompletedDateRange({ ...orgCompletedDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -2039,7 +2197,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={orgCompletedDateRange.to}
               onChange={(e) => setOrgCompletedDateRange({ ...orgCompletedDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -2048,166 +2206,245 @@ export default function DataAccessRequests1() {
 </TabsContent>
 </div>
                 <TabsContent value="org-pending" className="mt-0">
-  <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-    <table className="dept-pending-table w-full">
-      <thead>
-        <tr>
-          <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-          <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
-          <th className="text-[11px] font-bold text-[#6B7280]">Business Description</th>
-          <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
-          <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-          <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-        <TooltipProvider delayDuration={100}>
-          {pendingRequests.filter(r => !orgPendingSearch || r.id.toLowerCase().includes(orgPendingSearch.toLowerCase()) || r.organization.toLowerCase().includes(orgPendingSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(orgPendingSearch.toLowerCase())).map((request) => (
-            <tr key={request.id}>
-              <td className="sticky-col-id font-medium text-[#111827]">
-                <div className="flex items-center gap-2 whitespace-nowrap">
-                  <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
-                  {request.id}
-                </div>
-              </td>
-              <td className="font-semibold text-[#111827] whitespace-nowrap">{request.organization}</td>
-              <td className="max-w-[250px] truncate">
-                <Tooltip>
-                  <TooltipTrigger asChild>
-                    <span className="cursor-help text-[#374151] whitespace-nowrap">{request.description}</span>
-                  </TooltipTrigger>
-                  <TooltipContent className="bg-gray-800 text-white text-xs p-2 max-w-[300px]">
-                    {request.description}
-                  </TooltipContent>
-                </Tooltip>
-              </td>
-              <td className="font-medium text-[#374151] whitespace-nowrap">{request.submittedBy}</td>
-              <td className="font-medium whitespace-nowrap">
-                <div className="flex items-center gap-2 text-[#374151]">
-                  <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                  {request.date}
-                </div>
-              </td>
-              <td className="sticky-col-actions text-right">
-                {!isReviewer && (
-                  <div className="flex items-center justify-end gap-2">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          className="flex items-center justify-center w-7 h-7 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors font-bold border border-[#F59E0B]/20" 
-                          onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
-                        >
-                          <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                    </Tooltip>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          className="flex items-center justify-center w-7 h-7 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
-                          onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
-                        >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                    </Tooltip>
-                  </div>
-                )}
-              </td>
-            </tr>
-          ))}
-        </TooltipProvider>
-      </tbody>
-    </table>
-  </div>
-</TabsContent>
-
-
-
-<TabsContent value="org-completed" className="mt-0">
-                  
-<div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-
-                        <table className="org-completed-table">
-                          <thead>
-                            <tr>
-                              <th className="sticky-col-id">Request ID</th>
-                              <th className="col-org">Organization</th>
-                              <th>Requested by</th>
-                              <th>Requested Date</th>
-                              <th>Action by</th>
-                              <th>Action date</th>
-                              <th className="col-desc">Business Description</th>
-                              <th className="sticky-col-status">Status</th>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                    <table className="dept-pending-table w-full">
+                      <thead>
+                        <tr>
+                          <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Business Description</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                          <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <TooltipProvider delayDuration={100}>
+                          {pendingRequests.filter(r => !orgPendingSearch || r.id.toLowerCase().includes(orgPendingSearch.toLowerCase()) || r.organization.toLowerCase().includes(orgPendingSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(orgPendingSearch.toLowerCase())).map((request) => (
+                            <tr key={request.id}>
+                              <td className="sticky-col-id font-medium text-[#111827]">
+                                <div className="flex items-center gap-2 whitespace-nowrap">
+                                  <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                  {request.id}
+                                </div>
+                              </td>
+                              <td className="font-semibold text-[#111827] whitespace-nowrap">{request.organization}</td>
+                              <td className="max-w-[250px] truncate">
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="cursor-help text-[#374151] whitespace-nowrap">{request.description}</span>
+                                  </TooltipTrigger>
+                                  <TooltipContent className="bg-gray-800 text-white text-xs p-2 max-w-[300px]">
+                                    {request.description}
+                                  </TooltipContent>
+                                </Tooltip>
+                              </td>
+                              <td className="font-medium text-[#374151] whitespace-nowrap">{request.submittedBy}</td>
+                              <td className="font-medium whitespace-nowrap">
+                                <div className="flex items-center gap-2 text-[#374151]">
+                                  <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                  {request.date}
+                                </div>
+                              </td>
+                              <td className="sticky-col-actions text-right">
+                                {!isReviewer && (
+                                  <div className="flex items-center justify-end gap-2">
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <button 
+                                          className="flex items-center justify-center w-7 h-7 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors font-bold border border-[#F59E0B]/20" 
+                                          onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
+                                        >
+                                          <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
+                                    </Tooltip>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <button 
+                                          className="flex items-center justify-center w-7 h-7 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
+                                          onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
+                                        >
+                                          <X className="w-4 h-4" />
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
+                                    </Tooltip>
+                                  </div>
+                                )}
+                              </td>
                             </tr>
-                          </thead>
-                          <tbody>
-                            <TooltipProvider delayDuration={100}>
-                              {filteredCompletedRequests.filter(r => {
-  const searchMatch = !orgCompletedSearch || r.id.toLowerCase().includes(orgCompletedSearch.toLowerCase()) || r.organization.toLowerCase().includes(orgCompletedSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(orgCompletedSearch.toLowerCase());
-  const statusMatch = 
-    orgCompletedStatusFilter === "All" ||
-    (orgCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
-    (orgCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
-    (orgCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
-  return searchMatch && statusMatch;
-}).map((request) => (
-                                <tr key={request.id}>
-                                  <td className="sticky-col-id font-medium text-[#111827]">
-                                    {request.id}
-                                  </td>
-                                  <td className="col-org">
-                                    {request.organization}
-                                  </td>
-                                  <td>
-                                    {request.submittedBy}
-                                  </td>
-                                  <td>
-                                    <div className="flex items-center gap-2 text-[#374151]">
-                                      <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                      {request.requestedDate || request.date}
-                                    </div>
-                                  </td>
-                                  <td>
-                                    {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedBy || "Jawaher Rashed") : 
-                                     request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
-                                     (request.forwardedBy || "Ahmed Al-Mansoori")}
-                                  </td>
-                                  <td>
-                                    <div className="flex items-center gap-2 text-[#374151]">
-                                      <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                      {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedDate || "15 Mar 2026") : 
-                                       request.status?.toLowerCase() === "rejected" ? (request.rejectedDate || "16 Mar 2026") : 
-                                       (request.forwardedDate || "14 Mar 2026")}
-                                    </div>
-                                  </td>
-                                  <td><span className="text-[#374151] text-[13px]">Some comments</span></td>
-                                  <td className="col-desc">
-                                    <div className="business-desc-cell max-w-[200px] truncate">
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <span className="cursor-help whitespace-nowrap overflow-hidden text-ellipsis block">{request.description}</span>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-gray-800 text-white text-xs p-2 max-w-[300px]">
-                                          {request.description}
-                                        </TooltipContent>
-                                      </Tooltip>
-                                    </div>
-                                  </td>
-                                  <td className="sticky-col-status">
-                                    <span className={`status-badge ${request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'approved' : request.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
-                                      {request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'Approved' : request.status?.toLowerCase() === 'forwarded' ? 'Forwarded' : 'Rejected'}
-                                    </span>
-                                  </td>
-                                </tr>
-                              ))}
-                            </TooltipProvider>
-                          </tbody>
-                        </table>
+                          ))}
+                        </TooltipProvider>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {pendingRequests.filter(r => !orgPendingSearch || r.id.toLowerCase().includes(orgPendingSearch.toLowerCase()) || r.organization.toLowerCase().includes(orgPendingSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(orgPendingSearch.toLowerCase())).map((request) => (
+                      <div key={request.id} className="mobile-card">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                              <span className="text-xs font-bold text-[#6B7280]">{request.id}</span>
+                            </div>
+                            <h4 className="text-sm font-bold text-[#111827]">{request.organization}</h4>
+                          </div>
+                          {!isReviewer && (
+                            <div className="flex gap-2">
+                              <button 
+                                className="w-8 h-8 flex items-center justify-center bg-[#F59E0B]/10 text-[#F59E0B] rounded-full border border-[#F59E0B]/20"
+                                onClick={() => setApproveDialog({open: true, requestId: request.id})}
+                              >
+                                <Forward className="w-4 h-4" />
+                              </button>
+                              <button 
+                                className="w-8 h-8 flex items-center justify-center bg-[#EF4444]/10 text-[#EF4444] rounded-full border border-[#EF4444]/20"
+                                onClick={() => setRejectDialog({open: true, requestId: request.id})}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+                        
+                        <div className="space-y-2 mb-3">
+                          <div className="flex justify-between text-xs">
+                            <span className="text-[#6B7280]">Requested By</span>
+                            <span className="font-medium text-[#111827]">{request.submittedBy}</span>
+                          </div>
+                          <div className="flex justify-between text-xs">
+                            <span className="text-[#6B7280]">Date</span>
+                            <div className="flex items-center gap-1 font-medium text-[#111827]">
+                              <Calendar className="w-3 h-3 text-[#6B7280]" />
+                              {request.date}
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                          <p className="text-[11px] text-[#374151] leading-relaxed line-clamp-2">
+                            {request.description}
+                          </p>
+                        </div>
                       </div>
-</TabsContent>
+                    ))}
+                  </div>
+                </TabsContent>
+                <TabsContent value="org-completed" className="mt-0">
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                    <table className="org-completed-table w-full">
+                      <thead>
+                        <tr>
+                          <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Action by</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Action date</th>
+                          <th className="col-desc text-[11px] font-bold text-[#6B7280]">Business Description</th>
+                          <th className="sticky-col-status text-[11px] font-bold text-[#6B7280]">Status</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <TooltipProvider delayDuration={100}>
+                          {filteredCompletedRequests.filter(r => {
+                            const searchMatch = !orgCompletedSearch || r.id.toLowerCase().includes(orgCompletedSearch.toLowerCase()) || r.organization.toLowerCase().includes(orgCompletedSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(orgCompletedSearch.toLowerCase());
+                            const statusMatch = 
+                              orgCompletedStatusFilter === "All" ||
+                              (orgCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                              (orgCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                              (orgCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                            return searchMatch && statusMatch;
+                          }).map((request) => (
+                            <tr key={request.id}>
+                              <td className="sticky-col-id font-medium text-[#111827]">
+                                {request.id}
+                              </td>
+                              <td className="col-org font-semibold text-[#111827] whitespace-nowrap">
+                                {request.organization}
+                              </td>
+                              <td className="font-medium text-[#374151] whitespace-nowrap">{request.submittedBy}</td>
+                              <td className="font-medium whitespace-nowrap text-[#374151]">{request.requestedDate || request.date}</td>
+                              <td className="font-medium whitespace-nowrap text-[#374151]">{request.approvedBy || request.rejectedBy || '—'}</td>
+                              <td className="font-medium whitespace-nowrap text-[#374151]">{request.approvedDate || request.rejectedDate || request.date || '—'}</td>
+                              <td className="col-desc max-w-[200px] truncate">
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <span className="cursor-help text-[#374151] whitespace-nowrap">{request.description}</span>
+                                  </TooltipTrigger>
+                                  <TooltipContent className="bg-gray-800 text-white text-xs p-2 max-w-[300px]">
+                                    {request.description}
+                                  </TooltipContent>
+                                </Tooltip>
+                              </td>
+                              <td className="sticky-col-status">
+                                <Badge className={`status-badge ${request.status === 'approved' ? 'approved' : request.status === 'forwarded' ? 'forward' : 'reject'}`}>
+                                  {request.status}
+                                </Badge>
+                              </td>
+                            </tr>
+                          ))}
+                        </TooltipProvider>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {filteredCompletedRequests.filter(r => {
+                      const searchMatch = !orgCompletedSearch || r.id.toLowerCase().includes(orgCompletedSearch.toLowerCase()) || r.organization.toLowerCase().includes(orgCompletedSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(orgCompletedSearch.toLowerCase());
+                      const statusMatch = 
+                        orgCompletedStatusFilter === "All" ||
+                        (orgCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                        (orgCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                        (orgCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                      return searchMatch && statusMatch;
+                    }).map((request) => (
+                      <div key={request.id} className="mobile-card">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <span className="text-xs font-bold text-[#6B7280]">{request.id}</span>
+                            <h4 className="text-sm font-bold text-[#111827]">{request.organization}</h4>
+                          </div>
+                          <Badge className={`status-badge ${request.status === 'approved' ? 'approved' : request.status === 'forwarded' ? 'forward' : 'reject'}`}>
+                            {request.status}
+                          </Badge>
+                        </div>
+                        
+                        <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-3">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.submittedBy}</span>
+                          </div>
+                          <div className="flex flex-col text-right">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Req. Date</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.requestedDate || request.date}</span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.approvedBy || request.rejectedBy || '—'}</span>
+                          </div>
+                          <div className="flex flex-col text-right">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.approvedDate || request.rejectedDate || request.date || '—'}</span>
+                          </div>
+                        </div>
+                        
+                        <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                          <p className="text-[11px] text-[#374151] leading-relaxed line-clamp-2">
+                            {request.description}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
               </Tabs>
             </TabsContent>
 
@@ -2215,270 +2452,504 @@ export default function DataAccessRequests1() {
             <TabsContent value="department">
               <Tabs defaultValue="dept-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
-<TabsList className="bg-transparent h-auto p-0 gap-0">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
+                  <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="dept-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
                     </TabsTrigger>
-                    
                     <TabsTrigger value="dept-completed" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#10B981] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#10B981] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#10B981]"></span>Completed</span>
                     </TabsTrigger>
-</TabsList>
+                  </TabsList>
 
-<TabsContent value="dept-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search completed requests..."
-            value={deptCompletedSearch}
-            onChange={(e) => setDeptCompletedSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-          />
-        </div>
-        <select value={deptCompletedStatusFilter} onChange={(e) => setDeptCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" style={{cursor: 'pointer'}}>
-          <option value="All">All</option>
-          <option value="Approved">Approved</option>
-          <option value="Forwarded">Forwarded</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={orgCompletedDateRange.from}
-              onChange={(e) => setOrgCompletedDateRange({ ...orgCompletedDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={orgCompletedDateRange.to}
-              onChange={(e) => setOrgCompletedDateRange({ ...orgCompletedDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-        </div>
-      </div>
-</TabsContent>
-<TabsContent value="dept-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search pending requests..."
-            value={deptPendingSearch}
-            onChange={(e) => setDeptPendingSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-          />
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={deptPendingDateRange.from}
-              onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={deptPendingDateRange.to}
-              onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-        </div>
-    </div>
-</TabsContent>
-</div>
+                  <TabsContent value="dept-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search completed requests..."
+                              value={deptCompletedSearch}
+                              onChange={(e) => setDeptCompletedSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={deptCompletedDateRange.from}
+                                          onChange={(e) => setDeptCompletedDateRange({ ...deptCompletedDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={deptCompletedDateRange.to}
+                                          onChange={(e) => setDeptCompletedDateRange({ ...deptCompletedDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        </div>
+                        
+                        {/* Status Select with Chevron */}
+                        <div className="relative w-full sm:w-[120px]">
+                          <select 
+                            value={deptCompletedStatusFilter} 
+                            onChange={(e) => setDeptCompletedStatusFilter(e.target.value)} 
+                            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+                            style={{cursor: 'pointer'}}
+                          >
+                            <option value="All">All</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Forwarded">Forwarded</option>
+                            <option value="Rejected">Rejected</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                        </div>
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={deptCompletedDateRange.from}
+                              onChange={(e) => setDeptCompletedDateRange({ ...deptCompletedDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={deptCompletedDateRange.to}
+                              onChange={(e) => setDeptCompletedDateRange({ ...deptCompletedDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="dept-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search pending requests..."
+                              value={deptPendingSearch}
+                              onChange={(e) => setDeptPendingSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={deptPendingDateRange.from}
+                                          onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={deptPendingDateRange.to}
+                                          onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        </div>
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={deptPendingDateRange.from}
+                              onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={deptPendingDateRange.to}
+                              onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
+                    </div>
+                  </TabsContent>
+                </div>
                 
                 <TabsContent value="dept-pending" className="mt-0">
-                  
-<div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-
-                        <table className="dept-pending-table">
-                          <thead>
-                            <tr>
-                              <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Department</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Type</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Business Description</th>
-                              <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Status</th>
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                    <table className="dept-pending-table w-full">
+                      <thead>
+                        <tr>
+                          <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Department</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Type</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Business Description</th>
+                          <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <TooltipProvider delayDuration={100}>
+                          {filteredDeptPending.filter(r => !deptPendingSearch || r.id.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.department?.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.organization?.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(deptPendingSearch.toLowerCase())).map((request) => (
+                            <tr key={request.id}>
+                              <td className="sticky-col-id font-medium text-[#111827] whitespace-nowrap">
+                                <div className="flex items-center gap-2">
+                                  <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                  {request.id}
+                                </div>
+                              </td>
+                              <td className="whitespace-nowrap">{request.department}</td>
+                              <td className="whitespace-nowrap">{request.type}</td>
+                              <td className="whitespace-nowrap">{request.organization}</td>
+                              <td className="font-medium whitespace-nowrap">{request.submittedBy}</td>
+                              <td className="font-medium whitespace-nowrap">
+                                <div className="flex items-center gap-2 text-[#374151]">
+                                  <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                  {request.requestedDate}
+                                </div>
+                              </td>
+                              <td className="col-desc">
+                                <div className="business-desc-cell max-w-[200px] truncate">
+                                  <Tooltip>
+                                    <TooltipTrigger asChild>
+                                      <span className="cursor-help whitespace-nowrap overflow-hidden text-ellipsis block">{request.businessDescription}</span>
+                                    </TooltipTrigger>
+                                    <TooltipContent className="bg-gray-800 text-white text-xs p-2 max-w-[300px]">
+                                      {request.businessDescription}
+                                    </TooltipContent>
+                                  </Tooltip>
+                                </div>
+                              </td>
+                              <td className="sticky-col-actions">
+                                {isOrgAdmin ? (
+                                  <div className="flex justify-end items-center h-full w-full">
+                                    <span className={`inline-flex items-center justify-center px-3 py-1.5 min-w-[80px] text-[12px] font-semibold rounded-full capitalize shadow-sm transition-all duration-300 ${request?.status?.toLowerCase() === 'pending' ? 'bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20' : 'bg-[#003F72]/10 text-[#003F72] border border-[#003F72]/20'}`}>
+                                        {request?.status || "Pending"}
+                                    </span>
+                                  </div>
+                                ) : (
+                                  <div className="flex items-center justify-end gap-2">
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <button 
+                                          className="flex items-center justify-center w-8 h-8 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors font-bold border border-[#F59E0B]/20" 
+                                          onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
+                                        >
+                                          <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
+                                    </Tooltip>
+                                    <Tooltip>
+                                      <TooltipTrigger asChild>
+                                        <button 
+                                          className="flex items-center justify-center w-8 h-8 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
+                                          onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
+                                        >
+                                          <X className="w-4 h-4" />
+                                        </button>
+                                      </TooltipTrigger>
+                                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
+                                    </Tooltip>
+                                  </div>
+                                )}
+                              </td>
                             </tr>
-                          </thead>
+                          ))}
+                        </TooltipProvider>
+                      </tbody>
+                    </table>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {filteredDeptPending.filter(r => !deptPendingSearch || r.id.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.department?.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.organization?.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(deptPendingSearch.toLowerCase())).map((request) => (
+                      <div key={request.id} className="mobile-card">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                              <span className="text-xs font-bold text-[#6B7280]">{request.id}</span>
+                            </div>
+                            <h4 className="text-sm font-bold text-[#111827]">{request.department}</h4>
+                            <div className="text-[11px] text-[#6B7280]">{request.organization}</div>
+                          </div>
+                          {!isOrgAdmin && (
+                            <div className="flex gap-2">
+                              <button 
+                                className="w-8 h-8 flex items-center justify-center bg-[#F59E0B]/10 text-[#F59E0B] rounded-full border border-[#F59E0B]/20"
+                                onClick={() => setApproveDialog({open: true, requestId: request.id})}
+                              >
+                                <Forward className="w-4 h-4" />
+                              </button>
+                              <button 
+                                className="w-8 h-8 flex items-center justify-center bg-[#EF4444]/10 text-[#EF4444] rounded-full border border-[#EF4444]/20"
+                                onClick={() => setRejectDialog({open: true, requestId: request.id})}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-2 mb-3">
+                          <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                            <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Type</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.type}</span>
+                          </div>
+                          <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                            <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Requested By</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.submittedBy}</span>
+                          </div>
+                        </div>
+
+                        <div className="flex justify-between items-center mb-3 text-xs">
+                          <div className="flex items-center gap-1 text-[#6B7280]">
+                            <Calendar className="w-3.5 h-3.5" />
+                            <span>{request.requestedDate}</span>
+                          </div>
+                          {isOrgAdmin && (
+                            <span className={`px-2 py-0.5 rounded-full text-[10px] font-bold uppercase ${request?.status?.toLowerCase() === 'pending' ? 'bg-[#F59E0B]/10 text-[#F59E0B]' : 'bg-[#003F72]/10 text-[#003F72]'}`}>
+                              {request?.status || "Pending"}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="p-2 bg-[#F5F7FA] rounded-lg">
+                          <p className="text-[11px] text-[#374151] line-clamp-2">
+                            {request.businessDescription}
+                          </p>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
+
+                {/* Organization Completed Accordion (Reused in Department Tab) */}
+                <TabsContent value="dept-completed" className="mt-0">
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                    <table className="org-completed-table w-full">
+                      <thead>
+                        <tr>
+                          <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Department</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Type</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Action by</th>
+                          <th className="text-[11px] font-bold text-[#6B7280]">Action date</th>
+                          <th className="sticky-col-status text-left text-[11px] font-bold text-[#6B7280]">Status</th>
+                        </tr>
+                      </thead>
                           <tbody>
                             <TooltipProvider delayDuration={100}>
-                              {filteredDeptPending.filter(r => !deptPendingSearch || r.id.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.department?.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.organization?.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(deptPendingSearch.toLowerCase())).map((request) => (
+                            {filteredDeptCompleted.filter(r => {
+                                const searchMatch = !deptCompletedSearch || r.id.toLowerCase().includes(deptCompletedSearch.toLowerCase()) || r.organization.toLowerCase().includes(deptCompletedSearch.toLowerCase()) || (r.submittedBy && r.submittedBy.toLowerCase().includes(deptCompletedSearch.toLowerCase()));
+                                const statusMatch = 
+                                  deptCompletedStatusFilter === "All" ||
+                                  (deptCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                                  (deptCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                                  (deptCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                                return searchMatch && statusMatch;
+                              }).map((request) => (
                                 <tr key={request.id}>
-                                  <td className="sticky-col-id font-medium text-[#111827] whitespace-nowrap">
+                                  <td className="sticky-col-id font-medium text-[#111827]">
                                     <div className="flex items-center gap-2">
-                                      <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                      <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full"></div>
                                       {request.id}
                                     </div>
                                   </td>
                                   <td className="whitespace-nowrap">{request.department}</td>
                                   <td className="whitespace-nowrap">{request.type}</td>
                                   <td className="whitespace-nowrap">{request.organization}</td>
-                                  <td className="font-medium whitespace-nowrap">{request.submittedBy}</td>
+                                  <td className="font-medium text-[#111827] whitespace-nowrap">{request.requestedBy || "Ahmed Al-Mansoori"}</td>
                                   <td className="font-medium whitespace-nowrap">
                                     <div className="flex items-center gap-2 text-[#374151]">
                                       <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                      {request.requestedDate}
+                                      {request.requestedDate || "10 Mar 2026"}
                                     </div>
                                   </td>
-                                  <td className="col-desc">
-                                    <div className="business-desc-cell max-w-[200px] truncate">
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <span className="cursor-help whitespace-nowrap overflow-hidden text-ellipsis block">{request.businessDescription}</span>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-gray-800 text-white text-xs p-2 max-w-[300px]">
-                                          {request.businessDescription}
-                                        </TooltipContent>
-                                      </Tooltip>
+                                  <td className="font-medium text-[#111827] whitespace-nowrap">
+                                    {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedBy || "Jawaher Rashed") : 
+                                     request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
+                                     (request.forwardedBy || "Ahmed Al-Mansoori")}
+                                  </td>
+                                  <td className="font-medium whitespace-nowrap">
+                                    <div className="flex items-center gap-2 text-[#374151]">
+                                      <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                      {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedDate || "10 Mar 2026") : 
+                                       request.status?.toLowerCase() === "rejected" ? (request.rejectedDate || "16 Mar 2026") : 
+                                       (request.forwardedDate || "14 Mar 2026")}
                                     </div>
                                   </td>
-                                  <td className="sticky-col-actions">
-                                  {isOrgAdmin ? (
-                                    <div className="flex justify-center items-center h-full w-full">
-                                      <span className={`inline-flex items-center justify-center px-3 py-1.5 min-w-[80px] text-[12px] font-semibold rounded-full capitalize shadow-sm transition-all duration-300 ${request?.status?.toLowerCase() === 'pending' ? 'bg-[#F59E0B]/10 text-[#F59E0B] border border-[#F59E0B]/20' : 'bg-[#003F72]/10 text-[#003F72] border border-[#003F72]/20'}`}>
-                                          {request?.status || "Pending"}
-                                      </span>
-                                    </div>
-                                  ) : (
-                                    <div className="flex items-center justify-end gap-2">
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <button 
-                                            className="flex items-center justify-center w-8 h-8 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors font-bold border border-[#F59E0B]/20" 
-                                            onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
-                                          >
-                                            <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                                          </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                                      </Tooltip>
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <button 
-                                            className="flex items-center justify-center w-8 h-8 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
-                                            onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
-                                          >
-                                            âœ•
-                                          </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                                      </Tooltip>
-                                    </div>
-                                  )}
-                                </td>
+                                   <td className="sticky-col-status">
+                                     <span className={`status-badge ${request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'approved' : request.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
+                                       {request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'Approved' : request.status?.toLowerCase() === 'forwarded' ? 'Forwarded' : 'Rejected'}
+                                     </span>
+                                   </td>
                                 </tr>
                               ))}
-                            </TooltipProvider>
-                          </tbody>
-                        </table>
-                      
-</div>
-</TabsContent>
+                        </TooltipProvider>
+                      </tbody>
+                    </table>
+                  </div>
 
-                {/* Organization Completed Accordion (Reused in Department Tab) */}
-                <TabsContent value="dept-completed" className="mt-0">
-  <div className="pb-6 pt-2">
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-                        <table className="org-completed-table">
-                          <thead>
-                            <tr>
-                              <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Department</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Type</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Action by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Action date</th>
-                              <th className="sticky-col-status text-left text-[11px] font-bold text-[#6B7280]">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {filteredDeptCompleted.filter(r => {
-  const searchMatch = !deptCompletedSearch || r.id.toLowerCase().includes(deptCompletedSearch.toLowerCase()) || r.organization.toLowerCase().includes(deptCompletedSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(deptCompletedSearch.toLowerCase());
-  const statusMatch = 
-    deptCompletedStatusFilter === "All" ||
-    (deptCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
-    (deptCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
-    (deptCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
-  return searchMatch && statusMatch;
-}).map((request) => (
-                              <tr key={request.id}>
-                                <td className="sticky-col-id font-medium text-[#111827]">
-                                  <div className="flex items-center gap-2">
-                                    <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full"></div>
-                                    {request.id}
-                                  </div>
-                                </td>
-                                <td className="whitespace-nowrap">{request.department}</td>
-                                <td className="whitespace-nowrap">{request.type}</td>
-                                <td className="whitespace-nowrap">{request.organization}</td>
-                                <td className="font-medium text-[#111827] whitespace-nowrap">{request.requestedBy || "Ahmed Al-Mansoori"}</td>
-                                <td className="font-medium whitespace-nowrap">
-                                  <div className="flex items-center gap-2 text-[#374151]">
-                                    <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                    {request.requestedDate || "10 Mar 2026"}
-                                  </div>
-                                </td>
-                                <td className="font-medium text-[#111827] whitespace-nowrap">
-                                  {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedBy || "Jawaher Rashed") : 
-                                   request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
-                                   (request.forwardedBy || "Ahmed Al-Mansoori")}
-                                </td>
-                                <td className="font-medium whitespace-nowrap">
-                                  <div className="flex items-center gap-2 text-[#374151]">
-                                    <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                    {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedDate || "10 Mar 2026") : 
-                                     request.status?.toLowerCase() === "rejected" ? (request.rejectedDate || "16 Mar 2026") : 
-                                     (request.forwardedDate || "14 Mar 2026")}
-                                  </div>
-                                </td>
-                                 <td className="sticky-col-status">
-                                   <span className={`status-badge ${request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'approved' : request.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
-                                     {request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'Approved' : request.status?.toLowerCase() === 'forwarded' ? 'Forwarded' : 'Rejected'}
-                                   </span>
-                                 </td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {filteredDeptCompleted.filter(r => {
+                      const searchMatch = !deptCompletedSearch || r.id.toLowerCase().includes(deptCompletedSearch.toLowerCase()) || r.organization.toLowerCase().includes(deptCompletedSearch.toLowerCase()) || r.submittedBy.toLowerCase().includes(deptCompletedSearch.toLowerCase());
+                      const statusMatch = 
+                        deptCompletedStatusFilter === "All" ||
+                        (deptCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                        (deptCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                        (deptCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                      return searchMatch && statusMatch;
+                    }).map((request) => (
+                      <div key={request.id} className="mobile-card">
+                        <div className="flex justify-between items-start mb-3">
+                          <div>
+                            <div className="flex items-center gap-2 mb-1">
+                              <div className={`w-1.5 h-1.5 rounded-full ${request.status?.toLowerCase() === 'rejected' ? 'bg-[#EF4444]' : 'bg-[#10B981]'}`}></div>
+                              <span className="text-xs font-bold text-[#6B7280]">{request.id}</span>
+                            </div>
+                            <h4 className="text-sm font-bold text-[#111827]">{request.department}</h4>
+                            <div className="text-[11px] text-[#6B7280]">{request.organization}</div>
+                          </div>
+                          <Badge className={`status-badge ${request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'approved' : request.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
+                            {request.status}
+                          </Badge>
+                        </div>
+
+                        <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-3">
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.submittedBy || request.requestedBy || "Ahmed Al-Mansoori"}</span>
+                          </div>
+                          <div className="flex flex-col text-right">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Req. Date</span>
+                            <span className="text-xs font-medium text-[#111827]">{request.requestedDate || "10 Mar 2026"}</span>
+                          </div>
+                          <div className="flex flex-col">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                            <span className="text-xs font-medium text-[#111827]">
+                              {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedBy || "Jawaher Rashed") : 
+                               request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
+                               (request.forwardedBy || "Ahmed Al-Mansoori")}
+                            </span>
+                          </div>
+                          <div className="flex flex-col text-right">
+                            <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                            <span className="text-xs font-medium text-[#111827]">
+                              {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedDate || "10 Mar 2026") : 
+                               request.status?.toLowerCase() === "rejected" ? (request.rejectedDate || "16 Mar 2026") : 
+                               (request.forwardedDate || "14 Mar 2026")}
+                            </span>
+                          </div>
+                        </div>
+                        
+                        <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                          <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Type</span>
+                          <span className="text-xs font-medium text-[#111827]">{request.type}</span>
+                        </div>
                       </div>
-                    
-  </div>
-</TabsContent>
+                    ))}
+                  </div>
+                </TabsContent>
               </Tabs>
             </TabsContent>
 
@@ -2486,7 +2957,7 @@ export default function DataAccessRequests1() {
             <TabsContent value="user-request">
               <Tabs defaultValue="user-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
 <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="user-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -2498,20 +2969,71 @@ export default function DataAccessRequests1() {
 </TabsList>
 
 
-<TabsContent value="user-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search pending requests..."
-            value={userRequestPendingSearch}
-            onChange={(e) => setUserRequestPendingSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="user-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search pending requests..."
+              value={userRequestPendingSearch}
+              onChange={(e) => setUserRequestPendingSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={userRequestPendingDateRange.from}
+                          onChange={(e) => setUserRequestPendingDateRange({ ...userRequestPendingDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={userRequestPendingDateRange.to}
+                          onChange={(e) => setUserRequestPendingDateRange({ ...userRequestPendingDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -2519,12 +3041,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={userRequestPendingDateRange.from}
               onChange={(e) => setUserRequestPendingDateRange({ ...userRequestPendingDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -2532,7 +3054,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={userRequestPendingDateRange.to}
               onChange={(e) => setUserRequestPendingDateRange({ ...userRequestPendingDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -2540,26 +3062,87 @@ export default function DataAccessRequests1() {
     </div>
 </TabsContent>
 
-<TabsContent value="user-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search completed requests..."
-            value={userRequestCompletedSearch}
-            onChange={(e) => setUserRequestCompletedSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="user-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search completed requests..."
+              value={userRequestCompletedSearch}
+              onChange={(e) => setUserRequestCompletedSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={userRequestCompletedDateRange.from}
+                          onChange={(e) => setUserRequestCompletedDateRange({ ...userRequestCompletedDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={userRequestCompletedDateRange.to}
+                          onChange={(e) => setUserRequestCompletedDateRange({ ...userRequestCompletedDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <select value={userRequestCompletedStatusFilter} onChange={(e) => setUserRequestCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" style={{cursor: 'pointer'}}>
-          <option value="All">All</option>
-          <option value="Approved">Approved</option>
-          <option value="Forwarded">Forwarded</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+
+        {/* Status Select with Chevron */}
+        <div className="relative w-full sm:w-[120px]">
+          <select 
+            value={userRequestCompletedStatusFilter} 
+            onChange={(e) => setUserRequestCompletedStatusFilter(e.target.value)} 
+            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+            style={{cursor: 'pointer'}}
+          >
+            <option value="All">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Forwarded">Forwarded</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+        </div>
+
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -2567,12 +3150,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={userRequestCompletedDateRange.from}
               onChange={(e) => setUserRequestCompletedDateRange({ ...userRequestCompletedDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -2580,7 +3163,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={userRequestCompletedDateRange.to}
               onChange={(e) => setUserRequestCompletedDateRange({ ...userRequestCompletedDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -2622,10 +3205,8 @@ export default function DataAccessRequests1() {
                   .expand-btn.active { background: #EFF6FF; border-color: #BFDBFE; color: #3B82F6; }
                 `}</style>
                 <TabsContent value="user-pending" className="mt-0">
-                  
-<div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white" style={{position:'relative'}}>
-
-
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white" style={{position:'relative'}}>
                         <table className="user-group-table">
                           <thead>
                             <tr>
@@ -2718,7 +3299,7 @@ export default function DataAccessRequests1() {
                                           </button>
                                         </TooltipTrigger>
                                         <TooltipContent className="bg-gray-800 text-white text-xs">
-                                          {group.fileName} â€” {group.fileSize}
+                                          {group.fileName} — {group.fileSize}
                                         </TooltipContent>
                                       </Tooltip>
                                     </td>
@@ -2829,15 +3410,114 @@ export default function DataAccessRequests1() {
                             </TooltipProvider>
                           </tbody>
                         </table>
-                      
-</div>
-</TabsContent>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {filteredUserRequestPendingGroups.map((group) => (
+                      <div key={group.id} className="mobile-card !p-0 overflow-hidden">
+                        <div className="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                <span className="text-xs font-bold text-[#6B7280]">{group.id}</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">{group.usersCount} Users Requested</h4>
+                            </div>
+                            <div className="flex gap-2">
+                              <button 
+                                className="w-8 h-8 flex items-center justify-center bg-[#F59E0B]/10 text-[#F59E0B] rounded-full border border-[#F59E0B]/20"
+                                onClick={() => {
+                                  setSelectedForwardRequest({ id: group.id, service: 'User Request Group' }); 
+                                  setForwardDialogOpen(true);
+                                }}
+                              >
+                                <Forward className="w-4 h-4" />
+                              </button>
+                              <button 
+                                className="w-8 h-8 flex items-center justify-center bg-[#EF4444]/10 text-[#EF4444] rounded-full border border-[#EF4444]/20"
+                                onClick={() => setRejectDialog({open: true, requestId: group.id})}
+                              >
+                                <X className="w-4 h-4" />
+                              </button>
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2 mb-3">
+                            <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                              <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Requested By</span>
+                              <span className="text-xs font-medium text-[#111827]">{group.users[0]?.name}</span>
+                            </div>
+                            <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                              <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Date</span>
+                              <span className="text-xs font-medium text-[#111827]">{group.dateCreated}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center">
+                            <button
+                              className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F6F8] rounded-lg border border-[#E5E7EB] text-[11px] font-medium text-[#374151]"
+                              onClick={() => setFileViewerOpen({open: true, fileName: group.fileName, fileSize: group.fileSize})}
+                            >
+                              <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
+                              <span className="truncate max-w-[120px]">{group.fileName}</span>
+                            </button>
+                            
+                            <button
+                              className={`flex items-center gap-1 text-[11px] font-bold uppercase transition-colors ${expandedGroupRow === group.id ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}
+                              onClick={() => setExpandedGroupRow(expandedGroupRow === group.id ? null : group.id)}
+                            >
+                              {expandedGroupRow === group.id ? 'Hide Members' : 'View Members'}
+                              {expandedGroupRow === group.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Mobile Expanded Members */}
+                        {expandedGroupRow === group.id && (
+                          <div className="bg-[#F9FAFB] border-t border-[#F1F5F9] p-4 space-y-3">
+                            {group.users.map((member: any, idx: number) => (
+                              <div key={idx} className="bg-white p-3 rounded-xl border border-[#F1F5F9] shadow-sm">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-8 h-8 rounded-full bg-[#FEE2E2] flex items-center justify-center text-[#DC2626] text-xs font-bold shrink-0">
+                                    {member.name.charAt(0)}
+                                  </div>
+                                  <div>
+                                    <h5 className="text-xs font-bold text-[#111827]">{member.name}</h5>
+                                    <p className="text-[10px] text-[#6B7280]">{member.email}</p>
+                                  </div>
+                                </div>
+                                <div className="flex flex-wrap gap-1 mb-2">
+                                  {member.role.split(',').map((role: string, ridx: number) => (
+                                    <span key={ridx} className="px-2 py-0.5 bg-[#EFF6FF] text-[#3B82F6] border border-[#BFDBFE] rounded-full text-[9px] font-bold">
+                                      {role.trim()}
+                                    </span>
+                                  ))}
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                                  <div>
+                                    <span className="text-[#9CA3AF] font-bold uppercase block">Org</span>
+                                    <span className="text-[#374151] font-medium">{member.organization}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-[#9CA3AF] font-bold uppercase block text-right">Dept</span>
+                                    <span className="text-[#374151] font-medium block text-right">{member.department}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
 
 
                 <TabsContent value="user-completed" className="mt-0">
-                  
-<div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-
+                  {/* Desktop Table View */}
+                  <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
                         <table className="user-group-table">
                           <thead>
                             <tr>
@@ -2857,9 +3537,10 @@ export default function DataAccessRequests1() {
                               {filteredUserRequestCompletedGroups.filter(group => {
                                 const searchMatch = !userRequestCompletedSearch || group.id.toLowerCase().includes(userRequestCompletedSearch.toLowerCase()) || group.users[0]?.name.toLowerCase().includes(userRequestCompletedSearch.toLowerCase());
                                 const statusMatch = 
+                                  (userRequestCompletedStatusFilter === "All" ||
                                   (userRequestCompletedStatusFilter === "Approved" && (group.status?.toLowerCase() === "approved" || group.status?.toLowerCase() === "completed")) ||
                                   (userRequestCompletedStatusFilter === "Forwarded" && group.status?.toLowerCase() === "forwarded") ||
-                                  (userRequestCompletedStatusFilter === "Rejected" && group.status?.toLowerCase() === "rejected");
+                                  (userRequestCompletedStatusFilter === "Rejected" && group.status?.toLowerCase() === "rejected"));
                                 return searchMatch && statusMatch;
                               }).map((group) => (
                                 <React.Fragment key={group.id}>
@@ -2880,7 +3561,7 @@ export default function DataAccessRequests1() {
                                     {/* Group ID - sticky */}
                                     <td className="grp-sticky-id font-semibold text-[#111827] whitespace-nowrap" style={{left:'44px'}}>
                                       <div className="flex items-center gap-2">
-                                        <div className={`w-1.5 h-1.5 rounded-full ${group.status === 'completed' || group.status === 'Approved' ? 'bg-[#10B981]' : group.status === 'forwarded' || group.status === 'Forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                        <div className={`w-1.5 h-1.5 rounded-full ${group.status?.toLowerCase() === 'completed' || group.status?.toLowerCase() === 'approved' ? 'bg-[#10B981]' : group.status?.toLowerCase() === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
                                         {group.id}
                                       </div>
                                     </td>
@@ -2961,9 +3642,9 @@ export default function DataAccessRequests1() {
                                     {/* Status - sticky right */}
                                     <td className="grp-sticky-actions">
                                       <div className="flex items-center justify-end" style={{paddingRight: '16px'}}>
-                                        <span className={`status-badge ${userRequestCompletedStatusFilter === 'Approved' ? 'approved' : userRequestCompletedStatusFilter === 'Forwarded' ? 'forward' : 'reject'}`}>
-                                          {userRequestCompletedStatusFilter === 'Approved' ? 'Approved' : userRequestCompletedStatusFilter === 'Forwarded' ? 'Forwarded' : 'Rejected'}
-                                        </span>
+                                        <Badge className={`status-badge ${group.status?.toLowerCase() === 'approved' || group.status?.toLowerCase() === 'completed' ? 'approved' : group.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
+                                          {group.status}
+                                        </Badge>
                                       </div>
                                     </td>
                                   </tr>
@@ -3039,16 +3720,126 @@ export default function DataAccessRequests1() {
                             </TooltipProvider>
                           </tbody>
                         </table>
-                      
-</div>
-</TabsContent>
+                  </div>
+
+                  {/* Mobile Card View */}
+                  <div className="md:hidden space-y-4">
+                    {filteredUserRequestCompletedGroups.filter(group => {
+                      const searchMatch = !userRequestCompletedSearch || group.id.toLowerCase().includes(userRequestCompletedSearch.toLowerCase()) || group.users[0]?.name.toLowerCase().includes(userRequestCompletedSearch.toLowerCase());
+                      const statusMatch = 
+                        (userRequestCompletedStatusFilter === "All" ||
+                        (userRequestCompletedStatusFilter === "Approved" && (group.status?.toLowerCase() === "approved" || group.status?.toLowerCase() === "completed")) ||
+                        (userRequestCompletedStatusFilter === "Forwarded" && group.status?.toLowerCase() === "forwarded") ||
+                        (userRequestCompletedStatusFilter === "Rejected" && group.status?.toLowerCase() === "rejected"));
+                      return searchMatch && statusMatch;
+                    }).map((group) => (
+                      <div key={group.id} className="mobile-card !p-0 overflow-hidden">
+                        <div className="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className={`w-1.5 h-1.5 rounded-full ${group.status?.toLowerCase() === 'completed' || group.status?.toLowerCase() === 'approved' ? 'bg-[#10B981]' : group.status?.toLowerCase() === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                <span className="text-xs font-bold text-[#6B7280]">{group.id}</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">{group.usersCount} Users Group</h4>
+                            </div>
+                            <Badge className={`status-badge ${group.status?.toLowerCase() === 'approved' || group.status?.toLowerCase() === 'completed' ? 'approved' : group.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
+                              {group.status}
+                            </Badge>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-3">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                              <span className="text-xs font-medium text-[#111827]">{group.users[0]?.name}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Req. Date</span>
+                              <span className="text-xs font-medium text-[#111827]">{group.dateCreated}</span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                              <span className="text-xs font-medium text-[#111827]">
+                                {group.status?.toLowerCase() === "approved" || group.status?.toLowerCase() === "completed" ? (group.approvedBy || "Jawaher Rashed") : 
+                                 group.status?.toLowerCase() === "rejected" ? (group.rejectedBy || "Layla Ahmed") : 
+                                 (group.forwardedBy || "Ahmed Al-Mansoori")}
+                              </span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                              <span className="text-xs font-medium text-[#111827]">
+                                {group.status?.toLowerCase() === "approved" || group.status?.toLowerCase() === "completed" ? (group.approvedDate || "20 Mar 2026") : 
+                                 group.status?.toLowerCase() === "rejected" ? (group.rejectedDate || "21 Mar 2026") : 
+                                 (group.forwardedDate || "19 Mar 2026")}
+                              </span>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center">
+                            <button
+                              className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F6F8] rounded-lg border border-[#E5E7EB] text-[11px] font-medium text-[#374151]"
+                              onClick={() => setFileViewerOpen({open: true, fileName: group.fileName, fileSize: group.fileSize})}
+                            >
+                              <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
+                              <span className="truncate max-w-[120px]">{group.fileName}</span>
+                            </button>
+                            
+                            <button
+                              className={`flex items-center gap-1 text-[11px] font-bold uppercase transition-colors ${expandedGroupRow === group.id ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}
+                              onClick={() => setExpandedGroupRow(expandedGroupRow === group.id ? null : group.id)}
+                            >
+                              {expandedGroupRow === group.id ? 'Hide Members' : 'View Members'}
+                              {expandedGroupRow === group.id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Mobile Expanded Members */}
+                        {expandedGroupRow === group.id && (
+                          <div className="bg-[#F9FAFB] border-t border-[#F1F5F9] p-4 space-y-3">
+                            {group.users.map((member: any, idx: number) => (
+                              <div key={idx} className="bg-white p-3 rounded-xl border border-[#F1F5F9] shadow-sm">
+                                <div className="flex items-center gap-3 mb-2">
+                                  <div className="w-8 h-8 rounded-full bg-[#FEE2E2] flex items-center justify-center text-[#DC2626] text-xs font-bold shrink-0">
+                                    {member.name.charAt(0)}
+                                  </div>
+                                  <div>
+                                    <h5 className="text-xs font-bold text-[#111827]">{member.name}</h5>
+                                    <p className="text-[10px] text-[#6B7280]">{member.email}</p>
+                                  </div>
+                                </div>
+                                <div className="flex flex-wrap gap-1 mb-2">
+                                  {member.role.split(',').map((role: string, ridx: number) => (
+                                    <span key={ridx} className="px-2 py-0.5 bg-[#EFF6FF] text-[#3B82F6] border border-[#BFDBFE] rounded-full text-[9px] font-bold">
+                                      {role.trim()}
+                                    </span>
+                                  ))}
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                                  <div>
+                                    <span className="text-[#9CA3AF] font-bold uppercase block">Org</span>
+                                    <span className="text-[#374151] font-medium">{member.organization}</span>
+                                  </div>
+                                  <div>
+                                    <span className="text-[#9CA3AF] font-bold uppercase block text-right">Dept</span>
+                                    <span className="text-[#374151] font-medium block text-right">{member.department}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </TabsContent>
               </Tabs>
             </TabsContent>
             {/* Data Access Tab (Duplicated from Department) */}
             <TabsContent value="data-access">
               <Tabs defaultValue="dept-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
 <TabsList className="bg-transparent h-auto p-0 gap-0">
   <TabsTrigger value="dept-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -3059,47 +3850,108 @@ export default function DataAccessRequests1() {
                     </TabsTrigger>
 </TabsList>
 
-<TabsContent value="dept-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search completed requests..."
-            value={dataAccessCompletedSearch}
-            onChange={(e) => setDataAccessCompletedSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="dept-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search completed requests..."
+              value={dataAccessCompletedSearch}
+              onChange={(e) => setDataAccessCompletedSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={dataAccessCompletedDateRange.from}
+                          onChange={(e) => setDataAccessCompletedDateRange({ ...dataAccessCompletedDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={dataAccessCompletedDateRange.to}
+                          onChange={(e) => setDataAccessCompletedDateRange({ ...dataAccessCompletedDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <select value={dataAccessCompletedStatusFilter} onChange={(e) => setDataAccessCompletedStatusFilter(e.target.value)} className="w-[124px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" style={{cursor: 'pointer'}}>
-          <option value="All">All</option>
-          <option value="Approved">Approved</option>
-          <option value="Forwarded">Forwarded</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+
+        {/* Status Select with Chevron */}
+        <div className="relative w-full sm:w-[124px]">
+          <select 
+            value={dataAccessCompletedStatusFilter} 
+            onChange={(e) => setDataAccessCompletedStatusFilter(e.target.value)} 
+            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+            style={{cursor: 'pointer'}}
+          >
+            <option value="All">All</option>
+            <option value="Approved">Approved</option>
+            <option value="Forwarded">Forwarded</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+        </div>
+
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
               onFocus={(e) => e.target.type = 'date'}
               onBlur={(e) => e.target.type = 'text'}
               value={dataAccessCompletedDateRange.from}
-              onChange={(e) => setDataAccessCompletedDateRange({...dataAccessCompletedDateRange, from: e.target.value})}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              onChange={(e) => setDataAccessCompletedDateRange({ ...dataAccessCompletedDateRange, from: e.target.value })}
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
               onFocus={(e) => e.target.type = 'date'}
               onBlur={(e) => e.target.type = 'text'}
               value={dataAccessCompletedDateRange.to}
-              onChange={(e) => setDataAccessCompletedDateRange({...dataAccessCompletedDateRange, to: e.target.value})}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              onChange={(e) => setDataAccessCompletedDateRange({ ...dataAccessCompletedDateRange, to: e.target.value })}
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -3107,21 +3959,71 @@ export default function DataAccessRequests1() {
     </div>
 </TabsContent>
 
-<TabsContent value="dept-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search pending requests..."
-            value={deptPendingSearch}
-            onChange={(e) => setDeptPendingSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="dept-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search pending requests..."
+              value={deptPendingSearch}
+              onChange={(e) => setDeptPendingSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={deptPendingDateRange.from}
+                          onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={deptPendingDateRange.to}
+                          onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
 
-        <div className="flex items-center gap-2">
-          <div className="relative">
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -3129,12 +4031,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={deptPendingDateRange.from}
               onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -3142,7 +4044,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={deptPendingDateRange.to}
               onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -3150,577 +4052,571 @@ export default function DataAccessRequests1() {
     </div>
 </TabsContent>
 
-</div>
-                
+                </div>
+
                 <TabsContent value="dept-pending" className="mt-0">
-                  
-<div className="mt-4">
-  {isOrgAdmin || isSuperAdmin ? (
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white" style={{position:'relative'}}>
-      <style>{`
-        .user-group-table { width: 100%; border-collapse: collapse; table-layout: auto; }
-        .user-group-table thead tr { background: #E6E6E6; }
-        .user-group-table th {
-          background: transparent; padding: 12px 15px; font-size: 13px; font-weight: 600;
-          color: #2B2B2B; text-align: left; position: sticky; top: 0; z-index: 2; white-space: nowrap;
-        }
-        .user-group-table td { padding: 12px 15px; font-size: 13px; color: #374151; border-bottom: 1px solid #F0F0F0; vertical-align: middle; text-align: left; background: inherit; }
-        .user-group-table th:first-child, .user-group-table td:first-child { padding-left: 16px !important; }
-        .user-group-table th:last-child, .user-group-table td:last-child { padding-right: 16px !important; }
-        .user-group-table .grp-sticky-id { position: sticky; left: 0; z-index: 3; background: inherit; }
-        .user-group-table .grp-sticky-expand { position: sticky; left: 0; z-index: 3; background: inherit; width: 40px; padding-right: 0 !important; }
-        .user-group-table .grp-sticky-actions { position: sticky; right: 0; z-index: 3; background: inherit; text-align: right; }
-        .user-group-table tbody tr { transition: background 0.15s; }
-        .user-group-table tbody tr:hover td { background: #F9FAFB; }
-        .user-group-table tbody tr.is-expanded td { background: #F9FAFB; }
-        .user-group-table .expanded-content-row td { padding: 0 !important; border-bottom: 2px solid #E5E7EB !important; background: #F9FAFB !important; }
-        .nested-member-table { width: 100%; border-collapse: collapse; table-layout: fixed; background: #FFFFFF; }
-        .nested-member-table thead tr { background: transparent; }
-        .nested-member-table th { background: transparent; padding: 14px 16px; font-size: 13px; font-weight: 500; color: #2B2B2B; text-align: left !important; vertical-align: middle; white-space: nowrap; border-bottom: 1px solid #F1F5F9; }
-        .nested-member-table th:first-child { padding-left: 20px !important; }
-        .nested-member-table th:last-child { padding-right: 20px !important; text-align: center !important; }
-        .nested-member-table td { padding: 0 16px; height: 60px; font-size: 13px; font-weight: 400; color: #374151; border-bottom: 1px solid #F1F5F9; vertical-align: middle; text-align: left !important; background: #FFFFFF; }
-        .nested-member-table td:first-child { padding-left: 20px !important; }
-        .nested-member-table td:last-child { padding-right: 20px !important; text-align: center !important; }
-        .nested-member-table tbody tr:last-child td { border-bottom: none; }
-        .nested-member-table tbody tr:hover td { background: #F9FAFB; }
-        .role-chip { display: inline-flex; align-items: center; padding: 2px 8px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-        .name-cell { display: flex; align-items: center; justify-content: flex-start; gap: 12px; }
-        .expand-btn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; border: 1px solid #E5E7EB; background: white; cursor: pointer; color: #6B7280; transition: all 0.15s; }
-        .expand-btn:hover { background: #F3F4F6; color: #374151; }
-        .expand-btn.active { background: #EFF6FF; border-color: #BFDBFE; color: #3B82F6; }
-      `}</style>
-      <table className="user-group-table w-full">
-        <thead>
-          <tr>
-            <th className="grp-sticky-expand" style={{width:'44px'}}></th>
-            <th className="grp-sticky-id" style={{left:'44px'}}>Requested Organization</th>
-            <th>Requested Department</th>
-            <th>Requested By</th>
-            <th>Requested Date</th>
-            <th>Uploaded File</th>
-            <th className="grp-sticky-actions">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TooltipProvider delayDuration={100}>
-            {Array.from(new Set(dataAccessPendingRequests.map(r => r.entity))).map((entity) => {
-              const reqs = dataAccessPendingRequests.filter(r => r.entity === entity);
-              const firstReq = reqs[0];
-              return (
-                <React.Fragment key={entity}>
-                  <tr className={expandedDataAccessRow === entity ? 'is-expanded' : ''}>
-                    <td className="grp-sticky-expand" style={{left:'0', width:'44px', paddingRight:'0'}}>
-                      <button
-                        className={`expand-btn ${expandedDataAccessRow === entity ? 'active' : ''}`}
-                        onClick={() => setExpandedDataAccessRow(expandedDataAccessRow === entity ? null : entity)}
-                        title={expandedDataAccessRow === entity ? 'Collapse' : 'Expand services'}
-                      >
-                        {expandedDataAccessRow === entity ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                      </button>
-                    </td>
-                    <td className="grp-sticky-id font-semibold text-[#111827] whitespace-nowrap" style={{left:'44px'}}>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
-                        {entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing'}
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <span className="text-[#374151] font-medium">{entity === 'Information & eGovernment Authority' ? 'GIS Section' : 'Infrastructure Unit'}</span>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <span className="font-medium text-[#374151]">{firstReq.requester}</span>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <div className="flex items-center gap-2 text-[#374151]">
-                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                        {firstReq.date}
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <div 
-                        className="flex items-center gap-2 px-3 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full w-max group cursor-pointer hover:bg-[#F3F4F6] transition-colors"
-                        onClick={() => {
-                          setPdfViewerOpen(true);
-                          setViewingFileName(`${(entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing').replace(/\s+/g, '_')}_Docs.pdf`);
-                          setSelectedPrintData({
-                            requesterName: firstReq.requester,
-                            designation: "Department Admin",
-                            contact: "33884422",
-                            email: "requester@gov.bh",
-                            organization: entity,
-                            users: reqs.map(r => ({
-                              cpr: "960512842",
-                              name: r.requester, // Using requester as user for this example
-                              contact: "33445566",
-                              email: "user@gov.bh",
-                              designation: "Analyst",
-                              department: "GIS Section",
-                              role: "Reviewer"
-                            }))
-                          });
-                        }}
-                      >
-                        <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
-                        <span className="text-[12px] font-medium text-[#374151] group-hover:text-[#111827] transition-colors truncate max-w-[150px]">{(entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing').replace(/\s+/g, '_')}_Docs.pdf</span>
-                      </div>
-                    </td>
-                    <td className="grp-sticky-actions">
-                      <div className="flex items-center justify-end gap-2 pr-2">
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button 
-                              className="w-[32px] h-[32px] flex items-center justify-center rounded-full bg-[#FEF3C7] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white transition-colors shadow-sm"
-                              onClick={(e) => { 
-                                e.stopPropagation(); 
-                                setForwardingEntity(entity);
-                                setDataAccessForwardDialogOpen(true); 
-                              }}
-                            >
-                              <Forward className="w-[16px] h-[16px]" strokeWidth={2.5} />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                        </Tooltip>
-                        
-                        <Tooltip>
-                          <TooltipTrigger asChild>
-                            <button 
-                              className="w-[32px] h-[32px] flex items-center justify-center rounded-full bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white transition-colors shadow-sm"
-                              onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: entity}); }}
-                            >
-                              <X className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                            </button>
-                          </TooltipTrigger>
-                          <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                        </Tooltip>
-                      </div>
-                    </td>
-                  </tr>
-
-                  {/* Expanded Dropdown Content */}
-                  {expandedDataAccessRow === entity && (
-                    <tr className="expanded-content-row">
-                      <td colSpan={7} style={{padding: '0 !important'}}>
-                        <div style={{animation: 'fadeIn 0.25s ease', padding: '16px 20px 20px 20px', background: '#F9FAFB'}}>
-                          <div className="flex items-center justify-between mb-4 px-2">
-                            <div>
-                              <h4 className="font-bold text-[#111827] text-[15px]">Requested Services</h4>
-                              <p className="text-[#6B7280] text-[13px] mt-0.5">Full list of services requested by {entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing'}</p>
-                            </div>
-                            <div className="px-3 py-1.5 bg-[#EFF6FF] text-[#3B82F6] rounded-full text-[12px] font-bold border border-[#BFDBFE]">
-                              3 Services
-                            </div>
-                          </div>
-
-                          <div className="rounded-xl border border-[#F3F4F6] overflow-hidden bg-white shadow-sm">
-                            <table className="nested-member-table" style={{tableLayout:'fixed', width:'100%'}}>
-                              <colgroup>
-                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '35%' : '85%'}} />
-                                {(isSuperAdmin || isOrgAdmin) && <col style={{width: '25%'}} />}
-                                {(isSuperAdmin || isOrgAdmin) && <col style={{width: '25%'}} />}
-                                <col style={{width: '15%'}} />
-                              </colgroup>
-                              <thead>
-                                <tr>
-                                  <th style={{textAlign:'left'}}>Service Name</th>
-                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Org</th>}
-                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Dept</th>}
-                                  <th style={{textAlign:'center'}}>Active</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {['Addresses', 'AdminBoundary', 'Administrative_Boundary_UPDA'].map((svc, idx) => {
-                                  const isChecked = true; // All displayed are active
-                                  return (
-                                    <tr key={idx}>
-                                      <td className="font-semibold text-[#111827]">{svc}</td>
-                                      {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">{entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing'}</td>}
-                                      {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">{entity === 'Information & eGovernment Authority' ? 'GIS Section' : 'Infrastructure Unit'}</td>}
-                                      <td style={{textAlign:'center', paddingRight:'20px'}}>
-                                        <div className={`mx-auto w-[18px] h-[18px] rounded border flex items-center justify-center cursor-pointer transition-all ${isChecked ? 'bg-[#EF4444] border-none shadow-sm' : 'border-[#D1D5DB] hover:border-[#6B7280]'}`}>
-                                          {isChecked && <Check className="w-3.5 h-3.5 text-white stroke-[3.5px]" />}
-                                        </div>
-                                      </td>
-                                    </tr>
-                                  );
-                                })}
-                              </tbody>
-                            </table>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </TooltipProvider>
-        </tbody>
-      </table>
-    </div>
-  ) : (
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-      <table className="dept-pending-table">
-        <thead>
-          <tr>
-            <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Service</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Entity</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Requester</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-            <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-center">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TooltipProvider delayDuration={100}>
-            {dataAccessPendingRequests.map((request) => (
-              <tr key={request.id}>
-                <td className="sticky-col-id font-medium text-[#111827]">
-                  <div className="flex items-center gap-2">
-                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full shadow-[0_0_8px_rgba(239,68,68,0.5)]"></div>
-                    {request.id}
-                  </div>
-                </td>
-                <td>{request.service}</td>
-                <td>{request.entity}</td>
-                <td>{request.requester}</td>
-                <td className="font-medium whitespace-nowrap">
-                  <div className="flex items-center gap-2 text-[#374151]">
-                    <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                    {request.date}
-                  </div>
-                </td>
-                <td className="sticky-col-actions">
-                  <div className="flex items-center justify-center gap-2">
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          className="flex items-center justify-center w-8 h-8 bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981] hover:text-white rounded-full transition-all duration-300 font-bold border border-[#10B981]/20 shadow-sm"
-                          onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
-                        >
-                          <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                    </Tooltip>
-                    
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          className="flex items-center justify-center w-8 h-8 bg-[#003F72]/10 text-[#003F72] hover:bg-[#003F72] hover:text-white rounded-full transition-all duration-300 font-bold border border-[#003F72]/20 shadow-sm"
-                          onClick={(e) => { 
-                            e.stopPropagation(); 
-                            setSelectedForwardRequest(request);
-                            setForwardDialogOpen(true);
-                            setSelectedDataOwners([]);
-                            setForwardNotes("");
-                          }}
-                        >
-                          âžœ
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                    </Tooltip>
-                    
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <button 
-                          className="flex items-center justify-center w-8 h-8 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444] hover:text-white rounded-full transition-all duration-300 font-bold border border-[#EF4444]/20 shadow-sm"
-                          onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
-                        >
-                          âœ•
-                        </button>
-                      </TooltipTrigger>
-                      <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                    </Tooltip>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </TooltipProvider>
-        </tbody>
-      </table>
-    </div>
-  )}
-</div>
-</TabsContent>
-
-                
-
-                <TabsContent value="dept-completed" className="mt-0">
-
-<div className="mt-4">
-  {isOrgAdmin || isSuperAdmin ? (
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white" style={{position:'relative'}}>
-      <style>{`
-        .user-group-table { width: 100%; border-collapse: collapse; table-layout: auto; }
-        .user-group-table thead tr { background: #E6E6E6; }
-        .user-group-table th {
-          background: transparent; padding: 12px 15px; font-size: 13px; font-weight: 600;
-          color: #2B2B2B; text-align: left; position: sticky; top: 0; z-index: 2; white-space: nowrap;
-        }
-        .user-group-table td { padding: 12px 15px; font-size: 13px; color: #374151; border-bottom: 1px solid #F0F0F0; vertical-align: middle; text-align: left; background: inherit; }
-        .user-group-table th:first-child, .user-group-table td:first-child { padding-left: 16px !important; }
-        .user-group-table th:last-child, .user-group-table td:last-child { padding-right: 16px !important; }
-        .user-group-table .grp-sticky-id { position: sticky; left: 0; z-index: 3; background: inherit; }
-        .user-group-table .grp-sticky-expand { position: sticky; left: 0; z-index: 3; background: inherit; width: 40px; padding-right: 0 !important; }
-        .user-group-table .grp-sticky-actions { position: sticky; right: 0; z-index: 3; background: inherit; text-align: right; }
-        .user-group-table tbody tr { transition: background 0.15s; }
-        .user-group-table tbody tr:hover td { background: #F9FAFB; }
-        .user-group-table tbody tr.is-expanded td { background: #F9FAFB; }
-        .user-group-table .expanded-content-row td { padding: 0 !important; border-bottom: 2px solid #E5E7EB !important; background: #F9FAFB !important; }
-        .nested-member-table { width: 100%; border-collapse: collapse; table-layout: fixed; background: #FFFFFF; }
-        .nested-member-table thead tr { background: transparent; }
-        .nested-member-table th { background: transparent; padding: 14px 16px; font-size: 13px; font-weight: 500; color: #2B2B2B; text-align: left !important; vertical-align: middle; white-space: nowrap; border-bottom: 1px solid #F1F5F9; }
-        .nested-member-table th:first-child { padding-left: 20px !important; }
-        .nested-member-table th:last-child { padding-right: 20px !important; text-align: center !important; }
-        .nested-member-table td { padding: 0 16px; height: 60px; font-size: 13px; font-weight: 400; color: #374151; border-bottom: 1px solid #F1F5F9; vertical-align: middle; text-align: left !important; background: #FFFFFF; }
-        .nested-member-table td:first-child { padding-left: 20px !important; }
-        .nested-member-table td:last-child { padding-right: 20px !important; text-align: center !important; }
-        .nested-member-table tbody tr:last-child td { border-bottom: none; }
-        .nested-member-table tbody tr:hover td { background: #F9FAFB; }
-        .expand-btn { display: flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 8px; border: 1px solid #E5E7EB; background: white; cursor: pointer; color: #6B7280; transition: all 0.15s; }
-        .expand-btn:hover { background: #F3F4F6; color: #374151; }
-        .expand-btn.active { background: #EFF6FF; border-color: #BFDBFE; color: #3B82F6; }
-      `}</style>
-      <table className="user-group-table w-full">
-        <thead>
-          <tr>
-            <th className="grp-sticky-expand" style={{width:'44px'}}></th>
-            <th className="grp-sticky-id" style={{left:'44px'}}>Requested Organization</th>
-            <th>Requested Department</th>
-            <th>Requested By</th>
-            <th>Requested Date</th>
-            <th>Action by</th>
-            <th>Action date</th>
-            <th>Uploaded File</th>
-            <th className="grp-sticky-actions">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          <TooltipProvider delayDuration={100}>
-            {Array.from(new Set(dataAccessCompletedRequests.filter(r => {
-                const searchMatch = !dataAccessCompletedSearch || r.id.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()) || (r.requester && r.requester.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase())) || (r.service && r.service.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()));
-                const statusValue = r.status || "Approved";
-                const statusMatch = dataAccessCompletedStatusFilter === 'All' || statusValue.toLowerCase() === dataAccessCompletedStatusFilter.toLowerCase();
-                const fromDateMatch = !dataAccessCompletedDateRange.from || new Date(r.appDate || r.approvedDate || r.requestedDate) >= new Date(dataAccessCompletedDateRange.from);
-                const toDateMatch = !dataAccessCompletedDateRange.to || new Date(r.appDate || r.approvedDate || r.requestedDate) <= new Date(dataAccessCompletedDateRange.to);
-                return searchMatch && statusMatch && fromDateMatch && toDateMatch;
-            }).map(r => r.id))).map((id) => {
-              const request = dataAccessCompletedRequests.find(r => r.id === id)!;
-              return (
-                <React.Fragment key={id}>
-                  <tr className={expandedDataAccessCmpRow === id ? 'is-expanded' : ''}>
-                    <td className="grp-sticky-expand" style={{left:'0', width:'44px', paddingRight:'0'}}>
-                      <button
-                        className={`expand-btn ${expandedDataAccessCmpRow === id ? 'active' : ''}`}
-                        onClick={() => setExpandedDataAccessCmpRow(expandedDataAccessCmpRow === id ? null : id)}
-                        title={expandedDataAccessCmpRow === id ? 'Collapse' : 'Expand services'}
-                      >
-                        {expandedDataAccessCmpRow === id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
-                      </button>
-                    </td>
-                    <td className="grp-sticky-id font-semibold text-[#111827] whitespace-nowrap" style={{left:'44px'}}>
-                      <div className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full"></div>
-                        National Health Authority
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <span className="text-[#374151] font-medium">Public Health Unit</span>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <span className="font-medium text-[#374151]">{request.requester || "Jawaher Rashed"}</span>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <div className="flex items-center gap-2 text-[#374151]">
-                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                        {request.requestedDate}
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <span className="inline-flex items-center px-[10px] py-[4px] rounded-full text-[12px] font-medium bg-[#E6F0FA] text-[#3D72A2]">
-                        {request.status?.toLowerCase() === "approved" || !request.status ? (request.approvedBy || "Jawaher Rashed") : 
-                         request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
-                         (request.forwardedBy || "Ahmed Al-Mansoori")}
-                      </span>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <div className="flex items-center gap-2 text-[#374151]">
-                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                        {request.status?.toLowerCase() === "approved" || !request.status ? (request.appDate || request.approvedDate || "20 Jan 2025") : 
-                         request.status?.toLowerCase() === "rejected" ? (request.rejDate || request.rejectedDate || "21 Jan 2025") : 
-                         (request.fwdDate || request.forwardedDate || "18 Jan 2025")}
-                      </div>
-                    </td>
-                    <td className="whitespace-nowrap">
-                      <div 
-                        className="flex items-center gap-2 px-3 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full w-max group cursor-pointer hover:bg-[#F3F4F6] transition-colors"
-                        onClick={() => {
-                          setPdfViewerOpen(true);
-                          setViewingFileName("National_Health_Authority_Docs.pdf");
-                          setSelectedPrintData({
-                            requesterName: request.requester || "Jawaher Rashed",
-                            designation: "Director",
-                            contact: "17245566",
-                            email: "j.rashed@nha.gov.bh",
-                            organization: "National Health Authority",
-                            users: [
-                              {
-                                cpr: "880412532",
-                                name: request.requester || "Jawaher Rashed",
-                                contact: "33221144",
-                                email: "user@nha.gov.bh",
-                                designation: "Officer",
-                                department: "Public Health Unit",
-                                role: "Contributor"
-                              }
-                            ]
-                          });
-                        }}
-                      >
-                        <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
-                        <span className="text-[12px] font-medium text-[#374151] truncate max-w-[120px]">National_Health_Authority_Docs.pdf</span>
-                      </div>
-                    </td>
-                    <td className="grp-sticky-actions">
-                      <div className="flex items-center justify-end pr-2">
-                        <span className={`status-badge ${(request.status || "Approved").toLowerCase().includes("approve") ? "approved" : (request.status || "Approved").toLowerCase() === "forwarded" ? "forward" : "reject"}`}>
-                          {request.status || "Approved"}
-                        </span>
-                      </div>
-                    </td>
-                  </tr>
-
-                  {expandedDataAccessCmpRow === id && (
-                    <tr className="expanded-content-row">
-                      <td colSpan={9} style={{padding: '0 !important'}}>
-                        <div style={{animation: 'fadeIn 0.25s ease', padding: '16px 20px 20px 20px', background: '#F9FAFB'}}>
-                          <div className="flex items-center justify-between mb-4 px-2">
-                            <div>
-                              <h4 className="font-bold text-[#111827] text-[15px]">Approved Services</h4>
-                              <p className="text-[#6B7280] text-[13px] mt-0.5">Full list of services approved for National Health Authority</p>
-                            </div>
-                            <div className="px-3 py-1.5 bg-[#ECFDF5] text-[#065F46] rounded-full text-[12px] font-bold border border-[#A7F3D0]">
-                              3 Services
-                            </div>
-                          </div>
-                          <div className="rounded-xl border border-[#F3F4F6] overflow-hidden bg-white shadow-sm">
-                            <table className="nested-member-table" style={{tableLayout:'fixed', width:'100%'}}>
-                              <colgroup>
-                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '25%' : '40%'}} />
-                                {(isSuperAdmin || isOrgAdmin) && <col style={{width:'15%'}} />}
-                                {(isSuperAdmin || isOrgAdmin) && <col style={{width:'15%'}} />}
-                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '15%' : '20%'}} />
-                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '15%' : '25%'}} />
-                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '15%' : '15%'}} />
-                              </colgroup>
-                              <thead>
-                                <tr>
-                                  <th style={{textAlign:'left'}}>Service Name</th>
-                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Org</th>}
-                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Dept</th>}
-                                  <th style={{textAlign:'left'}}>Action date</th>
-                                  <th style={{textAlign:'left'}}>Action by</th>
-                                  <th style={{textAlign:'center'}}>Active</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {['Addresses', 'AdminBoundary', 'Administrative_Boundary_UPDA'].map((svc, idx) => (
-                                  <tr key={idx}>
-                                    <td className="font-semibold text-[#111827]">{svc}</td>
-                                    {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">National Health Authority</td>}
-                                    {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">Public Health Unit</td>}
-                                    <td>
-                                      <div className="flex items-center gap-2 text-[13px] text-[#374151]">
-                                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                        {request.status?.toLowerCase() === "approved" || !request.status ? (request.appDate || request.approvedDate || "15 Mar 2026") : 
-                                         request.status?.toLowerCase() === "rejected" ? (request.rejDate || request.rejectedDate || "16 Mar 2026") : 
-                                         (request.fwdDate || request.forwardedDate || "14 Mar 2026")}
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white" style={{position:'relative'}}>
+                      <table className="user-group-table w-full">
+                        <thead>
+                          <tr>
+                            <th className="grp-sticky-expand" style={{width:'44px'}}></th>
+                            <th className="grp-sticky-id" style={{left:'44px'}}>Requested Organization</th>
+                            <th>Requested Department</th>
+                            <th>Requested By</th>
+                            <th>Requested Date</th>
+                            <th>Uploaded File</th>
+                            <th className="grp-sticky-actions">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TooltipProvider delayDuration={100}>
+                            {Array.from(new Set(dataAccessPendingRequests.map(r => r.entity))).map((entity) => {
+                              const reqs = dataAccessPendingRequests.filter(r => r.entity === entity);
+                              const firstReq = reqs[0];
+                              return (
+                                <React.Fragment key={entity}>
+                                  <tr className={expandedDataAccessRow === entity ? 'is-expanded' : ''}>
+                                    <td className="grp-sticky-expand" style={{left:'0', width:'44px', paddingRight:'0'}}>
+                                      <button
+                                        className={`expand-btn ${expandedDataAccessRow === entity ? 'active' : ''}`}
+                                        onClick={() => setExpandedDataAccessRow(expandedDataAccessRow === entity ? null : entity)}
+                                        title={expandedDataAccessRow === entity ? 'Collapse' : 'Expand services'}
+                                      >
+                                        {expandedDataAccessRow === entity ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                                      </button>
+                                    </td>
+                                    <td className="grp-sticky-id font-semibold text-[#111827] whitespace-nowrap" style={{left:'44px'}}>
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                        {entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing'}
                                       </div>
                                     </td>
-                                    <td className="text-[#374151]">
-                                      {request.status?.toLowerCase() === "approved" || !request.status ? (request.approvedBy || "Jawaher Rashed") : 
-                                       request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
-                                       (request.forwardedBy || "Ahmed Al-Mansoori")}
+                                    <td className="whitespace-nowrap">
+                                      <span className="text-[#374151] font-medium">{entity === 'Information & eGovernment Authority' ? 'GIS Section' : 'Infrastructure Unit'}</span>
                                     </td>
-                                    <td style={{textAlign:'center', paddingRight:'20px'}}>
-                                      <div className="mx-auto w-[18px] h-[18px] rounded bg-[#EF4444] border-none shadow-sm flex items-center justify-center">
-                                        <Check className="w-3.5 h-3.5 text-white stroke-[3.5px]" />
+                                    <td className="whitespace-nowrap">
+                                      <span className="font-medium text-[#374151]">{firstReq.requester}</span>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <div className="flex items-center gap-2 text-[#374151]">
+                                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                        {firstReq.date}
+                                      </div>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <div 
+                                        className="flex items-center gap-2 px-3 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full w-max group cursor-pointer hover:bg-[#F3F4F6] transition-colors"
+                                        onClick={() => {
+                                          setPdfViewerOpen(true);
+                                          setViewingFileName(`${(entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing').replace(/\s+/g, '_')}_Docs.pdf`);
+                                          setSelectedPrintData({
+                                            requesterName: firstReq.requester,
+                                            designation: "Department Admin",
+                                            contact: "33884422",
+                                            email: "requester@gov.bh",
+                                            organization: entity,
+                                            users: reqs.map(r => ({
+                                              cpr: "960512842",
+                                              name: r.requester, // Using requester as user for this example
+                                              contact: "33445566",
+                                              email: "user@gov.bh",
+                                              designation: "Analyst",
+                                              department: "GIS Section",
+                                              role: "Reviewer"
+                                            }))
+                                          });
+                                        }}
+                                      >
+                                        <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
+                                        <span className="text-[12px] font-medium text-[#374151] group-hover:text-[#111827] transition-colors truncate max-w-[150px]">{(entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing').replace(/\s+/g, '_')}_Docs.pdf</span>
+                                      </div>
+                                    </td>
+                                    <td className="grp-sticky-actions">
+                                      <div className="flex items-center justify-end gap-2 pr-2">
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <button 
+                                              className="w-[32px] h-[32px] flex items-center justify-center rounded-full bg-[#FEF3C7] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white transition-colors shadow-sm"
+                                              onClick={(e) => { 
+                                                e.stopPropagation(); 
+                                                setForwardingEntity(entity);
+                                                setDataAccessForwardDialogOpen(true); 
+                                              }}
+                                            >
+                                              <Forward className="w-[16px] h-[16px]" strokeWidth={2.5} />
+                                            </button>
+                                          </TooltipTrigger>
+                                          <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
+                                        </Tooltip>
+                                        
+                                        <Tooltip>
+                                          <TooltipTrigger asChild>
+                                            <button 
+                                              className="w-[32px] h-[32px] flex items-center justify-center rounded-full bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white transition-colors shadow-sm"
+                                              onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: entity}); }}
+                                            >
+                                              <X className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                                            </button>
+                                          </TooltipTrigger>
+                                          <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
+                                        </Tooltip>
                                       </div>
                                     </td>
                                   </tr>
+
+                                  {/* Expanded Dropdown Content */}
+                                  {expandedDataAccessRow === entity && (
+                                    <tr className="expanded-content-row">
+                                      <td colSpan={7} style={{padding: '0 !important'}}>
+                                        <div style={{animation: 'fadeIn 0.25s ease', padding: '16px 20px 20px 20px', background: '#F9FAFB'}}>
+                                          <div className="flex items-center justify-between mb-4 px-2">
+                                            <div>
+                                              <h4 className="font-bold text-[#111827] text-[15px]">Requested Services</h4>
+                                              <p className="text-[#6B7280] text-[13px] mt-0.5">Full list of services requested by {entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing'}</p>
+                                            </div>
+                                            <div className="px-3 py-1.5 bg-[#EFF6FF] text-[#3B82F6] rounded-full text-[12px] font-bold border border-[#BFDBFE]">
+                                              3 Services
+                                            </div>
+                                          </div>
+
+                                          <div className="rounded-xl border border-[#F3F4F6] overflow-hidden bg-white shadow-sm">
+                                            <table className="nested-member-table" style={{tableLayout:'fixed', width:'100%'}}>
+                                              <colgroup>
+                                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '35%' : '85%'}} />
+                                                {(isSuperAdmin || isOrgAdmin) && <col style={{width: '25%'}} />}
+                                                {(isSuperAdmin || isOrgAdmin) && <col style={{width: '25%'}} />}
+                                                <col style={{width: '15%'}} />
+                                              </colgroup>
+                                              <thead>
+                                                <tr>
+                                                  <th style={{textAlign:'left'}}>Service Name</th>
+                                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Org</th>}
+                                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Dept</th>}
+                                                  <th style={{textAlign:'center'}}>Active</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {['Addresses', 'AdminBoundary', 'Administrative_Boundary_UPDA'].map((svc, idx) => {
+                                                  const isChecked = true; // All displayed are active
+                                                  return (
+                                                    <tr key={idx}>
+                                                      <td className="font-semibold text-[#111827]">{svc}</td>
+                                                      {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">{entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing'}</td>}
+                                                      {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">{entity === 'Information & eGovernment Authority' ? 'GIS Section' : 'Infrastructure Unit'}</td>}
+                                                      <td style={{textAlign:'center', paddingRight:'20px'}}>
+                                                        <div className={`mx-auto w-[18px] h-[18px] rounded border flex items-center justify-center cursor-pointer transition-all ${isChecked ? 'bg-[#EF4444] border-none shadow-sm' : 'border-[#D1D5DB] hover:border-[#6B7280]'}`}>
+                                                          {isChecked && <Check className="w-3.5 h-3.5 text-white stroke-[3.5px]" />}
+                                                        </div>
+                                                      </td>
+                                                    </tr>
+                                                  );
+                                                })}
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </React.Fragment>
+                              );
+                            })}
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {Array.from(new Set(dataAccessPendingRequests.map(r => r.entity))).map((entity) => {
+                        const reqs = dataAccessPendingRequests.filter(r => r.entity === entity);
+                        const firstReq = reqs[0];
+                        const displayOrg = entity === 'Information & eGovernment Authority' ? 'Urban Planning Dept' : 'Ministry of Housing';
+                        const displayDept = entity === 'Information & eGovernment Authority' ? 'GIS Section' : 'Infrastructure Unit';
+                        
+                        return (
+                          <div key={entity} className="mobile-card !p-0 overflow-hidden">
+                            <div className="p-4">
+                              <div className="flex justify-between items-start mb-3">
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                    <span className="text-xs font-bold text-[#6B7280]">{displayOrg}</span>
+                                  </div>
+                                  <h4 className="text-sm font-bold text-[#111827]">{displayDept}</h4>
+                                </div>
+                                <div className="flex gap-2">
+                                  <button 
+                                    className="w-8 h-8 flex items-center justify-center bg-[#F59E0B]/10 text-[#F59E0B] rounded-full border border-[#F59E0B]/20"
+                                    onClick={() => {
+                                      setForwardingEntity(entity);
+                                      setDataAccessForwardDialogOpen(true);
+                                    }}
+                                  >
+                                    <Forward className="w-4 h-4" />
+                                  </button>
+                                  <button 
+                                    className="w-8 h-8 flex items-center justify-center bg-[#EF4444]/10 text-[#EF4444] rounded-full border border-[#EF4444]/20"
+                                    onClick={() => setRejectDialog({open: true, requestId: entity})}
+                                  >
+                                    <X className="w-4 h-4" />
+                                  </button>
+                                </div>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-2 mb-3">
+                                <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                                  <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Requested By</span>
+                                  <span className="text-xs font-medium text-[#111827]">{firstReq.requester}</span>
+                                </div>
+                                <div className="p-2 bg-[#F9FAFB] rounded-lg border border-[#F1F5F9]">
+                                  <span className="text-[10px] text-[#9CA3AF] uppercase font-bold block mb-1">Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{firstReq.date}</span>
+                                </div>
+                              </div>
+
+                              <div className="flex justify-between items-center">
+                                <button
+                                  className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F6F8] rounded-lg border border-[#E5E7EB] text-[11px] font-medium text-[#374151]"
+                                  onClick={() => {
+                                    setPdfViewerOpen(true);
+                                    setViewingFileName(`${displayOrg.replace(/\s+/g, '_')}_Docs.pdf`);
+                                  }}
+                                >
+                                  <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
+                                  <span className="truncate max-w-[120px]">{displayOrg.replace(/\s+/g, '_')}_Docs.pdf</span>
+                                </button>
+                                
+                                <button
+                                  className={`flex items-center gap-1 text-[11px] font-bold uppercase transition-colors ${expandedDataAccessRow === entity ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}
+                                  onClick={() => setExpandedDataAccessRow(expandedDataAccessRow === entity ? null : entity)}
+                                >
+                                  {expandedDataAccessRow === entity ? 'Hide Services' : 'View Services'}
+                                  {expandedDataAccessRow === entity ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                                </button>
+                              </div>
+                            </div>
+
+                            {/* Mobile Expanded Services */}
+                            {expandedDataAccessRow === entity && (
+                              <div className="bg-[#F9FAFB] border-t border-[#F1F5F9] p-4 space-y-2">
+                                <div className="flex items-center justify-between mb-2">
+                                  <span className="text-[10px] font-bold text-[#9CA3AF] uppercase">Service Name</span>
+                                  <span className="text-[10px] font-bold text-[#9CA3AF] uppercase">Active</span>
+                                </div>
+                                {['Addresses', 'AdminBoundary', 'Administrative_Boundary_UPDA'].map((svc, idx) => (
+                                  <div key={idx} className="bg-white p-3 rounded-lg border border-[#F1F5F9] flex justify-between items-center shadow-sm">
+                                    <span className="text-xs font-bold text-[#111827]">{svc}</span>
+                                    <div className="w-5 h-5 rounded bg-[#EF4444] flex items-center justify-center">
+                                      <Check className="w-3.5 h-3.5 text-white stroke-[3px]" />
+                                    </div>
+                                  </div>
                                 ))}
-                              </tbody>
-                            </table>
+                              </div>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </TabsContent>
+
+                <TabsContent value="dept-completed" className="mt-0">
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white" style={{position:'relative'}}>
+                      <table className="user-group-table w-full">
+                        <thead>
+                          <tr>
+                            <th className="grp-sticky-expand" style={{width:'44px'}}></th>
+                            <th className="grp-sticky-id" style={{left:'44px'}}>Requested Organization</th>
+                            <th>Requested Department</th>
+                            <th>Requested By</th>
+                            <th>Requested Date</th>
+                            <th>Action by</th>
+                            <th>Action date</th>
+                            <th>Uploaded File</th>
+                            <th className="grp-sticky-actions">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TooltipProvider delayDuration={100}>
+                            {Array.from(new Set(dataAccessCompletedRequests.filter(r => {
+                                const searchMatch = !dataAccessCompletedSearch || r.id.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()) || (r.requester && r.requester.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase())) || (r.service && r.service.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()));
+                                const statusValue = r.status || "Approved";
+                                const statusMatch = dataAccessCompletedStatusFilter === 'All' || statusValue.toLowerCase() === dataAccessCompletedStatusFilter.toLowerCase();
+                                const fromDateMatch = !dataAccessCompletedDateRange.from || new Date(r.appDate || r.approvedDate || r.requestedDate) >= new Date(dataAccessCompletedDateRange.from);
+                                const toDateMatch = !dataAccessCompletedDateRange.to || new Date(r.appDate || r.approvedDate || r.requestedDate) <= new Date(dataAccessCompletedDateRange.to);
+                                return searchMatch && statusMatch && fromDateMatch && toDateMatch;
+                            }).map(r => r.id))).map((id) => {
+                              const request = dataAccessCompletedRequests.find(r => r.id === id)!;
+                              return (
+                                <React.Fragment key={id}>
+                                  <tr className={expandedDataAccessCmpRow === id ? 'is-expanded' : ''}>
+                                    <td className="grp-sticky-expand" style={{left:'0', width:'44px', paddingRight:'0'}}>
+                                      <button
+                                        className={`expand-btn ${expandedDataAccessCmpRow === id ? 'active' : ''}`}
+                                        onClick={() => setExpandedDataAccessCmpRow(expandedDataAccessCmpRow === id ? null : id)}
+                                        title={expandedDataAccessCmpRow === id ? 'Collapse' : 'Expand services'}
+                                      >
+                                        {expandedDataAccessCmpRow === id ? <ChevronUp className="w-3.5 h-3.5" /> : <ChevronDown className="w-3.5 h-3.5" />}
+                                      </button>
+                                    </td>
+                                    <td className="grp-sticky-id font-semibold text-[#111827] whitespace-nowrap" style={{left:'44px'}}>
+                                      <div className="flex items-center gap-2">
+                                        <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full"></div>
+                                        National Health Authority
+                                      </div>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <span className="text-[#374151] font-medium">Public Health Unit</span>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <span className="font-medium text-[#374151]">{request.requester || "Jawaher Rashed"}</span>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <div className="flex items-center gap-2 text-[#374151]">
+                                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                        {request.requestedDate}
+                                      </div>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <span className="inline-flex items-center px-[10px] py-[4px] rounded-full text-[12px] font-medium bg-[#E6F0FA] text-[#3D72A2]">
+                                        {request.status?.toLowerCase() === "approved" || !request.status ? (request.approvedBy || "Jawaher Rashed") : 
+                                         request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
+                                         (request.forwardedBy || "Ahmed Al-Mansoori")}
+                                      </span>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <div className="flex items-center gap-2 text-[#374151]">
+                                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                        {request.status?.toLowerCase() === "approved" || !request.status ? (request.appDate || request.approvedDate || "20 Jan 2025") : 
+                                         request.status?.toLowerCase() === "rejected" ? (request.rejDate || request.rejectedDate || "21 Jan 2025") : 
+                                         (request.fwdDate || request.forwardedDate || "18 Jan 2025")}
+                                      </div>
+                                    </td>
+                                    <td className="whitespace-nowrap">
+                                      <div 
+                                        className="flex items-center gap-2 px-3 py-1.5 bg-[#F9FAFB] border border-[#E5E7EB] rounded-full w-max group cursor-pointer hover:bg-[#F3F4F6] transition-colors"
+                                        onClick={() => {
+                                          setPdfViewerOpen(true);
+                                          setViewingFileName("National_Health_Authority_Docs.pdf");
+                                          setSelectedPrintData({
+                                            requesterName: request.requester || "Jawaher Rashed",
+                                            designation: "Director",
+                                            contact: "17245566",
+                                            email: "j.rashed@nha.gov.bh",
+                                            organization: "National Health Authority",
+                                            users: [
+                                              {
+                                                cpr: "880412532",
+                                                name: request.requester || "Jawaher Rashed",
+                                                contact: "33221144",
+                                                email: "user@nha.gov.bh",
+                                                designation: "Officer",
+                                                department: "Public Health Unit",
+                                                role: "Contributor"
+                                              }
+                                            ]
+                                          });
+                                        }}
+                                      >
+                                        <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
+                                        <span className="text-[12px] font-medium text-[#374151] truncate max-w-[120px]">National_Health_Authority_Docs.pdf</span>
+                                      </div>
+                                    </td>
+                                    <td className="grp-sticky-actions">
+                                      <div className="flex items-center justify-end pr-2">
+                                        <span className={`status-badge ${(request.status || "Approved").toLowerCase().includes("approve") ? "approved" : (request.status || "Approved").toLowerCase() === "forwarded" ? "forward" : "reject"}`}>
+                                          {request.status || "Approved"}
+                                        </span>
+                                      </div>
+                                    </td>
+                                  </tr>
+
+                                  {expandedDataAccessCmpRow === id && (
+                                    <tr className="expanded-content-row">
+                                      <td colSpan={9} style={{padding: '0 !important'}}>
+                                        <div style={{animation: 'fadeIn 0.25s ease', padding: '16px 20px 20px 20px', background: '#F9FAFB'}}>
+                                          <div className="flex items-center justify-between mb-4 px-2">
+                                            <div>
+                                              <h4 className="font-bold text-[#111827] text-[15px]">Approved Services</h4>
+                                              <p className="text-[#6B7280] text-[13px] mt-0.5">Full list of services approved for National Health Authority</p>
+                                            </div>
+                                            <div className="px-3 py-1.5 bg-[#ECFDF5] text-[#065F46] rounded-full text-[12px] font-bold border border-[#A7F3D0]">
+                                              3 Services
+                                            </div>
+                                          </div>
+                                          <div className="rounded-xl border border-[#F3F4F6] overflow-hidden bg-white shadow-sm">
+                                            <table className="nested-member-table" style={{tableLayout:'fixed', width:'100%'}}>
+                                              <colgroup>
+                                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '25%' : '40%'}} />
+                                                {(isSuperAdmin || isOrgAdmin) && <col style={{width:'15%'}} />}
+                                                {(isSuperAdmin || isOrgAdmin) && <col style={{width:'15%'}} />}
+                                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '15%' : '20%'}} />
+                                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '15%' : '25%'}} />
+                                                <col style={{width: (isSuperAdmin || isOrgAdmin) ? '15%' : '15%'}} />
+                                              </colgroup>
+                                              <thead>
+                                                <tr>
+                                                  <th style={{textAlign:'left'}}>Service Name</th>
+                                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Org</th>}
+                                                  {(isSuperAdmin || isOrgAdmin) && <th style={{textAlign:'left'}}>Requested Dept</th>}
+                                                  <th style={{textAlign:'left'}}>Action date</th>
+                                                  <th style={{textAlign:'left'}}>Action by</th>
+                                                  <th style={{textAlign:'center'}}>Active</th>
+                                                </tr>
+                                              </thead>
+                                              <tbody>
+                                                {['Addresses', 'AdminBoundary', 'Administrative_Boundary_UPDA'].map((svc, idx) => (
+                                                  <tr key={idx}>
+                                                    <td className="font-semibold text-[#111827]">{svc}</td>
+                                                    {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">National Health Authority</td>}
+                                                    {(isSuperAdmin || isOrgAdmin) && <td className="text-[#374151]">Public Health Unit</td>}
+                                                    <td>
+                                                      <div className="flex items-center gap-2 text-[13px] text-[#374151]">
+                                                        <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                                        {request.status?.toLowerCase() === "approved" || !request.status ? (request.appDate || request.approvedDate || "15 Mar 2026") : 
+                                                         request.status?.toLowerCase() === "rejected" ? (request.rejDate || request.rejectedDate || "16 Mar 2026") : 
+                                                         (request.fwdDate || request.forwardedDate || "14 Mar 2026")}
+                                                      </div>
+                                                    </td>
+                                                    <td className="text-[#374151]">
+                                                      {request.status?.toLowerCase() === "approved" || !request.status ? (request.approvedBy || "Jawaher Rashed") : 
+                                                       request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
+                                                       (request.forwardedBy || "Ahmed Al-Mansoori")}
+                                                    </td>
+                                                    <td style={{textAlign:'center', paddingRight:'20px'}}>
+                                                      <div className="mx-auto w-[18px] h-[18px] rounded bg-[#EF4444] border-none shadow-sm flex items-center justify-center">
+                                                        <Check className="w-3.5 h-3.5 text-white stroke-[3.5px]" />
+                                                      </div>
+                                                    </td>
+                                                  </tr>
+                                                ))}
+                                              </tbody>
+                                            </table>
+                                          </div>
+                                        </div>
+                                      </td>
+                                    </tr>
+                                  )}
+                                </React.Fragment>
+                              );
+                            })}
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4 mt-4">
+                  {Array.from(new Set(dataAccessCompletedRequests.filter(r => {
+                      const searchMatch = !dataAccessCompletedSearch || r.id.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()) || (r.requester && r.requester.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase())) || (r.service && r.service.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()));
+                      const statusValue = r.status || "Approved";
+                      const statusMatch = dataAccessCompletedStatusFilter === 'All' || statusValue.toLowerCase() === dataAccessCompletedStatusFilter.toLowerCase();
+                      const fromDateMatch = !dataAccessCompletedDateRange.from || new Date(r.appDate || r.approvedDate || r.requestedDate) >= new Date(dataAccessCompletedDateRange.from);
+                      const toDateMatch = !dataAccessCompletedDateRange.to || new Date(r.appDate || r.approvedDate || r.requestedDate) <= new Date(dataAccessCompletedDateRange.to);
+                      return searchMatch && statusMatch && fromDateMatch && toDateMatch;
+                  }).map(r => r.id))).map((id) => {
+                    const request = dataAccessCompletedRequests.find(r => r.id === id)!;
+                    const status = request.status || "Approved";
+                    const actionBy = status.toLowerCase() === "approved" || status.toLowerCase() === "completed" ? (request.approvedBy || "Jawaher Rashed") : 
+                                     status.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
+                                     (request.forwardedBy || "Ahmed Al-Mansoori");
+                    const actionDate = status.toLowerCase() === "approved" || status.toLowerCase() === "completed" ? (request.appDate || request.approvedDate || "20 Jan 2025") : 
+                                       status.toLowerCase() === "rejected" ? (request.rejDate || request.rejectedDate || "21 Jan 2025") : 
+                                       (request.fwdDate || request.forwardedDate || "18 Jan 2025");
+
+                    return (
+                      <div key={id} className="mobile-card !p-0 overflow-hidden">
+                        <div className="p-4">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className={`w-1.5 h-1.5 rounded-full ${status.toLowerCase().includes('approve') || status.toLowerCase() === 'completed' ? 'bg-[#10B981]' : status.toLowerCase() === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                <span className="text-xs font-bold text-[#6B7280]">National Health Authority</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">Public Health Unit</h4>
+                            </div>
+                            <Badge className={`status-badge ${status.toLowerCase().includes('approve') || status.toLowerCase() === 'completed' ? 'approved' : status.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
+                              {status}
+                            </Badge>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-y-2 gap-x-4 mb-3">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.requester || "Jawaher Rashed"}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Req. Date</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.requestedDate}</span>
+                            </div>
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                              <span className="text-xs font-medium text-[#111827]">{actionBy}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                              <span className="text-xs font-medium text-[#111827]">{actionDate}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex justify-between items-center">
+                            <button
+                              className="flex items-center gap-2 px-3 py-1.5 bg-[#F5F6F8] rounded-lg border border-[#E5E7EB] text-[11px] font-medium text-[#374151]"
+                              onClick={() => {
+                                setPdfViewerOpen(true);
+                                setViewingFileName("National_Health_Authority_Docs.pdf");
+                              }}
+                            >
+                              <FileText className="w-3.5 h-3.5 text-[#EF4444]" />
+                              <span className="truncate max-w-[120px]">NHA_Docs.pdf</span>
+                            </button>
+                            
+                            <button
+                              className={`flex items-center gap-1 text-[11px] font-bold uppercase transition-colors ${expandedDataAccessCmpRow === id ? 'text-[#3B82F6]' : 'text-[#6B7280]'}`}
+                              onClick={() => setExpandedDataAccessCmpRow(expandedDataAccessCmpRow === id ? null : id)}
+                            >
+                              {expandedDataAccessCmpRow === id ? 'Hide Services' : 'View Services'}
+                              {expandedDataAccessCmpRow === id ? <ChevronUp className="w-3 h-3" /> : <ChevronDown className="w-3 h-3" />}
+                            </button>
                           </div>
                         </div>
-                      </td>
-                    </tr>
-                  )}
-                </React.Fragment>
-              );
-            })}
-          </TooltipProvider>
-        </tbody>
-      </table>
-    </div>
-  ) : (
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-      <table className="dept-pending-table">
-        <thead>
-          <tr>
-            <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Service</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Entity</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Requester</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Action date</th>
-            <th className="text-[11px] font-bold text-[#6B7280]">Action by</th>
-            <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-center">Status</th>
-          </tr>
-        </thead>
-        <tbody>
-          {dataAccessCompletedRequests.filter(r => {
-  const searchMatch = !dataAccessCompletedSearch || r.id.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()) || r.service.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase()) || r.approvedBy.toLowerCase().includes(dataAccessCompletedSearch.toLowerCase());
-  const statusMatch = 
-    dataAccessCompletedStatusFilter === "All" ||
-    (dataAccessCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
-    (dataAccessCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
-    (dataAccessCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
-  return searchMatch && statusMatch;
-}).map((request) => (
-            <tr key={request.id}>
-              <td className="sticky-col-id font-medium text-[#111827]">
-                <div className="flex items-center gap-2">
-                  <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full"></div>
-                  {request.id}
+
+                        {/* Mobile Expanded Services */}
+                        {expandedDataAccessCmpRow === id && (
+                          <div className="bg-[#F9FAFB] border-t border-[#F1F5F9] p-4 space-y-3">
+                            {['Addresses', 'AdminBoundary', 'Administrative_Boundary_UPDA'].map((svc, idx) => (
+                              <div key={idx} className="bg-white p-3 rounded-xl border border-[#F1F5F9] shadow-sm">
+                                <div className="flex justify-between items-center mb-2">
+                                  <h5 className="text-xs font-bold text-[#111827]">{svc}</h5>
+                                  <div className="w-5 h-5 rounded bg-[#EF4444] flex items-center justify-center">
+                                    <Check className="w-3.5 h-3.5 text-white stroke-[3px]" />
+                                  </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-2 text-[10px]">
+                                  <div>
+                                    <span className="text-[#9CA3AF] font-bold uppercase block">Action By</span>
+                                    <span className="text-[#374151] font-medium">{actionBy}</span>
+                                  </div>
+                                  <div className="text-right">
+                                    <span className="text-[#9CA3AF] font-bold uppercase block">Action Date</span>
+                                    <span className="text-[#374151] font-medium">{actionDate}</span>
+                                  </div>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    );
+                  })}
                 </div>
-              </td>
-              <td>{request.service}</td>
-              <td>{request.organization || "â€”"}</td>
-              <td>{request.approvedBy || "â€”"}</td>
-              <td>{request.reqDate}</td>
-              <td>{request.appDate || "â€”"}</td>
-              <td>{request.approvedBy || "â€”"}</td>
-              <td className="sticky-col-actions text-center">
-                <span className={`inline-flex items-center px-2 py-0.5 rounded-full text-[10px] font-bold uppercase border ${
-                  (request.status || "Approved").toLowerCase().includes("approve") ? 'bg-[#ECFDF5] text-[#10B981] border-[#10B981]/20' : 
-                  (request.status || "Approved").toLowerCase() === 'forwarded' ? 'bg-[#FFFBEB] text-[#F59E0B] border-[#F59E0B]/20' : 
-                  'bg-red-50 text-red-600 border-red-200'
-                }`}>
-                  {request.status || "Approved"}
-                </span>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    </div>
-  )}
-</div>
-</TabsContent>
+              </div>
+              </TabsContent>
               </Tabs>
             </TabsContent>
 
@@ -3728,7 +4624,7 @@ export default function DataAccessRequests1() {
             <TabsContent value="spatial-permission">
               <Tabs defaultValue="spatial-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
                   <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="spatial-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -3738,90 +4634,245 @@ export default function DataAccessRequests1() {
                     </TabsTrigger>
                   </TabsList>
 
-                  {/* Search / date filter â€” shown per sub-tab */}
-                  <TabsContent value="spatial-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input type="text" placeholder="Search pending requests..." value={spatialPendingSearch} onChange={(e) => setSpatialPendingSearch(e.target.value)} className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]" />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={spatialPendingDateRange.from} onChange={(e) => setSpatialPendingDateRange({...spatialPendingDateRange, from: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                  {/* Pending search filters */}
+                  <TabsContent value="spatial-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search pending requests..."
+                              value={spatialPendingSearch}
+                              onChange={(e) => setSpatialPendingSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={spatialPendingDateRange.from}
+                                          onChange={(e) => setSpatialPendingDateRange({ ...spatialPendingDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={spatialPendingDateRange.to}
+                                          onChange={(e) => setSpatialPendingDateRange({ ...spatialPendingDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
                         </div>
-                        <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={spatialPendingDateRange.to} onChange={(e) => setSpatialPendingDateRange({...spatialPendingDateRange, to: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={spatialPendingDateRange.from}
+                              onChange={(e) => setSpatialPendingDateRange({ ...spatialPendingDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={spatialPendingDateRange.to}
+                              onChange={(e) => setSpatialPendingDateRange({ ...spatialPendingDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
                         </div>
-                      </div>
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="spatial-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input type="text" placeholder="Search completed requests..." value={spatialCompletedSearch} onChange={(e) => setSpatialCompletedSearch(e.target.value)} className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]" />
-                      </div>
-                      <select value={spatialAccessCompletedStatusFilter} onChange={(e) => setSpatialAccessCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none px-4" style={{cursor: 'pointer'}}>
-                        <option value="Approved">Approved</option>
-                        <option value="Forwarded">Forwarded</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
-                      <div className="flex items-center gap-2">
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={spatialCompletedDateRange.from} onChange={(e) => setSpatialCompletedDateRange({...spatialCompletedDateRange, from: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                  <TabsContent value="spatial-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search completed requests..."
+                              value={spatialCompletedSearch}
+                              onChange={(e) => setSpatialCompletedSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={spatialCompletedDateRange.from}
+                                          onChange={(e) => setSpatialCompletedDateRange({ ...spatialCompletedDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={spatialCompletedDateRange.to}
+                                          onChange={(e) => setSpatialCompletedDateRange({ ...spatialCompletedDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
                         </div>
-                        <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={spatialCompletedDateRange.to} onChange={(e) => setSpatialCompletedDateRange({...spatialCompletedDateRange, to: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+
+                        {/* Status Select with Chevron */}
+                        <div className="relative w-full sm:w-[124px]">
+                          <select 
+                            value={spatialAccessCompletedStatusFilter} 
+                            onChange={(e) => setSpatialAccessCompletedStatusFilter(e.target.value)} 
+                            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+                            style={{cursor: 'pointer'}}
+                          >
+                            <option value="Approved">Approved</option>
+                            <option value="Forwarded">Forwarded</option>
+                            <option value="Rejected">Rejected</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
                         </div>
-                      </div>
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={spatialCompletedDateRange.from}
+                              onChange={(e) => setSpatialCompletedDateRange({ ...spatialCompletedDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={spatialCompletedDateRange.to}
+                              onChange={(e) => setSpatialCompletedDateRange({ ...spatialCompletedDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
                     </div>
                   </TabsContent>
                 </div>
 
                 {/* Pending Table */}
                 <TabsContent value="spatial-pending" className="mt-0">
-                  <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-                    <table className="dept-pending-table">
-                      <thead>
-                        <tr>
-                          <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-                          <th className="text-[11px] font-bold text-[#6B7280]">Permission Name</th>
-                          <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
-                          <th className="text-[11px] font-bold text-[#6B7280]">Layers</th>
-                          <th className="text-[11px] font-bold text-[#6B7280]">Boundary</th>
-                          <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-                          <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <TooltipProvider delayDuration={100}>
-                          {filteredSpatialPending.map((request) => (
-                            <tr key={request.id}>
-                              <td className="sticky-col-id font-medium text-[#111827] whitespace-nowrap">
-                                <div className="flex items-center gap-2">
-                                  <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
-                                  {request.id}
-                                </div>
-                              </td>
-                              <td className="whitespace-nowrap font-medium">{request.permissionName}</td>
-                              <td className="whitespace-nowrap">{request.organization}</td>
-                              <td className="whitespace-nowrap">
-                                <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[12px] font-medium border border-[#3D72A2]/20">{request.layers}</span>
-                              </td>
-                              <td className="whitespace-nowrap">{request.boundary || "â€”"}</td>
-                              <td className="font-medium whitespace-nowrap text-[#374151]">
-                                <div className="flex items-center gap-2"><Calendar className="w-3.5 h-3.5 text-[#6B7280]" />{request.date}</div>
-                              </td>
-                              <td className="sticky-col-actions">
-                                {isOrgAdmin ? (
-                                  <div className="flex justify-center items-center gap-1.5 h-full w-full">
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                      <table className="dept-pending-table">
+                        <thead>
+                          <tr>
+                            <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Permission Name</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Organization</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Layers</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                            <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TooltipProvider delayDuration={100}>
+                            {filteredSpatialPending.map((request) => (
+                              <tr key={request.id}>
+                                <td className="sticky-col-id font-medium text-[#111827] whitespace-nowrap">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                    {request.id}
+                                  </div>
+                                </td>
+                                <td className="whitespace-nowrap font-medium">{request.permissionName}</td>
+                                <td className="whitespace-nowrap">{request.organization}</td>
+                                <td className="whitespace-nowrap">
+                                  <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[12px] font-medium border border-[#3D72A2]/20">{request.layers}</span>
+                                </td>
+                                <td className="font-medium whitespace-nowrap text-[#374151]">
+                                  <div className="flex items-center gap-2"><Calendar className="w-3.5 h-3.5 text-[#6B7280]" />{request.date}</div>
+                                </td>
+                                <td className="sticky-col-actions">
+                                  <div className="flex items-center justify-end gap-1.5">
                                     <Tooltip><TooltipTrigger asChild>
                                       <button className="flex items-center justify-center w-8 h-8 bg-[#FEF3C7] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#F59E0B]/20" onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}>
                                         <Forward className="w-4 h-4" strokeWidth={3} />
@@ -3833,35 +4884,66 @@ export default function DataAccessRequests1() {
                                       </button>
                                     </TooltipTrigger><TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent></Tooltip>
                                   </div>
-                                ) : (
-                                  <div className="flex items-center justify-end gap-1.5">
-                                    {!isReviewer && (<>
-                                      <Tooltip><TooltipTrigger asChild>
-                                        <button className="flex items-center justify-center w-8 h-8 bg-[#FEF3C7] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#F59E0B]/20" onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}>
-                                          <Forward className="w-4 h-4" strokeWidth={3} />
-                                        </button>
-                                      </TooltipTrigger><TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent></Tooltip>
-                                      <Tooltip><TooltipTrigger asChild>
-                                        <button className="flex items-center justify-center w-8 h-8 bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#EF4444]/20" onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}>
-                                          <X className="w-4 h-4" strokeWidth={3} />
-                                        </button>
-                                      </TooltipTrigger><TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent></Tooltip>
-                                    </>)}
-                                  </div>
-                                )}
-                              </td>
-                            </tr>
-                          ))}
-                        </TooltipProvider>
-                      </tbody>
-                    </table>
+                                </td>
+                              </tr>
+                            ))}
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {filteredSpatialPending.map((request) => (
+                        <div key={request.id} className="mobile-card">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                <span className="text-xs font-bold text-[#6B7280]">{request.organization}</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">{request.permissionName}</h4>
+                            </div>
+                            <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[10px] font-bold border border-[#3D72A2]/20">{request.layers} Layers</span>
+                          </div>
+
+                          <div className="flex justify-between items-center mb-4">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested Date</span>
+                              <div className="flex items-center gap-1.5 text-xs font-medium text-[#111827]">
+                                <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                {request.date}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF3C7] text-[#F59E0B] rounded-xl font-bold text-xs border border-[#F59E0B]/20 transition-colors active:bg-[#F59E0B] active:text-white"
+                              onClick={() => setApproveDialog({open: true, requestId: request.id})}
+                            >
+                              <Forward className="w-4 h-4" strokeWidth={2.5} />
+                              FORWARD
+                            </button>
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF2F2] text-[#EF4444] rounded-xl font-bold text-xs border border-[#EF4444]/20 transition-colors active:bg-[#EF4444] active:text-white"
+                              onClick={() => setRejectDialog({open: true, requestId: request.id})}
+                            >
+                              <X className="w-4 h-4" strokeWidth={2.5} />
+                              REJECT
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </TabsContent>
 
                 {/* Completed Table */}
                 <TabsContent value="spatial-completed" className="mt-0">
-                  <div className="pb-6 pt-2">
-                    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
                       <table className="org-completed-table">
                         <thead>
                           <tr>
@@ -3917,6 +4999,55 @@ export default function DataAccessRequests1() {
                         </tbody>
                       </table>
                     </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {filteredSpatialCompleted.map((request) => {
+                        const status = request.status?.toLowerCase() || 'approved';
+                        const actionBy = status === 'approved' || status === 'completed' ? (request.approvedBy || "Lulwa Saad Mujaddam") : 
+                                         status === 'rejected' ? (request.rejectedBy || "Layla Ahmed") : 
+                                         (request.forwardedBy || "Ahmed Al-Mansoori");
+                        const actionDate = status === 'approved' || status === 'completed' ? (request.approvedDate || "15 Mar 2026") : 
+                                           status === 'rejected' ? (request.rejectedDate || "16 Mar 2026") : 
+                                           (request.forwardedDate || "14 Mar 2026");
+
+                        return (
+                          <div key={request.id} className="mobile-card">
+                            <div className="flex justify-between items-start mb-3">
+                              <div>
+                                <div className="flex items-center gap-2 mb-1">
+                                  <div className={`w-1.5 h-1.5 rounded-full ${status === 'approved' || status === 'completed' ? 'bg-[#10B981]' : status === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                  <span className="text-xs font-bold text-[#6B7280]">{request.organization}</span>
+                                </div>
+                                <h4 className="text-sm font-bold text-[#111827]">{request.permissionName}</h4>
+                              </div>
+                              <Badge className={`status-badge ${status === 'approved' || status === 'completed' ? 'approved' : status === 'forwarded' ? 'forward' : 'reject'}`}>
+                                {status.charAt(0).toUpperCase() + status.slice(1)}
+                              </Badge>
+                            </div>
+
+                            <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+                              <div className="flex flex-col">
+                                <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Layers</span>
+                                <span className="text-xs font-medium text-[#3D72A2]">{request.layers} Total</span>
+                              </div>
+                              <div className="flex flex-col text-right">
+                                <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested</span>
+                                <span className="text-xs font-medium text-[#111827]">{request.date}</span>
+                              </div>
+                              <div className="flex flex-col">
+                                <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                                <span className="text-xs font-medium text-[#111827] truncate max-w-[120px]">{actionBy}</span>
+                              </div>
+                              <div className="flex flex-col text-right">
+                                <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                                <span className="text-xs font-medium text-[#111827]">{actionDate}</span>
+                              </div>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
                 </TabsContent>
               </Tabs>
@@ -3925,7 +5056,7 @@ export default function DataAccessRequests1() {
             {/* Services Creation Tab */}
             <TabsContent value="department-2">
               <Tabs defaultValue="svc-pending">
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
                   <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="svc-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -3935,48 +5066,204 @@ export default function DataAccessRequests1() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="svc-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input type="text" placeholder="Search pending services..." value={servicesPendingSearch} onChange={(e) => setServicesPendingSearch(e.target.value)} className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]" />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={servicesPendingDateRange.from} onChange={(e) => setServicesPendingDateRange({...servicesPendingDateRange, from: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                  <TabsContent value="svc-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search pending services..."
+                              value={servicesPendingSearch}
+                              onChange={(e) => setServicesPendingSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={servicesPendingDateRange.from}
+                                          onChange={(e) => setServicesPendingDateRange({ ...servicesPendingDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={servicesPendingDateRange.to}
+                                          onChange={(e) => setServicesPendingDateRange({ ...servicesPendingDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
                         </div>
-                        <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={servicesPendingDateRange.to} onChange={(e) => setServicesPendingDateRange({...servicesPendingDateRange, to: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={servicesPendingDateRange.from}
+                              onChange={(e) => setServicesPendingDateRange({ ...servicesPendingDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={servicesPendingDateRange.to}
+                              onChange={(e) => setServicesPendingDateRange({ ...servicesPendingDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
                         </div>
-                      </div>
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="svc-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input type="text" placeholder="Search completed services..." value={servicesCompletedSearch} onChange={(e) => setServicesCompletedSearch(e.target.value)} className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]" />
-                      </div>
-                      <select value={servicesCreationCompletedStatusFilter} onChange={(e) => setServicesCreationCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none px-4" style={{cursor: 'pointer'}}>
-                        <option value="Approved">Approved</option>
-                        <option value="Forwarded">Forwarded</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
-                      <div className="flex items-center gap-2">
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={servicesCompletedDateRange.from} onChange={(e) => setServicesCompletedDateRange({...servicesCompletedDateRange, from: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                  <TabsContent value="svc-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search completed services..."
+                              value={servicesCompletedSearch}
+                              onChange={(e) => setServicesCompletedSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={servicesCompletedDateRange.from}
+                                          onChange={(e) => setServicesCompletedDateRange({ ...servicesCompletedDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={servicesCompletedDateRange.to}
+                                          onChange={(e) => setServicesCompletedDateRange({ ...servicesCompletedDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
                         </div>
-                        <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-                        <div className="relative">
-                          <input type="text" placeholder="dd-mm-yyyy" onFocus={(e) => e.target.type='date'} onBlur={(e) => e.target.type='text'} value={servicesCompletedDateRange.to} onChange={(e) => setServicesCompletedDateRange({...servicesCompletedDateRange, to: e.target.value})} className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+
+                        {/* Status Select with Chevron */}
+                        <div className="relative w-full sm:w-[120px]">
+                          <select 
+                            value={servicesCreationCompletedStatusFilter} 
+                            onChange={(e) => setServicesCreationCompletedStatusFilter(e.target.value)} 
+                            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+                            style={{cursor: 'pointer'}}
+                          >
+                            <option value="Approved">Approved</option>
+                            <option value="Forwarded">Forwarded</option>
+                            <option value="Rejected">Rejected</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
                         </div>
-                      </div>
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={servicesCompletedDateRange.from}
+                              onChange={(e) => setServicesCompletedDateRange({ ...servicesCompletedDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={servicesCompletedDateRange.to}
+                              onChange={(e) => setServicesCompletedDateRange({ ...servicesCompletedDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
                     </div>
                   </TabsContent>
                 </div>
@@ -4129,7 +5416,7 @@ export default function DataAccessRequests1() {
             <TabsContent value="data-download">
               <Tabs defaultValue="download-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
 <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="download-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -4141,20 +5428,71 @@ export default function DataAccessRequests1() {
 </TabsList>
 
 
-<TabsContent value="download-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search pending requests..."
-            value={deptPendingSearch}
-            onChange={(e) => setDeptPendingSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="download-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search pending requests..."
+              value={deptPendingSearch}
+              onChange={(e) => setDeptPendingSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={deptPendingDateRange.from}
+                          onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={deptPendingDateRange.to}
+                          onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -4162,12 +5500,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={deptPendingDateRange.from}
               onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -4175,7 +5513,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={deptPendingDateRange.to}
               onChange={(e) => setDeptPendingDateRange({ ...deptPendingDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -4183,25 +5521,86 @@ export default function DataAccessRequests1() {
     </div>
 </TabsContent>
 
-<TabsContent value="download-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search completed requests..."
-            value={dataDownloadCompletedSearch}
-            onChange={(e) => setDataDownloadCompletedSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-          />
+<TabsContent value="download-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+            <input
+              type="text"
+              placeholder="Search completed requests..."
+              value={dataDownloadCompletedSearch}
+              onChange={(e) => setDataDownloadCompletedSearch(e.target.value)}
+              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+            />
+          </div>
+          {/* Mobile Date Filter Icon */}
+          <div className="sm:hidden">
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[300px] p-4" align="end">
+                <div className="flex flex-col gap-4">
+                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                  <div className="space-y-3">
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={dataDownloadCompletedDateRange.from}
+                          onChange={(e) => setDataDownloadCompletedDateRange({ ...dataDownloadCompletedDateRange, from: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                    <div className="space-y-1.5">
+                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                      <div className="relative">
+                        <input
+                          type="text"
+                          placeholder="dd-mm-yyyy"
+                          onFocus={(e) => e.target.type = 'date'}
+                          onBlur={(e) => e.target.type = 'text'}
+                          value={dataDownloadCompletedDateRange.to}
+                          onChange={(e) => setDataDownloadCompletedDateRange({ ...dataDownloadCompletedDateRange, to: e.target.value })}
+                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                        />
+                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </PopoverContent>
+            </Popover>
+          </div>
         </div>
-        <select value={dataDownloadCompletedStatusFilter} onChange={(e) => setDataDownloadCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none px-4" style={{cursor: 'pointer'}}>
-          <option value="Approved">Approved</option>
-          <option value="Forwarded">Forwarded</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="relative">
+
+        {/* Status Select with Chevron */}
+        <div className="relative w-full sm:w-[120px]">
+          <select 
+            value={dataDownloadCompletedStatusFilter} 
+            onChange={(e) => setDataDownloadCompletedStatusFilter(e.target.value)} 
+            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+            style={{cursor: 'pointer'}}
+          >
+            <option value="Approved">Approved</option>
+            <option value="Forwarded">Forwarded</option>
+            <option value="Rejected">Rejected</option>
+          </select>
+          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+        </div>
+
+        {/* Desktop Date Range */}
+        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -4209,12 +5608,12 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={dataDownloadCompletedDateRange.from}
               onChange={(e) => setDataDownloadCompletedDateRange({ ...dataDownloadCompletedDateRange, from: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
           <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
+          <div className="relative flex-1 sm:flex-none">
             <input
               type="text"
               placeholder="dd-mm-yyyy"
@@ -4222,7 +5621,7 @@ export default function DataAccessRequests1() {
               onBlur={(e) => e.target.type = 'text'}
               value={dataDownloadCompletedDateRange.to}
               onChange={(e) => setDataDownloadCompletedDateRange({ ...dataDownloadCompletedDateRange, to: e.target.value })}
-              className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
             />
             <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
           </div>
@@ -4231,145 +5630,137 @@ export default function DataAccessRequests1() {
 </TabsContent>
 </div>
                 
+                {/* Pending Table */}
                 <TabsContent value="download-pending" className="mt-0">
-                  
-<div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-
-                        <table className="dept-pending-table">
-                          <thead>
-                            <tr>
-                              <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Dataset</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Format</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]" style={{minWidth: '240px'}}>Description</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Email</th>
-                              <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <TooltipProvider delayDuration={100}>
-                              {dataDownloadPendingRequests.filter(r => !deptPendingSearch || r.id.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.dataset.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.requestor.toLowerCase().includes(deptPendingSearch.toLowerCase())).map((request) => (
-                                <tr key={request.id}>
-                                  <td className="sticky-col-id font-medium text-[#111827] whitespace-nowrap">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
-                                      {request.id}
-                                    </div>
-                                  </td>
-                                  <td className="whitespace-nowrap font-medium">{request.dataset}</td>
-                                  <td className="whitespace-nowrap">
-                                    <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[12px] font-medium border border-[#3D72A2]/20">
-                                      {request.format}
-                                    </span>
-                                  </td>
-                                  <td className="font-medium whitespace-nowrap">{request.requestor}</td>
-                                  <td className="font-medium whitespace-nowrap text-[#374151]">
-                                    <div className="flex items-center gap-2 text-[#374151]">
-                                      <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                      {request.date}
-                                    </div>
-                                  </td>
-                                  <td style={{minWidth: '240px'}}>
-                                    <span className="text-[#374151] whitespace-normal inline-block max-w-[220px]">{request.description}</span>
-                                  </td>
-                                  <td className="whitespace-nowrap">
-                                    <a href={"mailto:" + request.email} className="text-[#3D72A2] hover:underline text-[13px] flex items-center">
-                                      {request.email} <span className="ml-1 text-[10px]">â†—</span>
-                                    </a>
-                                  </td>
-                                  <td className="sticky-col-actions">
-                                  {isOrgAdmin ? (
-                                    <div className="flex justify-center items-center gap-1.5 h-full w-full">
-                                       <Tooltip>
-                                         <TooltipTrigger asChild>
-                                           <button 
-                                             className="flex items-center justify-center w-8 h-8 bg-[#ECFDF5] text-[#10B981] hover:bg-[#10B981] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#10B981]/20"
-                                             onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
-                                           >
-                                              <Check className="w-4 h-4" strokeWidth={3} />
-                                            </button>
-                                         </TooltipTrigger>
-                                         <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Approve</TooltipContent>
-                                       </Tooltip>
-                                       <Tooltip>
-                                         <TooltipTrigger asChild>
-                                           <button 
-                                             className="flex items-center justify-center w-8 h-8 bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#EF4444]/20"
-                                             onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
-                                           >
-                                             <X className="w-4 h-4" strokeWidth={3} />
-                                           </button>
-                                         </TooltipTrigger>
-                                         <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                                       </Tooltip>
-                                    </div>
-                                  ) : (
-                                    <div className="flex items-center justify-end gap-1.5">
-                                      <Tooltip>
-                                        <TooltipTrigger asChild>
-                                          <button 
-                                            className="flex items-center justify-center w-7 h-7 bg-[#3B82F6]/10 text-[#3B82F6] hover:bg-[#3B82F6]/20 rounded-full transition-colors font-bold border border-[#3B82F6]/20 text-[10px]" 
-                                            onClick={(e) => { e.stopPropagation(); setPreviewingRequest(request); setMapPreviewOpen(true); }}
-                                          >
-                                            <Map className="w-3.5 h-3.5" />
-                                          </button>
-                                        </TooltipTrigger>
-                                        <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">View Map</TooltipContent>
-                                      </Tooltip>
-                                      {!isReviewer && (
-                                        <>
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <button 
-                                                className="flex items-center justify-center w-8 h-8 bg-[#ECFDF5] text-[#10B981] hover:bg-[#10B981] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#10B981]/20" 
-                                                onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
-                                              >
-                                              <Check className="w-4 h-4" strokeWidth={3} />
-                                            </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Approve</TooltipContent>
-                                          </Tooltip>
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <button 
-                                                className="flex items-center justify-center w-7 h-7 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors border border-[#F59E0B]/20 font-bold" 
-                                                onClick={(e) => { e.stopPropagation(); setSelectedForwardRequest({ ...request, service: request.dataset }); setForwardDialogOpen(true); }}
-                                              >
-                                                <Forward className="w-4 h-4" />
-                                              </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                                          </Tooltip>
-                                          <Tooltip>
-                                            <TooltipTrigger asChild>
-                                              <button 
-                                                className="flex items-center justify-center w-7 h-7 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
-                                                onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
-                                              >
-                                                <X className="w-4 h-4" />
-                                              </button>
-                                            </TooltipTrigger>
-                                            <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                                          </Tooltip>
-                                        </>
-                                      )}
-                                    </div>
-                                  )}
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                      <table className="dept-pending-table">
+                        <thead>
+                          <tr>
+                            <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Dataset</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Format</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]" style={{minWidth: '240px'}}>Description</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Email</th>
+                            <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280] text-right">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TooltipProvider delayDuration={100}>
+                            {dataDownloadPendingRequests.filter(r => !deptPendingSearch || r.id.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.dataset.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.requestor.toLowerCase().includes(deptPendingSearch.toLowerCase())).map((request) => (
+                              <tr key={request.id}>
+                                <td className="sticky-col-id font-medium text-[#111827] whitespace-nowrap">
+                                  <div className="flex items-center gap-2">
+                                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                    {request.id}
+                                  </div>
                                 </td>
-                                </tr>
-                              ))}
-                            </TooltipProvider>
-                          </tbody>
-                        </table>
-                      
-</div>
-</TabsContent>
+                                <td className="whitespace-nowrap font-medium">{request.dataset}</td>
+                                <td className="whitespace-nowrap">
+                                  <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[12px] font-medium border border-[#3D72A2]/20">
+                                    {request.format}
+                                  </span>
+                                </td>
+                                <td className="font-medium whitespace-nowrap">{request.requestor}</td>
+                                <td className="font-medium whitespace-nowrap text-[#374151]">
+                                  <div className="flex items-center gap-2 text-[#374151]">
+                                    <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                    {request.date}
+                                  </div>
+                                </td>
+                                <td style={{minWidth: '240px'}}>
+                                  <span className="text-[#374151] whitespace-normal inline-block max-w-[220px]">{request.description}</span>
+                                </td>
+                                <td className="whitespace-nowrap">
+                                  <a href={"mailto:" + request.email} className="text-[#3D72A2] hover:underline text-[13px] flex items-center">
+                                    {request.email} <span className="ml-1 text-[10px]">↗</span>
+                                  </a>
+                                </td>
+                                <td className="sticky-col-actions">
+                                  <div className="flex items-center justify-end gap-1.5">
+                                    <Tooltip><TooltipTrigger asChild>
+                                      <button className="flex items-center justify-center w-8 h-8 bg-[#ECFDF5] text-[#10B981] hover:bg-[#10B981] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#10B981]/20" onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}>
+                                        <Check className="w-4 h-4" strokeWidth={3} />
+                                      </button>
+                                    </TooltipTrigger><TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Approve</TooltipContent></Tooltip>
+                                    <Tooltip><TooltipTrigger asChild>
+                                      <button className="flex items-center justify-center w-8 h-8 bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#EF4444]/20" onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}>
+                                        <X className="w-4 h-4" strokeWidth={3} />
+                                      </button>
+                                    </TooltipTrigger><TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent></Tooltip>
+                                  </div>
+                                </td>
+                              </tr>
+                            ))}
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {dataDownloadPendingRequests.filter(r => !deptPendingSearch || r.id.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.dataset.toLowerCase().includes(deptPendingSearch.toLowerCase()) || r.requestor.toLowerCase().includes(deptPendingSearch.toLowerCase())).map((request) => (
+                        <div key={request.id} className="mobile-card">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                <span className="text-xs font-bold text-[#6B7280]">Pending Request</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">{request.dataset}</h4>
+                            </div>
+                            <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[10px] font-bold border border-[#3D72A2]/20">{request.format}</span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-4">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.requestor}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Date</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.date}</span>
+                            </div>
+                            <div className="col-span-2 flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Description</span>
+                              <span className="text-xs text-[#4B5563] leading-relaxed">{request.description}</span>
+                            </div>
+                            <div className="col-span-2 flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Email</span>
+                              <span className="text-xs font-medium text-[#3D72A2]">{request.email}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#ECFDF5] text-[#10B981] rounded-xl font-bold text-xs border border-[#10B981]/20 transition-colors active:bg-[#10B981] active:text-white"
+                              onClick={() => setApproveDialog({open: true, requestId: request.id})}
+                            >
+                              <Check className="w-4 h-4" strokeWidth={2.5} />
+                              APPROVE
+                            </button>
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF2F2] text-[#EF4444] rounded-xl font-bold text-xs border border-[#EF4444]/20 transition-colors active:bg-[#EF4444] active:text-white"
+                              onClick={() => setRejectDialog({open: true, requestId: request.id})}
+                            >
+                              <X className="w-4 h-4" strokeWidth={2.5} />
+                              REJECT
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+
 
                 <TabsContent value="download-completed" className="mt-0">
-                  <div className="pb-6 pt-2">
-                    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
                       <table className="org-completed-table">
                         <thead>
                           <tr>
@@ -4385,70 +5776,132 @@ export default function DataAccessRequests1() {
                         </thead>
                         <tbody>
                           <TooltipProvider delayDuration={100}>
-                              {dataDownloadCompletedRequests.filter(r => {
-                                  const searchMatch = !dataDownloadCompletedSearch || 
-                                    r.id.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase()) || 
-                                    (r.dataset && r.dataset.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase())) || 
-                                    (r.requestedBy && r.requestedBy.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase())) || 
-                                    (r.approvedBy && r.approvedBy.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase()));
-                                  const statusMatch = 
-                                    (dataDownloadCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
-                                    (dataDownloadCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
-                                    (dataDownloadCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
-                                  const dateMatch = (!dataDownloadCompletedDateRange.from || new Date(r.requestedDate) >= new Date(dataDownloadCompletedDateRange.from)) &&
-                                                    (!dataDownloadCompletedDateRange.to || new Date(r.requestedDate) <= new Date(dataDownloadCompletedDateRange.to));
-                                  return searchMatch && statusMatch && dateMatch;
-                                }).map((request) => (
-                                  <tr key={request.id}>
-                                    <td className="sticky-col-id font-medium text-[#111827]">
-                                      <div className="flex items-center gap-2">
-                                        <div className={`w-1.5 h-1.5 rounded-full ${request.status === 'Approved' ? 'bg-[#10B981]' : request.status === 'Forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
-                                        {request.id}
-                                      </div>
-                                    </td>
-                                    <td className="whitespace-nowrap font-medium">{request.dataset}</td>
-                                    <td className="whitespace-nowrap">
-                                      <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[12px] font-medium border border-[#3D72A2]/20">
-                                        {request.format}
-                                      </span>
-                                    </td>
-                                    <td className="font-medium whitespace-nowrap">{request.requestedBy || "Jawaher Rashed"}</td>
-                                    <td className="font-medium whitespace-nowrap">
-                                      <div className="flex items-center gap-2 text-[#374151]">
-                                        {request.requestedDate}
-                                      </div>
-                                    </td>
-                                    <td className="font-medium whitespace-nowrap">
-                                        {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedBy || "Layla Al-Qassimi") : 
-                                         request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
-                                         (request.forwardedBy || "Ahmed Al-Mansoori")}
-                                    </td>
-                                    <td className="font-medium whitespace-nowrap">
-                                        {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedDate || "14 Mar 2025") : 
-                                         request.status?.toLowerCase() === "rejected" ? (request.rejectedDate || "16 Mar 2025") : 
-                                         (request.forwardedDate || "12 Mar 2025")}
-                                    </td>
+                            {dataDownloadCompletedRequests.filter(r => {
+                                const searchMatch = !dataDownloadCompletedSearch || 
+                                  r.id.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase()) || 
+                                  (r.dataset && r.dataset.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase())) || 
+                                  (r.requestedBy && r.requestedBy.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase())) || 
+                                  (r.approvedBy && r.approvedBy.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase()));
+                                const statusMatch = 
+                                  (dataDownloadCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                                  (dataDownloadCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                                  (dataDownloadCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                                const dateMatch = (!dataDownloadCompletedDateRange.from || new Date(r.requestedDate) >= new Date(dataDownloadCompletedDateRange.from)) &&
+                                                  (!dataDownloadCompletedDateRange.to || new Date(r.requestedDate) <= new Date(dataDownloadCompletedDateRange.to));
+                                return searchMatch && statusMatch && dateMatch;
+                              }).map((request) => (
+                                <tr key={request.id}>
+                                  <td className="sticky-col-id font-medium text-[#111827]">
+                                    <div className="flex items-center gap-2">
+                                      <div className={`w-1.5 h-1.5 rounded-full ${request.status === 'Approved' ? 'bg-[#10B981]' : request.status === 'Forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                      {request.id}
+                                    </div>
+                                  </td>
+                                  <td className="whitespace-nowrap font-medium">{request.dataset}</td>
+                                  <td className="whitespace-nowrap">
+                                    <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[12px] font-medium border border-[#3D72A2]/20">
+                                      {request.format}
+                                    </span>
+                                  </td>
+                                  <td className="font-medium whitespace-nowrap">{request.requestedBy || "Jawaher Rashed"}</td>
+                                  <td className="font-medium whitespace-nowrap">
+                                    <div className="flex items-center gap-2 text-[#374151]">
+                                      {request.requestedDate}
+                                    </div>
+                                  </td>
+                                  <td className="font-medium whitespace-nowrap">
+                                      {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedBy || "Layla Al-Qassimi") : 
+                                       request.status?.toLowerCase() === "rejected" ? (request.rejectedBy || "Layla Ahmed") : 
+                                       (request.forwardedBy || "Ahmed Al-Mansoori")}
+                                  </td>
+                                  <td className="font-medium whitespace-nowrap">
+                                      {request.status?.toLowerCase() === "approved" || request.status?.toLowerCase() === "completed" ? (request.approvedDate || "15 Mar 2026") : 
+                                       request.status?.toLowerCase() === "rejected" ? (request.rejectedDate || "16 Mar 2026") : 
+                                       (request.forwardedDate || "14 Mar 2026")}
+                                  </td>
                                   <td className="sticky-col-status">
                                     <span className={`status-badge ${request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'approved' : request.status?.toLowerCase() === 'forwarded' ? 'forward' : 'reject'}`}>
                                       {request.status?.toLowerCase() === 'approved' || request.status?.toLowerCase() === 'completed' ? 'Approved' : request.status?.toLowerCase() === 'forwarded' ? 'Forwarded' : 'Rejected'}
                                     </span>
                                   </td>
-                                  </tr>
-                                ))}
-                            </TooltipProvider>
-                          </tbody>
-                        </table>
-                      </div>
+                                </tr>
+                              ))}
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
                     </div>
-                    </TabsContent>
-                  </Tabs>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {dataDownloadCompletedRequests.filter(r => {
+                          const searchMatch = !dataDownloadCompletedSearch || 
+                            r.id.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase()) || 
+                            (r.dataset && r.dataset.toLowerCase().includes(dataDownloadCompletedSearch.toLowerCase()));
+                          const statusMatch = 
+                            (dataDownloadCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                            (dataDownloadCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                            (dataDownloadCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                          return searchMatch && statusMatch;
+                        }).map((request) => {
+                          const status = request.status?.toLowerCase() || 'approved';
+                          const actionBy = status === 'approved' || status === 'completed' ? (request.approvedBy || "Layla Al-Qassimi") : 
+                                           status === 'rejected' ? (request.rejectedBy || "Layla Ahmed") : 
+                                           (request.forwardedBy || "Ahmed Al-Mansoori");
+                          const actionDate = status === 'approved' || status === 'completed' ? (request.approvedDate || "15 Mar 2026") : 
+                                             status === 'rejected' ? (request.rejectedDate || "16 Mar 2026") : 
+                                             (request.forwardedDate || "14 Mar 2026");
+
+                          return (
+                            <div key={request.id} className="mobile-card">
+                              <div className="flex justify-between items-start mb-3">
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${status === 'approved' || status === 'completed' ? 'bg-[#10B981]' : status === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                    <span className="text-xs font-bold text-[#6B7280]">Completed Request</span>
+                                  </div>
+                                  <h4 className="text-sm font-bold text-[#111827]">{request.dataset}</h4>
+                                </div>
+                                <Badge className={`status-badge ${status === 'approved' || status === 'completed' ? 'approved' : status === 'forwarded' ? 'forward' : 'reject'}`}>
+                                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                                </Badge>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-y-3 gap-x-4">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                                  <span className="text-xs font-medium text-[#111827] truncate">{request.requestedBy || "Jawaher Rashed"}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{request.requestedDate}</span>
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                                  <span className="text-xs font-medium text-[#111827] truncate">{actionBy}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{actionDate}</span>
+                                </div>
+                                <div className="col-span-2 flex flex-col pt-1">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Format</span>
+                                  <span className="text-xs font-medium text-[#3D72A2]">{request.format}</span>
+                                </div>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
                 </TabsContent>
-          
+              </Tabs>
+            </TabsContent>
+
             {/* Metadata Tab */}
             <TabsContent value="metadata">
               <Tabs defaultValue="metadata-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
                   <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="metadata-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -4459,99 +5912,214 @@ export default function DataAccessRequests1() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="metadata-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input
-                          type="text"
-                          placeholder="Search pending requests..."
-                          value={metadataPendingSearch}
-                          onChange={(e) => setMetadataPendingSearch(e.target.value)}
-                          className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="dd-mm-yyyy"
-                            onFocus={(e) => e.target.type = 'date'}
-                            onBlur={(e) => e.target.type = 'text'}
-                            value={metadataPendingDateRange.from}
-                            onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, from: e.target.value })}
-                            className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
-                          />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                  <TabsContent value="metadata-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search pending metadata..."
+                              value={metadataPendingSearch}
+                              onChange={(e) => setMetadataPendingSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={metadataPendingDateRange.from}
+                                          onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={metadataPendingDateRange.to}
+                                          onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
                         </div>
-                        <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="dd-mm-yyyy"
-                            onFocus={(e) => e.target.type = 'date'}
-                            onBlur={(e) => e.target.type = 'text'}
-                            value={metadataPendingDateRange.to}
-                            onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, to: e.target.value })}
-                            className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
-                          />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={metadataPendingDateRange.from}
+                              onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={metadataPendingDateRange.to}
+                              onChange={(e) => setMetadataPendingDateRange({ ...metadataPendingDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
                         </div>
-                      </div>
                     </div>
                   </TabsContent>
 
-                  <TabsContent value="metadata-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'220px',maxWidth:'320px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input
-                          type="text"
-                          placeholder="Search completed requests..."
-                          value={metadataCompletedSearch}
-                          onChange={(e) => setMetadataCompletedSearch(e.target.value)}
-                          className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-                        />
-                      </div>
-                      <select value={metadataCompletedStatusFilter} onChange={(e) => setMetadataCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none px-4" style={{cursor: 'pointer'}}>
-                        <option value="Approved">Approved</option>
-                        <option value="Forwarded">Forwarded</option>
-                        <option value="Rejected">Rejected</option>
-                      </select>
-                      <div className="flex items-center gap-2">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="dd-mm-yyyy"
-                            onFocus={(e) => e.target.type = 'date'}
-                            onBlur={(e) => e.target.type = 'text'}
-                            value={metadataCompletedDateRange.from}
-                            onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, from: e.target.value })}
-                            className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
-                          />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                  <TabsContent value="metadata-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 w-full justify-end md:justify-start lg:justify-end">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[320px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search completed metadata..."
+                              value={metadataCompletedSearch}
+                              onChange={(e) => setMetadataCompletedSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={metadataCompletedDateRange.from}
+                                          onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={metadataCompletedDateRange.to}
+                                          onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
                         </div>
-                        <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="dd-mm-yyyy"
-                            onFocus={(e) => e.target.type = 'date'}
-                            onBlur={(e) => e.target.type = 'text'}
-                            value={metadataCompletedDateRange.to}
-                            onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, to: e.target.value })}
-                            className="w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
-                          />
-                          <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+
+                        {/* Status Select with Chevron */}
+                        <div className="relative w-full sm:w-[120px]">
+                          <select 
+                            value={metadataCompletedStatusFilter} 
+                            onChange={(e) => setMetadataCompletedStatusFilter(e.target.value)} 
+                            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+                            style={{cursor: 'pointer'}}
+                          >
+                            <option value="All">All</option>
+                            <option value="Approved">Approved</option>
+                            <option value="Forwarded">Forwarded</option>
+                            <option value="Rejected">Rejected</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
                         </div>
-                      </div>
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={metadataCompletedDateRange.from}
+                              onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, from: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={metadataCompletedDateRange.to}
+                              onChange={(e) => setMetadataCompletedDateRange({ ...metadataCompletedDateRange, to: e.target.value })}
+                              className="w-full sm:w-[130px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
                     </div>
                   </TabsContent>
                 </div>
                 
+                {/* Pending Table */}
                 <TabsContent value="metadata-pending" className="mt-0">
-                  <div className="pb-6 pt-2">
-                    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
                       <table className="dept-pending-table w-full">
                         <thead>
                           <tr>
@@ -4569,7 +6137,7 @@ export default function DataAccessRequests1() {
                               <tr key={request.id}>
                                 <td className="sticky-col-id font-medium text-[#111827]">
                                   <div className="flex items-center gap-2 whitespace-nowrap">
-                                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
+                                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
                                     {request.id}
                                   </div>
                                 </td>
@@ -4592,7 +6160,7 @@ export default function DataAccessRequests1() {
                                       <Tooltip>
                                         <TooltipTrigger asChild>
                                           <button 
-                                            className="flex items-center justify-center w-7 h-7 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors font-bold border border-[#F59E0B]/20" 
+                                            className="flex items-center justify-center w-7 h-7 bg-[#FEF3C7] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#F59E0B]/20" 
                                             onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
                                           >
                                             <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
@@ -4603,7 +6171,7 @@ export default function DataAccessRequests1() {
                                       <Tooltip>
                                         <TooltipTrigger asChild>
                                           <button 
-                                            className="flex items-center justify-center w-7 h-7 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
+                                            className="flex items-center justify-center w-7 h-7 bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#EF4444]/20" 
                                             onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
                                           >
                                             <X className="w-4 h-4" />
@@ -4620,12 +6188,63 @@ export default function DataAccessRequests1() {
                         </tbody>
                       </table>
                     </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {metadataPendingRequests.filter(r => !metadataPendingSearch || r.id.toLowerCase().includes(metadataPendingSearch.toLowerCase()) || r.layerName.toLowerCase().includes(metadataPendingSearch.toLowerCase()) || r.requestor.toLowerCase().includes(metadataPendingSearch.toLowerCase())).map((request) => (
+                        <div key={request.id} className="mobile-card">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                <span className="text-xs font-bold text-[#6B7280]">Pending Metadata</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">{request.layerName}</h4>
+                            </div>
+                            <span className="px-2.5 py-1 bg-[#3D72A2]/10 text-[#3D72A2] rounded-full text-[10px] font-bold border border-[#3D72A2]/20">{request.layerType}</span>
+                          </div>
+
+                          <div className="flex justify-between items-center mb-4">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.requestor}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Date</span>
+                              <div className="flex items-center gap-1 text-xs font-medium text-[#111827]">
+                                <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                {request.date}
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF3C7] text-[#F59E0B] rounded-xl font-bold text-xs border border-[#F59E0B]/20 transition-colors active:bg-[#F59E0B] active:text-white"
+                              onClick={() => setApproveDialog({open: true, requestId: request.id})}
+                            >
+                              <Forward className="w-4 h-4" strokeWidth={2.5} />
+                              FORWARD
+                            </button>
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF2F2] text-[#EF4444] rounded-xl font-bold text-xs border border-[#EF4444]/20 transition-colors active:bg-[#EF4444] active:text-white"
+                              onClick={() => setRejectDialog({open: true, requestId: request.id})}
+                            >
+                              <X className="w-4 h-4" strokeWidth={2.5} />
+                              REJECT
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 </TabsContent>
 
+                {/* Completed Table */}
                 <TabsContent value="metadata-completed" className="mt-0">
-                  <div className="pb-6 pt-2">
-                    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
                       <table className="org-completed-table w-full">
                         <thead>
                           <tr>
@@ -4643,7 +6262,7 @@ export default function DataAccessRequests1() {
                         <tbody>
                           <TooltipProvider delayDuration={100}>
                             {metadataCompletedRequests.filter(r => {
-                                  const searchMatch = !metadataCompletedSearch || r.id.toLowerCase().includes(metadataCompletedSearch.toLowerCase()) || r.layerName.toLowerCase().includes(metadataCompletedSearch.toLowerCase()) || r.requestor.toLowerCase().includes(metadataCompletedSearch.toLowerCase()) || r.approvedBy.toLowerCase().includes(metadataCompletedSearch.toLowerCase());
+                                  const searchMatch = !metadataCompletedSearch || r.id.toLowerCase().includes(metadataCompletedSearch.toLowerCase()) || r.layerName.toLowerCase().includes(metadataCompletedSearch.toLowerCase()) || (r.requestor && r.requestor.toLowerCase().includes(metadataCompletedSearch.toLowerCase())) || (r.approvedBy && r.approvedBy.toLowerCase().includes(metadataCompletedSearch.toLowerCase()));
                                   const statusMatch = 
                                     (metadataCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
                                     (metadataCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
@@ -4695,6 +6314,66 @@ export default function DataAccessRequests1() {
                         </tbody>
                       </table>
                     </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {metadataCompletedRequests.filter(r => {
+                          const searchMatch = !metadataCompletedSearch || r.id.toLowerCase().includes(metadataCompletedSearch.toLowerCase()) || r.layerName.toLowerCase().includes(metadataCompletedSearch.toLowerCase());
+                          const statusMatch = 
+                            (metadataCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                            (metadataCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                            (metadataCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                          return searchMatch && statusMatch;
+                        }).map((request) => {
+                          const status = request.status?.toLowerCase() || 'approved';
+                          const actionBy = status === 'approved' || status === 'completed' ? (request.approvedBy || "Noor Al-Hashimi") : 
+                                           status === 'rejected' ? (request.rejectedBy || "Layla Ahmed") : 
+                                           (request.forwardedBy || "Ahmed Al-Mansoori");
+                          const actionDate = status === 'approved' || status === 'completed' ? (request.approvedDate || "13 Mar 2025") : 
+                                             status === 'rejected' ? (request.rejectedDate || "21 Mar 2026") : 
+                                             (request.forwardedDate || "19 Mar 2026");
+
+                          return (
+                            <div key={request.id} className="mobile-card">
+                              <div className="flex justify-between items-start mb-3">
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${status === 'approved' || status === 'completed' ? 'bg-[#10B981]' : status === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                    <span className="text-xs font-bold text-[#6B7280]">Completed Metadata</span>
+                                  </div>
+                                  <h4 className="text-sm font-bold text-[#111827]">{request.layerName}</h4>
+                                </div>
+                                <Badge className={`status-badge ${status === 'approved' || status === 'completed' ? 'approved' : status === 'forwarded' ? 'forward' : 'reject'}`}>
+                                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                                </Badge>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                                  <span className="text-xs font-medium text-[#111827] truncate">{request.requestedBy || "Sara Mohammad"}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{request.requestedDate || "07 Mar 2025"}</span>
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                                  <span className="text-xs font-medium text-[#111827] truncate">{actionBy}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{actionDate}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                                <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Type:</span>
+                                <span className="text-xs font-medium text-[#3D72A2]">{request.layerType}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
                   </div>
                 </TabsContent>
               </Tabs>
@@ -4704,7 +6383,7 @@ export default function DataAccessRequests1() {
             <TabsContent value="app-users">
               <Tabs defaultValue="app-users-pending">
                 {/* Secondary line tabs */}
-                <div className="flex items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1">
+                <div className="flex flex-col lg:flex-row lg:items-center justify-between border-b border-[#E5E7EB] mb-4 pr-1 gap-4">
                   <TabsList className="bg-transparent h-auto p-0 gap-0">
                     <TabsTrigger value="app-users-pending" className="relative px-5 py-2.5 text-sm font-medium text-[#6B7280] bg-transparent border-0 rounded-none data-[state=active]:text-[#EF4444] data-[state=active]:shadow-none data-[state=active]:bg-transparent after:absolute after:bottom-0 after:left-0 after:right-0 after:h-[2px] after:bg-[#EF4444] after:opacity-0 data-[state=active]:after:opacity-100">
                       <span className="flex items-center gap-2"><span className="w-2 h-2 rounded-full bg-[#EF4444]"></span>Pending</span>
@@ -4715,213 +6394,379 @@ export default function DataAccessRequests1() {
                     </TabsTrigger>
                   </TabsList>
 
-                  <TabsContent value="app-users-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-                    <div className="flex items-center gap-3 flex-1 justify-end">
-                      <div className="relative" style={{minWidth:'200px',maxWidth:'280px',flex:1}}>
-                        <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-                        <input
-                          type="text"
-                          placeholder="Search pending requests..."
-                          value={appUsersPendingSearch}
-                          onChange={(e) => setAppUsersPendingSearch(e.target.value)}
-                          className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
-                        />
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <div className="relative">
-                          <input
-                            type="text"
-                            placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={appUsersPendingDateRange.from}
-              onChange={(e) => setAppUsersPendingDateRange({ ...appUsersPendingDateRange, from: e.target.value })}
-              className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={appUsersPendingDateRange.to}
-              onChange={(e) => setAppUsersPendingDateRange({ ...appUsersPendingDateRange, to: e.target.value })}
-              className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-        </div>
-    </div>
-</TabsContent>
+                  <TabsContent value="app-users-pending" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[280px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search pending requests..."
+                              value={appUsersPendingSearch}
+                              onChange={(e) => setAppUsersPendingSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={appUsersPendingDateRange.from}
+                                          onChange={(e) => setAppUsersPendingDateRange({ ...appUsersPendingDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={appUsersPendingDateRange.to}
+                                          onChange={(e) => setAppUsersPendingDateRange({ ...appUsersPendingDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        </div>
 
-<TabsContent value="app-users-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex justify-end" tabIndex={-1}>
-    <div className="flex items-center gap-3 flex-1 justify-end">
-        <div className="relative" style={{minWidth:'200px',maxWidth:'280px',flex:1}}>
-          <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
-          <input
-            type="text"
-            placeholder="Search completed requests..."
-            value={appUsersCompletedSearch}
-            onChange={(e) => setAppUsersCompletedSearch(e.target.value)}
-            className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
-          />
-        </div>
-        <select value={appUsersCompletedStatusFilter} onChange={(e) => setAppUsersCompletedStatusFilter(e.target.value)} className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none px-4" style={{cursor: 'pointer'}}>
-          <option value="Approved">Approved</option>
-          <option value="Forwarded">Forwarded</option>
-          <option value="Rejected">Rejected</option>
-        </select>
-        <div className="flex items-center gap-2">
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={appUsersCompletedDateRange.from}
-              onChange={(e) => setAppUsersCompletedDateRange({ ...appUsersCompletedDateRange, from: e.target.value })}
-              className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="dd-mm-yyyy"
-              onFocus={(e) => e.target.type = 'date'}
-              onBlur={(e) => e.target.type = 'text'}
-              value={appUsersCompletedDateRange.to}
-              onChange={(e) => setAppUsersCompletedDateRange({ ...appUsersCompletedDateRange, to: e.target.value })}
-              className="w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
-            />
-            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
-          </div>
-        </div>
-    </div>
-</TabsContent>
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={appUsersPendingDateRange.from}
+                              onChange={(e) => setAppUsersPendingDateRange({ ...appUsersPendingDateRange, from: e.target.value })}
+                              className="w-full sm:w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={appUsersPendingDateRange.to}
+                              onChange={(e) => setAppUsersPendingDateRange({ ...appUsersPendingDateRange, to: e.target.value })}
+                              className="w-full sm:w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#EF4444] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="app-users-completed" className="mt-0 !m-0 p-0 border-0 flex-1 flex flex-col md:flex-row justify-end md:justify-start lg:justify-end" tabIndex={-1}>
+                    <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 justify-end md:justify-start lg:justify-end w-full">
+                        <div className="flex items-center gap-2 w-full sm:max-w-[280px]">
+                          <div className="relative flex-1">
+                            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280]" />
+                            <input
+                              type="text"
+                              placeholder="Search completed requests..."
+                              value={appUsersCompletedSearch}
+                              onChange={(e) => setAppUsersCompletedSearch(e.target.value)}
+                              className="w-full pl-10 pr-4 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px]"
+                            />
+                          </div>
+                          {/* Mobile Date Filter Icon */}
+                          <div className="sm:hidden">
+                            <Popover>
+                              <PopoverTrigger asChild>
+                                <Button variant="outline" size="icon" className="h-[36px] w-[36px] rounded-[10px] border-[#E5E7EB] bg-white">
+                                  <Calendar className="w-4 h-4 text-[#6B7280]" />
+                                </Button>
+                              </PopoverTrigger>
+                              <PopoverContent className="w-[300px] p-4" align="end">
+                                <div className="flex flex-col gap-4">
+                                  <h4 className="text-xs font-bold text-[#111827] uppercase tracking-wider">Filter by Date</h4>
+                                  <div className="space-y-3">
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">From Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={appUsersCompletedDateRange.from}
+                                          onChange={(e) => setAppUsersCompletedDateRange({ ...appUsersCompletedDateRange, from: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                    <div className="space-y-1.5">
+                                      <Label className="text-[11px] font-bold text-[#6B7280] uppercase">To Date</Label>
+                                      <div className="relative">
+                                        <input
+                                          type="text"
+                                          placeholder="dd-mm-yyyy"
+                                          onFocus={(e) => e.target.type = 'date'}
+                                          onBlur={(e) => e.target.type = 'text'}
+                                          value={appUsersCompletedDateRange.to}
+                                          onChange={(e) => setAppUsersCompletedDateRange({ ...appUsersCompletedDateRange, to: e.target.value })}
+                                          className="w-full px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                                        />
+                                        <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </PopoverContent>
+                            </Popover>
+                          </div>
+                        </div>
+
+                        {/* Status Select with Chevron */}
+                        <div className="relative w-full sm:w-[120px]">
+                          <select 
+                            value={appUsersCompletedStatusFilter} 
+                            onChange={(e) => setAppUsersCompletedStatusFilter(e.target.value)} 
+                            className="w-full px-3 pr-9 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none" 
+                            style={{cursor: 'pointer'}}
+                          >
+                            <option value="Approved">Approved</option>
+                            <option value="Forwarded">Forwarded</option>
+                            <option value="Rejected">Rejected</option>
+                          </select>
+                          <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                        </div>
+
+                        {/* Desktop Date Range */}
+                        <div className="hidden sm:flex items-center gap-2 w-full sm:w-auto">
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={appUsersCompletedDateRange.from}
+                              onChange={(e) => setAppUsersCompletedDateRange({ ...appUsersCompletedDateRange, from: e.target.value })}
+                              className="w-full sm:w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                          <span className="text-[#6B7280] font-bold text-[11px] uppercase shrink-0">TO</span>
+                          <div className="relative flex-1 sm:flex-none">
+                            <input
+                              type="text"
+                              placeholder="dd-mm-yyyy"
+                              onFocus={(e) => e.target.type = 'date'}
+                              onBlur={(e) => e.target.type = 'text'}
+                              value={appUsersCompletedDateRange.to}
+                              onChange={(e) => setAppUsersCompletedDateRange({ ...appUsersCompletedDateRange, to: e.target.value })}
+                              className="w-full sm:w-[120px] px-3 bg-white border border-[#E5E7EB] focus:outline-none focus:ring-1 focus:ring-[#10B981] rounded-[10px] h-[36px] text-[14px] appearance-none"
+                            />
+                            <Calendar className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#6B7280] pointer-events-none" />
+                          </div>
+                        </div>
+                    </div>
+                  </TabsContent>
 </div>
                 
+                {/* Pending Table */}
                 <TabsContent value="app-users-pending" className="mt-0">
-  <div className="pb-6 pt-2">
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-                        <table className="dept-pending-table w-full">
-                          <thead>
-                            <tr>
-                              <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-                              <th className="text-[11px] font-bold text-[#6B7280] min-w-[200px]">User Details</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Organization / Dept</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Role</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-                              <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280]">Actions</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <TooltipProvider delayDuration={100}>
-                              {appUsersPendingRequests.filter(r => !appUsersPendingSearch || r.id.toLowerCase().includes(appUsersPendingSearch.toLowerCase()) || r.name.toLowerCase().includes(appUsersPendingSearch.toLowerCase()) || r.orgDept.toLowerCase().includes(appUsersPendingSearch.toLowerCase())).map((request) => (
-                                <tr key={request.id}>
-                                  <td className="sticky-col-id font-medium text-[#111827]">
-                                    <div className="flex items-center gap-2 whitespace-nowrap">
-                                      <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full"></div>
-                                      {request.id}
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                      <table className="dept-pending-table w-full">
+                        <thead>
+                          <tr>
+                            <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                            <th className="text-[11px] font-bold text-[#6B7280] min-w-[200px]">User Details</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Organization / Dept</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Role</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                            <th className="sticky-col-actions text-[11px] font-bold text-[#6B7280]">Actions</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TooltipProvider delayDuration={100}>
+                            {appUsersPendingRequests.filter(r => !appUsersPendingSearch || r.id.toLowerCase().includes(appUsersPendingSearch.toLowerCase()) || r.name.toLowerCase().includes(appUsersPendingSearch.toLowerCase()) || r.orgDept.toLowerCase().includes(appUsersPendingSearch.toLowerCase())).map((request) => (
+                              <tr key={request.id}>
+                                <td className="sticky-col-id font-medium text-[#111827]">
+                                  <div className="flex items-center gap-2 whitespace-nowrap">
+                                    <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                    {request.id}
+                                  </div>
+                                </td>
+                                <td className="whitespace-nowrap">
+                                  {request.name !== 'â€”' ? (
+                                    <div className="flex flex-col gap-0.5">
+                                      <span className="font-bold text-[#111827] text-[13px]">{request.name}</span>
+                                      <span className="text-[#3D72A2] text-[12px]">{request.email}</span>
                                     </div>
-                                  </td>
-                                  <td className="whitespace-nowrap">
-                                    {request.name !== 'â€”' ? (
-                                      <div className="flex flex-col gap-0.5">
-                                        <span className="font-bold text-[#111827] text-[13px]">{request.name}</span>
-                                        <span className="text-[#3D72A2] text-[12px]">{request.email}</span>
-                                      </div>
-                                    ) : (
-                                      <span className="font-medium text-[#6B7280]">{request.name}</span>
-                                    )}
-                                  </td>
-                                  <td className="font-medium whitespace-nowrap text-[#374151]">{request.orgDept}</td>
-                                  <td className="whitespace-nowrap">
-                                    <span className="px-2.5 py-1 bg-[#F3F4F6] text-[#4B5563] rounded-full text-[12px] font-medium border border-[#E5E7EB]">
-                                      {request.role}
-                                    </span>
-                                  </td>
-                                  <td className="font-medium whitespace-nowrap text-[#374151]">{request.requestedBy}</td>
-                                  <td>
-                                    <div className="flex items-center gap-2 text-[#374151]">
-                                      <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
-                                      {request.requestedDate}
+                                  ) : (
+                                    <span className="font-medium text-[#6B7280]">{request.name}</span>
+                                  )}
+                                </td>
+                                <td className="font-medium whitespace-nowrap text-[#374151]">{request.orgDept}</td>
+                                <td className="whitespace-nowrap">
+                                  <span className="px-2.5 py-1 bg-[#F3F4F6] text-[#4B5563] rounded-full text-[12px] font-medium border border-[#E5E7EB]">
+                                    {request.role}
+                                  </span>
+                                </td>
+                                <td className="font-medium whitespace-nowrap text-[#374151]">{request.requestedBy}</td>
+                                <td>
+                                  <div className="flex items-center gap-2 text-[#374151]">
+                                    <Calendar className="w-3.5 h-3.5 text-[#6B7280]" />
+                                    {request.requestedDate}
+                                  </div>
+                                </td>
+                                <td className="sticky-col-actions">
+                                  {!isReviewer && (
+                                    <div className="flex items-center gap-2">
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <button 
+                                            className="flex items-center justify-center w-7 h-7 bg-[#FEF3C7] text-[#F59E0B] hover:bg-[#F59E0B] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#F59E0B]/20" 
+                                            onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
+                                          >
+                                            <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
+                                          </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
+                                      </Tooltip>
+                                      <Tooltip>
+                                        <TooltipTrigger asChild>
+                                          <button 
+                                            className="flex items-center justify-center w-7 h-7 bg-[#FEF2F2] text-[#EF4444] hover:bg-[#EF4444] hover:text-white rounded-full transition-all duration-300 shadow-sm border border-[#EF4444]/20" 
+                                            onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
+                                          >
+                                            <X className="w-4 h-4" />
+                                          </button>
+                                        </TooltipTrigger>
+                                        <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
+                                      </Tooltip>
                                     </div>
-                                  </td>
-                                  <td className="sticky-col-actions">
-                                    {!isReviewer && (
-                                      <div className="flex items-center gap-2">
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <button 
-                                              className="flex items-center justify-center w-7 h-7 bg-[#F59E0B]/10 text-[#F59E0B] hover:bg-[#F59E0B]/20 rounded-full transition-colors font-bold border border-[#F59E0B]/20" 
-                                              onClick={(e) => { e.stopPropagation(); setApproveDialog({open: true, requestId: request.id}); }}
-                                            >
-                                              <Forward className="w-[18px] h-[18px]" strokeWidth={2.5} />
-                                            </button>
-                                          </TooltipTrigger>
-                                          <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Forward</TooltipContent>
-                                        </Tooltip>
-                                        <Tooltip>
-                                          <TooltipTrigger asChild>
-                                            <button 
-                                              className="flex items-center justify-center w-7 h-7 bg-[#EF4444]/10 text-[#EF4444] hover:bg-[#EF4444]/20 rounded-full transition-colors font-bold border border-[#EF4444]/20" 
-                                              onClick={(e) => { e.stopPropagation(); setRejectDialog({open: true, requestId: request.id}); }}
-                                            >
-                                              <X className="w-4 h-4" />
-                                            </button>
-                                          </TooltipTrigger>
-                                          <TooltipContent className="bg-gray-800 text-white text-[11px] py-1 px-2.5 rounded-md border-0 shadow-lg">Reject</TooltipContent>
-                                        </Tooltip>
-                                      </div>
-                                    )}
-                                  </td>
-                                </tr>
-                              ))}
-                            </TooltipProvider>
-                          </tbody>
-                        </table>
-                      </div>
-                    
-  </div>
-</TabsContent>
+                                  )}
+                                </td>
+                              </tr>
+                            ))}
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
+                    </div>
 
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {appUsersPendingRequests.filter(r => !appUsersPendingSearch || r.id.toLowerCase().includes(appUsersPendingSearch.toLowerCase()) || r.name.toLowerCase().includes(appUsersPendingSearch.toLowerCase()) || r.orgDept.toLowerCase().includes(appUsersPendingSearch.toLowerCase())).map((request) => (
+                        <div key={request.id} className="mobile-card">
+                          <div className="flex justify-between items-start mb-3">
+                            <div>
+                              <div className="flex items-center gap-2 mb-1">
+                                <div className="w-1.5 h-1.5 bg-[#EF4444] rounded-full animate-pulse"></div>
+                                <span className="text-xs font-bold text-[#6B7280]">User Access Request</span>
+                              </div>
+                              <h4 className="text-sm font-bold text-[#111827]">{request.name}</h4>
+                              <p className="text-xs text-[#3D72A2]">{request.email}</p>
+                            </div>
+                            <span className="px-2.5 py-1 bg-[#F3F4F6] text-[#4B5563] rounded-full text-[10px] font-bold border border-[#E5E7EB]">{request.role}</span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-4">
+                            <div className="flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Organization</span>
+                              <span className="text-xs font-medium text-[#111827] truncate">{request.orgDept}</span>
+                            </div>
+                            <div className="flex flex-col text-right">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested Date</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.requestedDate}</span>
+                            </div>
+                            <div className="col-span-2 flex flex-col">
+                              <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Requested By</span>
+                              <span className="text-xs font-medium text-[#111827]">{request.requestedBy}</span>
+                            </div>
+                          </div>
+
+                          <div className="flex gap-2">
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF3C7] text-[#F59E0B] rounded-xl font-bold text-xs border border-[#F59E0B]/20 transition-colors active:bg-[#F59E0B] active:text-white"
+                              onClick={() => setApproveDialog({open: true, requestId: request.id})}
+                            >
+                              <Forward className="w-4 h-4" strokeWidth={2.5} />
+                              FORWARD
+                            </button>
+                            <button 
+                              className="flex-1 flex items-center justify-center gap-2 h-10 bg-[#FEF2F2] text-[#EF4444] rounded-xl font-bold text-xs border border-[#EF4444]/20 transition-colors active:bg-[#EF4444] active:text-white"
+                              onClick={() => setRejectDialog({open: true, requestId: request.id})}
+                            >
+                              <X className="w-4 h-4" strokeWidth={2.5} />
+                              REJECT
+                            </button>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </TabsContent>
+
+                {/* Completed Table */}
                 <TabsContent value="app-users-completed" className="mt-0">
-  <div className="pb-6 pt-2">
-    <div className="scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
-                        <table className="org-completed-table w-full">
-                          <thead>
-                            <tr>
-                              <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">User Details</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Organization / Dept</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Role</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Action by</th>
-                              <th className="text-[11px] font-bold text-[#6B7280]">Action date</th>
-                              <th className="sticky-col-status text-left">Status</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            <TooltipProvider delayDuration={100}>
-                              {appUsersCompletedRequests.filter(r => {
-  const searchMatch = !appUsersCompletedSearch || r.id.toLowerCase().includes(appUsersCompletedSearch.toLowerCase()) || r.name.toLowerCase().includes(appUsersCompletedSearch.toLowerCase()) || r.orgDept.toLowerCase().includes(appUsersCompletedSearch.toLowerCase());
-  const statusMatch = 
-    (appUsersCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
-    (appUsersCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
-    (appUsersCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
-  return searchMatch && statusMatch;
-}).map((request) => (
+                  <div className="mt-4">
+                    {/* Desktop Table View */}
+                    <div className="hidden md:block scrollable-table-container shadow-sm border border-[#E5E7EB] rounded-xl overflow-hidden bg-white">
+                      <table className="org-completed-table w-full">
+                        <thead>
+                          <tr>
+                            <th className="sticky-col-id text-[11px] font-bold text-[#6B7280]">Request ID</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">User Details</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Organization / Dept</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Role</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested by</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Requested Date</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Action by</th>
+                            <th className="text-[11px] font-bold text-[#6B7280]">Action date</th>
+                            <th className="sticky-col-status text-left">Status</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <TooltipProvider delayDuration={100}>
+                            {appUsersCompletedRequests.filter(r => {
+                                  const searchMatch = !appUsersCompletedSearch || r.id.toLowerCase().includes(appUsersCompletedSearch.toLowerCase()) || r.name.toLowerCase().includes(appUsersCompletedSearch.toLowerCase()) || r.orgDept.toLowerCase().includes(appUsersCompletedSearch.toLowerCase());
+                                  const statusMatch = 
+                                    (appUsersCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                                    (appUsersCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                                    (appUsersCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                                  return searchMatch && statusMatch;
+                              }).map((request) => (
                                 <tr key={request.id}>
                                   <td className="sticky-col-id font-medium text-[#111827]">
                                     <div className="flex items-center gap-2 whitespace-nowrap">
-                                      <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full"></div>
+                                      <div className={`w-1.5 h-1.5 rounded-full ${request.status === 'Approved' ? 'bg-[#10B981]' : request.status === 'Forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
                                       {request.id}
                                     </div>
                                   </td>
@@ -4966,13 +6811,73 @@ export default function DataAccessRequests1() {
                                   </td>
                                 </tr>
                               ))}
-                            </TooltipProvider>
-                          </tbody>
-                        </table>
-                      </div>
-                    
-  </div>
-</TabsContent>
+                          </TooltipProvider>
+                        </tbody>
+                      </table>
+                    </div>
+
+                    {/* Mobile Card View */}
+                    <div className="md:hidden space-y-4">
+                      {appUsersCompletedRequests.filter(r => {
+                          const searchMatch = !appUsersCompletedSearch || r.id.toLowerCase().includes(appUsersCompletedSearch.toLowerCase()) || r.name.toLowerCase().includes(appUsersCompletedSearch.toLowerCase()) || r.orgDept.toLowerCase().includes(appUsersCompletedSearch.toLowerCase());
+                          const statusMatch = 
+                            (appUsersCompletedStatusFilter === "Approved" && (r.status?.toLowerCase() === "approved" || r.status?.toLowerCase() === "completed")) ||
+                            (appUsersCompletedStatusFilter === "Forwarded" && r.status?.toLowerCase() === "forwarded") ||
+                            (appUsersCompletedStatusFilter === "Rejected" && r.status?.toLowerCase() === "rejected");
+                          return searchMatch && statusMatch;
+                        }).map((request) => {
+                          const status = request.status?.toLowerCase() || 'approved';
+                          const actionBy = status === 'approved' || status === 'completed' ? (request.approvedBy || "Jawaher Rashed") : 
+                                           status === 'rejected' ? (request.rejectedBy || "Layla Ahmed") : 
+                                           (request.forwardedBy || "Ahmed Al-Mansoori");
+                          const actionDate = status === 'approved' || status === 'completed' ? (request.approvedDate || "24 Mar 2026") : 
+                                             status === 'rejected' ? (request.rejectedDate || "25 Mar 2026") : 
+                                             (request.forwardedDate || "23 Mar 2026");
+
+                          return (
+                            <div key={request.id} className="mobile-card">
+                              <div className="flex justify-between items-start mb-3">
+                                <div>
+                                  <div className="flex items-center gap-2 mb-1">
+                                    <div className={`w-1.5 h-1.5 rounded-full ${status === 'approved' || status === 'completed' ? 'bg-[#10B981]' : status === 'forwarded' ? 'bg-[#F59E0B]' : 'bg-[#EF4444]'}`}></div>
+                                    <span className="text-xs font-bold text-[#6B7280]">Completed Access Request</span>
+                                  </div>
+                                  <h4 className="text-sm font-bold text-[#111827]">{request.name}</h4>
+                                  <p className="text-xs text-[#3D72A2]">{request.email}</p>
+                                </div>
+                                <Badge className={`status-badge ${status === 'approved' || status === 'completed' ? 'approved' : status === 'forwarded' ? 'forward' : 'reject'}`}>
+                                  {status.charAt(0).toUpperCase() + status.slice(1)}
+                                </Badge>
+                              </div>
+
+                              <div className="grid grid-cols-2 gap-y-3 gap-x-4 mb-3">
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Organization</span>
+                                  <span className="text-xs font-medium text-[#111827] truncate">{request.orgDept}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{request.requestedDate}</span>
+                                </div>
+                                <div className="flex flex-col">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action By</span>
+                                  <span className="text-xs font-medium text-[#111827] truncate">{actionBy}</span>
+                                </div>
+                                <div className="flex flex-col text-right">
+                                  <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Action Date</span>
+                                  <span className="text-xs font-medium text-[#111827]">{actionDate}</span>
+                                </div>
+                              </div>
+                              <div className="flex items-center gap-2 pt-2 border-t border-gray-100">
+                                <span className="text-[10px] uppercase font-bold text-[#9CA3AF]">Role:</span>
+                                <span className="text-xs font-medium text-[#3D72A2]">{request.role}</span>
+                              </div>
+                            </div>
+                          );
+                        })}
+                    </div>
+                  </div>
+                </TabsContent>
               </Tabs>
             </TabsContent>
 
@@ -5841,7 +7746,7 @@ export default function DataAccessRequests1() {
             </div>
 
             {/* Info Cards Row */}
-            <div className="grid grid-cols-3 gap-3 mb-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mb-5">
               <div className="bg-[#F9FAFB] rounded-[12px] p-3 border border-[#F3F4F6]">
                 <div className="flex items-center gap-2 mb-1.5 text-[#6B7280]">
                   <FileText className="w-3.5 h-3.5" />

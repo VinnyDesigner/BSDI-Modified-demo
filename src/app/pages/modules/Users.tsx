@@ -89,6 +89,7 @@ export default function Users() {
   const [savedUsersFromDate, setSavedUsersFromDate] = useState<Date | undefined>(undefined);
   const [savedUsersToDate, setSavedUsersToDate] = useState<Date | undefined>(undefined);
   const searchRef = useRef<HTMLDivElement>(null);
+  const searchRefTablet = useRef<HTMLDivElement>(null);
   const [searchSuggestions, setSearchSuggestions] = useState<typeof users>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [statusFilter, setStatusFilter] = useState("all");
@@ -595,7 +596,10 @@ export default function Users() {
   // Handle click outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (searchRef.current && !searchRef.current.contains(event.target as Node)) {
+      const isOutsideMain = searchRef.current && !searchRef.current.contains(event.target as Node);
+      const isOutsideTablet = searchRefTablet.current && !searchRefTablet.current.contains(event.target as Node);
+      
+      if (isOutsideMain && isOutsideTablet) {
         setShowSuggestions(false);
       }
     };
@@ -672,7 +676,7 @@ export default function Users() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] px-6 py-5">
+    <div className="min-h-screen bg-[#F5F7FA] px-4 md:px-6 py-4 md:py-5">
       <div className="max-w-[1700px] mx-auto space-y-6">
         {/* Standardized Header */}
         <PageHeader 
@@ -692,7 +696,7 @@ export default function Users() {
 
         {/* KPI Cards Grid */}
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8">
           <MetricCard 
             value={stats.total} 
             label="Total Users" 
@@ -720,19 +724,19 @@ export default function Users() {
         </div>
 
         {/* User Directory Table */}
-        <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)]" style={{ padding: '20px 24px 24px' }}>
+        <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] p-4 md:p-6 md:pb-[24px]">
           
           {/* Row 1: Title & Global Search */}
-          <div className="flex items-center justify-between mb-3">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-4">
             <div>
               <h3 className="text-lg font-semibold text-[#111827]">User Management</h3>
               <p className="text-sm text-[#6B7280]">Manage and view all users</p>
             </div>
             
-            <div className="relative" ref={searchRef}>
+            <div className="relative w-full lg:w-[320px] md:hidden lg:block" ref={searchRef}>
               <Search className="absolute left-[12px] top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] pointer-events-none" />
               <Input
-                className="pl-[36px] pr-[32px] h-[36px] w-[280px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
+                className="pl-[36px] pr-[32px] h-[36px] w-full border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
                 placeholder="Search"
                 value={searchQuery}
                 onChange={(e) => {
@@ -782,41 +786,57 @@ export default function Users() {
 
           <Tabs value={activeMainTab} onValueChange={setActiveMainTab} className="w-full">
             {/* Row 2: Tabs & Filters */}
-            <div className="flex items-center justify-between mb-5">
+            <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-5">
               {/* LEFT: Tabs */}
-              <TabsList className="bg-transparent p-0 h-auto flex items-center gap-2 shadow-none">
-                <TabsTrigger
-                  value="directory"
-                  className="h-[32px] px-[14px] rounded-[10px] text-[13px] font-medium border transition-all duration-200
-                    bg-white text-[#6B7280] border-[#E5E7EB] hover:bg-[#F9FAFB] hover:text-[#111827]
-                    data-[state=active]:bg-[#EF4444] data-[state=active]:text-white data-[state=active]:border-transparent data-[state=active]:shadow-[0_2px_6px_rgba(239,68,68,0.2)]
-                    data-[state=active]:font-medium data-[state=active]:hover:bg-[#DC2626]"
-                >
-                  User Directory
-                </TabsTrigger>
-                <TabsTrigger
-                  value="saved"
-                  className="h-[32px] px-[14px] rounded-[10px] text-[13px] font-medium border transition-all duration-200
-                    bg-white text-[#6B7280] border-[#E5E7EB] hover:bg-[#F9FAFB] hover:text-[#111827]
-                    data-[state=active]:bg-[#EF4444] data-[state=active]:text-white data-[state=active]:border-transparent data-[state=active]:shadow-[0_2px_6px_rgba(239,68,68,0.2)]
-                    data-[state=active]:font-medium data-[state=active]:hover:bg-[#DC2626]"
-                >
-                  Saved Users
-                </TabsTrigger>
-              </TabsList>
+              <div className="flex items-center justify-between w-full lg:w-auto gap-4">
+                <TabsList className="bg-transparent p-0 h-auto flex flex-wrap items-center gap-2 shadow-none">
+                  <TabsTrigger
+                    value="directory"
+                    className="h-[32px] px-[14px] rounded-[10px] text-[13px] font-medium border transition-all duration-200
+                      bg-white text-[#6B7280] border-[#E5E7EB] hover:bg-[#F9FAFB] hover:text-[#111827]
+                      data-[state=active]:bg-[#EF4444] data-[state=active]:text-white data-[state=active]:border-transparent data-[state=active]:shadow-[0_2px_6px_rgba(239,68,68,0.2)]
+                      data-[state=active]:font-medium data-[state=active]:hover:bg-[#DC2626]"
+                  >
+                    User Directory
+                  </TabsTrigger>
+                  <TabsTrigger
+                    value="saved"
+                    className="h-[32px] px-[14px] rounded-[10px] text-[13px] font-medium border transition-all duration-200
+                      bg-white text-[#6B7280] border-[#E5E7EB] hover:bg-[#F9FAFB] hover:text-[#111827]
+                      data-[state=active]:bg-[#EF4444] data-[state=active]:text-white data-[state=active]:border-transparent data-[state=active]:shadow-[0_2px_6px_rgba(239,68,68,0.2)]
+                      data-[state=active]:font-medium data-[state=active]:hover:bg-[#DC2626]"
+                  >
+                    Saved Users
+                  </TabsTrigger>
+                </TabsList>
+
+                {/* Tab View Only Search Bar - Pushed to right corner */}
+                <div className="hidden md:flex lg:hidden relative w-[240px]" ref={searchRefTablet}>
+                  <Search className="absolute left-[10px] top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-[#9CA3AF] pointer-events-none" />
+                  <Input
+                    className="pl-[32px] pr-[10px] h-[32px] w-full border border-[#E5E7EB] bg-[#F9FAFB] rounded-[8px] text-[13px] focus:border-[#EF4444] transition-all"
+                    placeholder="Search users..."
+                    value={searchQuery}
+                    onChange={(e) => {
+                      setSearchQuery(e.target.value);
+                      setShowSuggestions(true);
+                    }}
+                  />
+                </div>
+              </div>
 
               {/* RIGHT: Filters Context */}
-              <div className="flex items-center gap-[12px]">
+              <div className="grid grid-cols-2 md:flex md:items-center gap-2 md:gap-[12px] w-full lg:w-auto">
                 {activeMainTab === "directory" ? (
                   <>
                     {!isDeptAdmin && (
-                      <>
+                      <div className="col-span-1 md:flex-1 lg:w-auto">
                         <Select 
                           value={departmentFilter}
                           onValueChange={(value) => setDepartmentFilter(value)}
                           disabled={isDeptAdmin}
                         >
-                          <SelectTrigger className="w-[160px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                          <SelectTrigger className="w-full lg:w-[160px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
                             <SelectValue placeholder="Department" />
                           </SelectTrigger>
                           <SelectContent>
@@ -832,70 +852,74 @@ export default function Users() {
                             )}
                           </SelectContent>
                         </Select>
-                        {!isOrgAdmin && (
-                          <Select 
-                            value={orgFilter}
-                            onValueChange={(value) => setOrgFilter(value)}
-                            disabled={isDeptAdmin}
-                          >
-                            <SelectTrigger className="w-[180px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                              <SelectValue placeholder="Organization" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              {isDeptAdmin ? (
-                                <SelectItem value={adminOrg}>{adminOrg}</SelectItem>
-                              ) : (
-                                <>
-                                  <SelectItem value="all">Organization</SelectItem>
-                                  <SelectItem value="Ministry of Works">Ministry of Works</SelectItem>
-                                  <SelectItem value="Urban Planning Authority">Urban Planning Authority</SelectItem>
-                                  <SelectItem value="Transport Authority">Transport Authority</SelectItem>
-                                  <SelectItem value="Environmental Agency">Environmental Agency</SelectItem>
-                                </>
-                              )}
-                            </SelectContent>
-                          </Select>
-                        )}
-                      </>
+                      </div>
                     )}
-                    <Select 
-                      value={roleFilter}
-                      onValueChange={(value) => setRoleFilter(value)}
-                    >
-                      <SelectTrigger className="w-[160px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                        <SelectValue placeholder="Role" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Roles</SelectItem>
-                        <SelectItem value="Department User">Department User</SelectItem>
-                        <SelectItem value="Department Admin">Department Admin</SelectItem>
-                        <SelectItem value="GIS Analyst">GIS Analyst</SelectItem>
-                        <SelectItem value="Data Reviewer">Data Reviewer</SelectItem>
-                        <SelectItem value="Organization User">Organization User</SelectItem>
-                        <SelectItem value="Data Manager">Data Manager</SelectItem>
-                        <SelectItem value="System Administrator">System Administrator</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <Select 
-                      value={statusFilter}
-                      onValueChange={(value) => setStatusFilter(value)}
-                    >
-                      <SelectTrigger className="w-[130px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                        <SelectValue placeholder="Status" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="all">Status</SelectItem>
-                        <SelectItem value="active">Active</SelectItem>
-                        <SelectItem value="pending">Pending</SelectItem>
-                      </SelectContent>
-                    </Select>
+                    {!isDeptAdmin && !isOrgAdmin && (
+                      <div className="col-span-1 md:flex-1 lg:w-auto">
+                        <Select 
+                          value={orgFilter}
+                          onValueChange={(value) => setOrgFilter(value)}
+                          disabled={isDeptAdmin}
+                        >
+                          <SelectTrigger className="w-full lg:w-[180px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                            <SelectValue placeholder="Organization" />
+                          </SelectTrigger>
+                          <SelectContent>
+                            {isDeptAdmin ? (
+                              <SelectItem value={adminOrg}>{adminOrg}</SelectItem>
+                            ) : (
+                              <>
+                                <SelectItem value="all">Organization</SelectItem>
+                                <SelectItem value="Ministry of Works">Ministry of Works</SelectItem>
+                                <SelectItem value="Urban Planning Authority">Urban Planning Authority</SelectItem>
+                                <SelectItem value="Transport Authority">Transport Authority</SelectItem>
+                                <SelectItem value="Environmental Agency">Environmental Agency</SelectItem>
+                              </>
+                            )}
+                          </SelectContent>
+                        </Select>
+                      </div>
+                    )}
+                    <div className="col-span-1 md:flex-1 lg:w-auto">
+                      <Select 
+                        value={roleFilter}
+                        onValueChange={(value) => setRoleFilter(value)}
+                      >
+                        <SelectTrigger className="w-full lg:w-[160px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                          <SelectValue placeholder="Role" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Roles</SelectItem>
+                          <SelectItem value="Department User">Department User</SelectItem>
+                          <SelectItem value="Department Admin">Department Admin</SelectItem>
+                          <SelectItem value="GIS Analyst">GIS Analyst</SelectItem>
+                          <SelectItem value="Data Reviewer">Data Reviewer</SelectItem>
+                          <SelectItem value="Organization User">Organization User</SelectItem>
+                          <SelectItem value="Data Manager">Data Manager</SelectItem>
+                          <SelectItem value="System Administrator">System Administrator</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
+                    <div className="col-span-1 md:flex-1 lg:w-auto">
+                      <Select 
+                        value={statusFilter}
+                        onValueChange={(value) => setStatusFilter(value)}
+                      >
+                        <SelectTrigger className="w-full lg:w-[130px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                          <SelectValue placeholder="Status" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          <SelectItem value="all">Status</SelectItem>
+                          <SelectItem value="active">Active</SelectItem>
+                          <SelectItem value="pending">Pending</SelectItem>
+                        </SelectContent>
+                      </Select>
+                    </div>
                   </>
                 ) : (
-                  <div className="flex items-center gap-[12px]">
-
-
-                    {/* Date Range Group */}
-                    <div className="flex items-center gap-[8px] ml-[4px]">
+                  <div className="col-span-2 md:w-auto">
+                    <div className="flex items-center gap-3 h-[36px] bg-[#F9FAFB] rounded-[10px] px-3 border border-[#E5E7EB]">
+                      <span className="text-[10px] font-bold text-[#9CA3AF] uppercase">From</span>
                       <Popover>
                         <PopoverTrigger asChild>
                           <div className="relative group cursor-pointer inline-flex items-center h-[36px] w-[130px] px-[12px] rounded-[10px] border border-[#E5E7EB] bg-white text-[13px] font-normal text-[#111827] hover:border-[#EF4444] transition-all">
@@ -947,8 +971,8 @@ export default function Users() {
             <TabsContent value="directory" className="mt-0">
           <div className="space-y-4">
 
-            <div className="overflow-x-auto border border-[#F1F1F1] rounded-[12px] overflow-hidden">
-              <table className="w-full">
+            <div className="overflow-hidden">
+              <table className="w-full hidden md:table border border-[#F1F1F1] rounded-[12px]">
                 <thead>
                   <tr className="bg-[#FAFAFA] border-b border-[#E5E7EB]">
                     <th className="px-6 py-4 text-left text-[13px] font-semibold text-[#374151] cursor-pointer hover:text-[#EF4444] transition-colors" onClick={() => handleSort("name")}>
@@ -1083,10 +1107,68 @@ export default function Users() {
                   ))}
                 </tbody>
               </table>
+
+              {/* Mobile Card View (User Directory) */}
+              <div className="md:hidden space-y-4">
+                {paginatedUsers.map((user) => (
+                  <div 
+                    key={user.id} 
+                    id={`user-card-${user.id}`}
+                    className="bg-white border border-[#E5E7EB] rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex flex-col gap-1">
+                        <h4 className="font-bold text-[#111827] text-base">{user.name}</h4>
+                        <p className="text-xs text-[#6B7280]">{user.email}</p>
+                      </div>
+                      <Badge variant={getStatusBadgeProps(user.status).variant}>
+                        {getStatusBadgeProps(user.status).label}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 py-3 border-y border-[#F3F4F6]">
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Role</p>
+                        <p className="text-sm font-medium text-[#374151] truncate max-w-full" title={user.role}>{user.role.split(', ')[0]}</p>
+                      </div>
+                      <div className="space-y-1 text-right">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Department</p>
+                        <p className="text-sm font-medium text-[#374151] truncate">{user.department}</p>
+                      </div>
+                      <div className="col-span-2 space-y-1">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Organization</p>
+                        <p className="text-sm font-medium text-[#374151]">{user.org}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 rounded-xl h-10 gap-2 border-[#E5E7EB] text-[#374151]"
+                        onClick={() => handleOpenUserModal(user, "view")}
+                      >
+                        <Eye className="w-4 h-4" />
+                        Details
+                      </Button>
+                      {!isReviewer && (
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 rounded-xl h-10 gap-2 border-[#E5E7EB] text-[#374151]"
+                          onClick={() => handleOpenUserModal(user, "edit")}
+                        >
+                          <Edit className="w-4 h-4" />
+                          Edit
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
 
             <div className="pt-6 border-t border-[#F3F4F6] mt-6">
-              <div className="flex items-center justify-between">
+              {/* Desktop Pagination */}
+              <div className="hidden md:flex items-center justify-between">
                 <span className="text-xs font-medium text-[#6B7280]">
                   Showing <span className="text-[#111827]">{((currentPage - 1) * itemsPerPage) + 1}</span> to <span className="text-[#111827]">{Math.min(currentPage * itemsPerPage, sortedUsers.length)}</span> of <span className="text-[#111827]">{sortedUsers.length}</span> users
                 </span>
@@ -1128,6 +1210,40 @@ export default function Users() {
                   </Button>
                 </div>
               </div>
+
+              {/* Mobile Pagination */}
+              <div className="flex flex-col items-center justify-center gap-4 md:hidden">
+                <div className="flex items-center gap-2">
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                    onClick={() => setCurrentPage(currentPage - 1)}
+                    disabled={currentPage === 1}
+                  >
+                    Previous
+                  </Button>
+                  <Button
+                    variant="default"
+                    size="sm"
+                    className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+                  >
+                    {currentPage}
+                  </Button>
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                    onClick={() => setCurrentPage(currentPage + 1)}
+                    disabled={currentPage === totalPages}
+                  >
+                    Next
+                  </Button>
+                </div>
+                <div className="text-sm font-medium text-[#6B7280]">
+                  Showing <span className="font-bold text-[#111827]">{sortedUsers.length}</span> results
+                </div>
+              </div>
             </div>
           </div>
             </TabsContent>
@@ -1138,168 +1254,227 @@ export default function Users() {
 
                 <div className="space-y-3">
                   {filteredUserGroups.length > 0 ? (
-                    filteredUserGroups.map((group) => (
-                      <div key={group.id} className="border border-gray-200 rounded-xl overflow-hidden bg-white">
-                      {/* Group Header Row */}
-                      <div 
-                        onClick={() => setExpandedGroupId(expandedGroupId === group.id ? null : group.id)}
-                        className="flex items-center px-4 py-4 hover:bg-gray-50 transition-all cursor-pointer"
-                      >
-                        {/* Chevron Icon on Left */}
-                        <div className="mr-3">
-                          {expandedGroupId === group.id ? (
-                            <ChevronUp className="w-5 h-5 text-[#666666]" />
-                          ) : (
-                            <ChevronDown className="w-5 h-5 text-[#666666]" />
-                          )}
-                        </div>
-                        
-                        <div className="flex-1 grid grid-cols-4 gap-4">
-                          <div>
-                            <span className="text-[#ED1C24] font-semibold">{group.id}</span>
-                          </div>
-                          <div className="text-[#1a1a1a] font-medium">{group.usersCount} users</div>
-                          <div className="text-[#666666]">{group.dateCreated}</div>
-                          <div className="flex items-center gap-2 justify-end" onClick={(e) => e.stopPropagation()}>
-                            {userUploadedFiles[`${group.id}-group`] ? (
-                              <>
-                                <div className="flex items-center gap-2 px-3 h-[32px] bg-[#DCFCE7] rounded-full border border-emerald-100 shadow-sm">
-                                  <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse" />
-                                  <span className="text-[11px] font-bold text-[#059669] uppercase tracking-tight">Uploaded</span>
-                                </div>
-                                <Button
-                                  size="sm"
-                                  variant="outline"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setUploadingForUser({ groupId: group.id });
-                                    setUploadDialogOpen(true);
-                                  }}
-                                  className="h-[36px] px-[16px] rounded-[10px] border border-[#E5E7EB] bg-white text-[13px] font-medium text-[#374151] hover:bg-gray-50 transition-colors shadow-none"
-                                >
-                                  <Upload className="w-3.5 h-3.5 mr-2 text-[#EF4444]" />
-                                  Re-upload
-                                </Button>
-                                <Button
-                                  size="sm"
-                                  variant="default"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setRequestingGroupId(group.id);
-                                    setRequestConfirmDialogOpen(true);
-                                  }}
-                                  className="h-[36px] px-[16px] rounded-[10px] bg-[#EF4444] text-white text-[13px] font-semibold hover:bg-[#DC2626] transition-all shadow-md active:scale-95"
-                                >
-                                  Request
-                                </Button>
-                              </>
-                            ) : (
-                              <>
-                                <Button
-                                  size="sm"
-                                  variant="default"
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    setUploadingForUser({ groupId: group.id });
-                                    setUploadDialogOpen(true);
-                                  }}
-                                  className="h-[36px] px-[16px] rounded-[10px] bg-[#EF4444] text-white text-[13px] font-semibold hover:bg-[#DC2626] transition-all shadow-md active:scale-95"
-                                >
-                                  <Upload className="w-3.5 h-3.5 mr-2" />
-                                  Upload
-                                </Button>
-                                <button
-                                  onClick={(e) => {
-                                    e.stopPropagation();
-                                    confirmDeleteGroup(group.id);
-                                  }}
-                                  className="w-[36px] h-[36px] rounded-[10px] flex items-center justify-center bg-[#FEF2F2] hover:bg-[#FEE2E2] transition-colors cursor-pointer border-0 shadow-sm"
-                                  title="Delete group"
-                                >
-                                  <Trash2 className="w-4 h-4 text-[#EF4444]" />
-                                </button>
-                              </>
-                            )}
-                          </div>
+                    <div className="bg-white border border-[#E5E7EB] rounded-xl overflow-hidden shadow-sm">
+                      {/* Desktop Header Row */}
+                      <div className="hidden md:grid grid-cols-[48px_1fr] bg-[#F9FAFB] border-b border-[#E5E7EB]">
+                        <div className="px-4 py-3" />
+                        <div className="grid grid-cols-4 gap-4 px-4 py-3">
+                          <div className="text-[12px] font-semibold text-[#4B5563] uppercase tracking-wider">Group ID</div>
+                          <div className="text-[12px] font-semibold text-[#4B5563] uppercase tracking-wider">Users</div>
+                          <div className="text-[12px] font-semibold text-[#4B5563] uppercase tracking-wider">Date Created</div>
+                          <div className="text-[12px] font-semibold text-[#4B5563] uppercase tracking-wider text-right">Actions</div>
                         </div>
                       </div>
 
-                      {/* Expanded User Details */}
-                      {expandedGroupId === group.id && (
-                        <div className="border-t border-gray-200 bg-gray-50/50">
-                          <div className="overflow-x-auto">
-                            <table className="w-full border-collapse">
-                              <thead>
-                                <tr className="bg-gray-100">
-                                  <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Name</th>
-                                  <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Email</th>
-                                  <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Role</th>
-                                  <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Organization</th>
-                                  <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Department</th>
-                                </tr>
-                              </thead>
-                              <tbody>
-                                {group.users.map((user) => (
-                                  <tr key={user.id} className="border-b border-gray-200 last:border-b-0 hover:bg-white transition-all">
-                                    <td className="px-4 py-4 text-[#1a1a1a] font-medium">{user.name}</td>
-                                    <td className="px-4 py-4 text-[#666666]">{user.email}</td>
-                                    <td className="px-4 py-4">
-                                      <div className="flex flex-wrap gap-1">
-                                        {user.role.split(', ').slice(0, 2).map((role, index) => (
-                                          <Badge 
-                                            key={index}
-                                            className={getRoleBadgeStyles()}
-                                          >
-                                            {role}
-                                          </Badge>
-                                        ))}
-                                        {user.role.split(', ').length > 2 && (
-                                          <Popover>
-                                            <PopoverTrigger asChild>
-                                              <button className="bg-[#EF4444]/10 text-[#EF4444] border border-[#EF4444]/20 text-xs px-2 py-0.5 rounded-full font-medium cursor-pointer hover:bg-[#EF4444]/20 transition-all">
-                                                +{user.role.split(', ').length - 2} more
-                                              </button>
-                                            </PopoverTrigger>
-                                            <PopoverContent className="w-80 bg-white rounded-xl border border-[#E0E0E0] shadow-lg p-4">
-                                              <div className="space-y-3">
-                                                <div className="flex items-center gap-2 pb-3 border-b border-[#E0E0E0]">
-                                                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#ED1C24]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                                                    <span className="text-sm font-bold text-[#ED1C24]">
-                                                      {user.name.split(' ').map(n => n[0]).join('')}
-                                                    </span>
-                                                  </div>
-                                                  <div>
-                                                    <h4 className="font-semibold text-[#1a1a1a] text-sm">{user.name}</h4>
-                                                    <p className="text-xs text-[#666666]">All Roles</p>
-                                                  </div>
-                                                </div>
-                                                <div className="flex flex-wrap gap-2">
-                                                  {user.role.split(', ').map((role, index) => (
-                                                    <Badge 
-                                                      key={index}
-                                                      className={getRoleBadgeStyles()}
-                                                    >
-                                                      {role}
-                                                    </Badge>
-                                                  ))}
-                                                </div>
-                                              </div>
-                                            </PopoverContent>
-                                          </Popover>
-                                        )}
-                                      </div>
-                                    </td>
-                                    <td className="px-4 py-4 text-[#666666]">Ministry of Works</td>
-                                    <td className="px-4 py-4 text-[#666666]">{user.department}</td>
-                                  </tr>
-                                ))}
-                              </tbody>
-                            </table>
+                      {filteredUserGroups.map((group) => (
+                        <div key={group.id} className="border-b border-[#F1F1F1] last:border-b-0">
+                          {/* Desktop Row */}
+                          <div 
+                            onClick={() => setExpandedGroupId(expandedGroupId === group.id ? null : group.id)}
+                            className="hidden md:flex items-center px-4 py-4 hover:bg-gray-50 transition-all cursor-pointer"
+                          >
+                            {/* Chevron Icon on Left */}
+                            <div className="mr-3">
+                              {expandedGroupId === group.id ? (
+                                <ChevronUp className="w-5 h-5 text-[#666666]" />
+                              ) : (
+                                <ChevronDown className="w-5 h-5 text-[#666666]" />
+                              )}
+                            </div>
+                            
+                            <div className="flex-1 grid grid-cols-4 gap-4">
+                              <div>
+                                <span className="text-[#ED1C24] font-semibold">{group.id}</span>
+                              </div>
+                              <div className="text-[#1a1a1a] font-medium">{group.usersCount} users</div>
+                              <div className="text-[#666666]">{group.dateCreated}</div>
+                              <div className="flex items-center gap-2 justify-end" onClick={(e) => e.stopPropagation()}>
+                                {userUploadedFiles[`${group.id}-group`] ? (
+                                  <>
+                                    <div className="flex items-center gap-2 px-3 h-[32px] bg-[#DCFCE7] rounded-full border border-emerald-100 shadow-sm">
+                                      <div className="w-1.5 h-1.5 bg-[#10B981] rounded-full animate-pulse" />
+                                      <span className="text-[11px] font-bold text-[#059669] uppercase tracking-tight">Uploaded</span>
+                                    </div>
+                                    <Button
+                                      size="sm"
+                                      variant="outline"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setUploadingForUser({ groupId: group.id });
+                                        setUploadDialogOpen(true);
+                                      }}
+                                      className="h-[36px] px-[16px] rounded-[10px] border border-[#E5E7EB] bg-white text-[13px] font-medium text-[#374151] hover:bg-gray-50 transition-colors shadow-none"
+                                    >
+                                      <Upload className="w-3.5 h-3.5 mr-2 text-[#EF4444]" />
+                                      Re-upload
+                                    </Button>
+                                    <Button
+                                      size="sm"
+                                      variant="default"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setRequestingGroupId(group.id);
+                                        setRequestConfirmDialogOpen(true);
+                                      }}
+                                      className="h-[36px] px-[16px] rounded-[10px] bg-[#EF4444] text-white text-[13px] font-semibold hover:bg-[#DC2626] transition-all shadow-md active:scale-95"
+                                    >
+                                      Request
+                                    </Button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Button
+                                      size="sm"
+                                      variant="default"
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        setUploadingForUser({ groupId: group.id });
+                                        setUploadDialogOpen(true);
+                                      }}
+                                      className="h-[36px] px-[16px] rounded-[10px] bg-[#EF4444] text-white text-[13px] font-semibold hover:bg-[#DC2626] transition-all shadow-md active:scale-95"
+                                    >
+                                      <Upload className="w-3.5 h-3.5 mr-2" />
+                                      Upload
+                                    </Button>
+                                    <button
+                                      onClick={(e) => {
+                                        e.stopPropagation();
+                                        confirmDeleteGroup(group.id);
+                                      }}
+                                      className="w-[36px] h-[36px] rounded-[10px] flex items-center justify-center bg-[#FEF2F2] hover:bg-[#FEE2E2] transition-colors cursor-pointer border-0 shadow-sm"
+                                      title="Delete group"
+                                    >
+                                      <Trash2 className="w-4 h-4 text-[#EF4444]" />
+                                    </button>
+                                  </>
+                                )}
+                              </div>
+                            </div>
                           </div>
+
+                          {/* Mobile View Card */}
+                          <div className="md:hidden p-4 space-y-4">
+                            <div className="flex justify-between items-center">
+                              <div className="flex items-center gap-3">
+                                <span className="text-[#ED1C24] font-bold text-base">#{group.id}</span>
+                                <div className="flex flex-col">
+                                  <span className="text-sm font-semibold text-[#111827]">{group.usersCount} users</span>
+                                  <span className="text-[10px] text-[#6B7280]">{group.dateCreated}</span>
+                                </div>
+                              </div>
+                              <button 
+                                onClick={() => setExpandedGroupId(expandedGroupId === group.id ? null : group.id)}
+                                className="w-8 h-8 flex items-center justify-center rounded-lg bg-[#F9FAFB]"
+                              >
+                                {expandedGroupId === group.id ? <ChevronUp className="w-5 h-5 text-[#EF4444]" /> : <ChevronDown className="w-5 h-5" />}
+                              </button>
+                            </div>
+
+                            <div className="flex flex-wrap gap-2" onClick={(e) => e.stopPropagation()}>
+                              {userUploadedFiles[`${group.id}-group`] ? (
+                                <>
+                                  <Button
+                                    className="flex-1 h-9 rounded-xl border-[#E5E7EB] text-[11px] font-semibold"
+                                    variant="outline"
+                                    onClick={() => {
+                                      setUploadingForUser({ groupId: group.id });
+                                      setUploadDialogOpen(true);
+                                    }}
+                                  >
+                                    <Upload className="w-3.5 h-3.5 mr-1.5" /> Re-upload
+                                  </Button>
+                                  <Button
+                                    className="flex-1 h-9 rounded-xl bg-[#EF4444] text-[11px] font-semibold"
+                                    onClick={() => {
+                                      setRequestingGroupId(group.id);
+                                      setRequestConfirmDialogOpen(true);
+                                    }}
+                                  >
+                                    Request
+                                  </Button>
+                                </>
+                              ) : (
+                                <>
+                                  <Button
+                                    className="flex-1 h-9 rounded-xl bg-[#EF4444] text-[11px] font-semibold"
+                                    onClick={() => {
+                                      setUploadingForUser({ groupId: group.id });
+                                      setUploadDialogOpen(true);
+                                    }}
+                                  >
+                                    <Upload className="w-3.5 h-3.5 mr-1.5" /> Upload
+                                  </Button>
+                                  <Button
+                                    variant="outline"
+                                    className="w-9 h-9 p-0 rounded-xl border-[#FEF2F2] bg-[#FEF2F2] hover:bg-[#FEE2E2]"
+                                    onClick={() => confirmDeleteGroup(group.id)}
+                                  >
+                                    <Trash2 className="w-3.5 h-3.5 text-[#EF4444]" />
+                                  </Button>
+                                </>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Expanded User Details */}
+                          {expandedGroupId === group.id && (
+                            <div className="border-t border-gray-200 bg-gray-50/50">
+                              <div className="overflow-x-auto">
+                                <table className="w-full border-collapse hidden sm:table">
+                                  <thead>
+                                    <tr className="bg-gray-100">
+                                      <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Name</th>
+                                      <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Email</th>
+                                      <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Role</th>
+                                      <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Organization</th>
+                                      <th className="px-4 py-3 text-left text-[#4A4A4A] font-semibold text-sm">Department</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {group.users.map((user) => (
+                                      <tr key={user.id} className="border-b border-gray-200 last:border-b-0 hover:bg-white transition-all">
+                                        <td className="px-4 py-4 text-[#1a1a1a] font-medium text-sm">{user.name}</td>
+                                        <td className="px-4 py-4 text-[#666666] text-sm">{user.email}</td>
+                                        <td className="px-4 py-4">
+                                          <Badge className={getRoleBadgeStyles()}>{user.role.split(', ')[0]}</Badge>
+                                        </td>
+                                        <td className="px-4 py-4 text-[#666666] text-sm truncate max-w-[150px]">{user.organization}</td>
+                                        <td className="px-4 py-4 text-[#666666] text-sm">{user.department}</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+
+                                {/* Mobile User Details */}
+                                <div className="sm:hidden divide-y divide-[#F3F4F6]">
+                                  {group.users.map((user) => (
+                                    <div key={user.id} className="p-4 bg-white/50 space-y-2">
+                                      <div className="flex justify-between items-start">
+                                        <div className="flex flex-col gap-0.5">
+                                          <span className="text-sm font-bold text-[#111827]">{user.name}</span>
+                                          <span className="text-[10px] text-[#6B7280]">{user.email}</span>
+                                        </div>
+                                        <Badge className={getRoleBadgeStyles() + " text-[9px] px-2 py-0"}>{user.role.split(', ')[0]}</Badge>
+                                      </div>
+                                      <div className="grid grid-cols-2 gap-2 text-[10px]">
+                                        <div>
+                                          <p className="text-[#9CA3AF] uppercase font-semibold text-[8px]">Org</p>
+                                          <p className="text-[#374151] font-medium truncate">{user.organization}</p>
+                                        </div>
+                                        <div className="text-right">
+                                          <p className="text-[#9CA3AF] uppercase font-semibold text-[8px]">Dept</p>
+                                          <p className="text-[#374151] font-medium truncate">{user.department}</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  ))}
+                                </div>
+                              </div>
+                            </div>
+                          )}
                         </div>
-                      )}
-                      </div>
-                    ))
+                      ))}
+                    </div>
                   ) : (
                     <div className="bg-[#F9FAFB] border border-dashed border-[#E5E7EB] rounded-[12px] p-8 text-center text-[#6B7280] text-[13px]">
                       No saved user groups found matching your search.

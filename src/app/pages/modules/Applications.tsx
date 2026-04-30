@@ -355,35 +355,35 @@ export default function Applications() {
         {/* Applications Directory Card */}
         <Card className="bg-white border border-[#F1F5F9] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden" style={{ padding: '16px 20px' }}>
           {/* Top Control Row */}
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-[14px]">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-[14px]">
             <div>
               <h2 className="text-[18px] font-semibold text-[#111827]">Applications Directory</h2>
               <p className="text-[13px] text-[#6B7280] mt-0.5">Manage and track system applications.</p>
             </div>
             
-            <div className="flex items-center gap-[12px]">
-              <div className="relative">
+            <div className="flex flex-col md:flex-row items-center gap-[12px] w-full lg:w-auto">
+              <div className="relative w-full md:w-[280px]">
                 <Search className="absolute left-[12px] top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] pointer-events-none" />
                 <Input
-                  className="pl-[36px] pr-[12px] h-[36px] w-[220px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
+                  className="pl-[36px] pr-[12px] h-[36px] w-full border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
                   placeholder="Search applications..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                 />
               </div>
 
-
-
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[120px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="flex items-center gap-[12px] w-full md:w-auto">
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="flex-1 md:w-[130px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -452,7 +452,8 @@ export default function Applications() {
             </table>
           </div>
 
-          <div className="flex items-center justify-between mt-2 pt-2 border-t border-[#F3F4F6]">
+          {/* Desktop Pagination */}
+          <div className="hidden md:flex items-center justify-between mt-2 pt-2 border-t border-[#F3F4F6]">
             <div className="text-sm font-medium text-[#6B7280]">
               Showing {filteredApplications.length > 0 ? (currentPage - 1) * ITEMS_PER_PAGE + 1 : 0}-
               {Math.min(currentPage * ITEMS_PER_PAGE, filteredApplications.length)} of {filteredApplications.length} Applications
@@ -479,6 +480,40 @@ export default function Applications() {
               >
                 <ChevronRight className="w-4 h-4" />
               </Button>
+            </div>
+          </div>
+
+          {/* Mobile Pagination */}
+          <div className="flex flex-col items-center justify-center gap-4 mt-4 pt-4 border-t border-[#F3F4F6] md:hidden">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+              >
+                {currentPage}
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                disabled={currentPage >= totalPages || totalPages === 0}
+              >
+                Next
+              </Button>
+            </div>
+            <div className="text-sm font-medium text-[#6B7280]">
+              Showing <span className="font-bold text-[#111827]">{filteredApplications.length}</span> results
             </div>
           </div>
         </Card>

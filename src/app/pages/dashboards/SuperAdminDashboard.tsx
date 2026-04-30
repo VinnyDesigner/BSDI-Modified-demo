@@ -5,7 +5,7 @@ import {
   Building2, Users, Activity, Plus, CheckCircle,
   Clock, AlertCircle, TrendingUp, Database, Shield, X, Check, Maximize2, Server, UsersRound, Download, Calendar, Printer, FileText, ChevronDown,
   MapPin, Route, Construction, Network, Wind, Droplets, Waves,
-  Layers, User, BadgeCheck
+  Layers, User, BadgeCheck, LayoutGrid
 } from "lucide-react";
 import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, AreaChart, Area } from "recharts";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "../../components/ui/dialog";
@@ -217,18 +217,18 @@ export default function SuperAdminDashboard() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-10 py-6">
-      <div className="max-w-[1800px] mx-auto space-y-8">
+    <div className="min-h-screen bg-[#F5F7FA] px-4 md:px-10 py-4 md:py-8">
+      <div className="max-w-[1800px] mx-auto space-y-6 md:space-y-8">
         {/* Header */}
-        <div className="flex flex-col gap-0.5 mb-6">
-          <h1 className="text-[26px] font-bold text-[#EF4444]">
+        <div className="flex flex-col gap-1 mb-6 md:mb-10">
+          <h1 className="text-xl md:text-[26px] font-bold text-[#EF4444] tracking-tight">
             Governance Dashboard
           </h1>
-          <p className="text-[#4A5565] text-[14px] font-normal">BSDI Super Admin • National Data Infrastructure Overview</p>
+          <p className="text-[#64748B] text-xs md:text-sm font-medium">BSDI Super Admin • National Data Infrastructure Overview</p>
         </div>
 
-        {/* KPI Cards Grid */}
-        <div className="grid grid-cols-4 gap-6">
+        {/* KPI Cards Grid - 1 col on mobile, 2 on tablet, 4 on desktop */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
           {kpiData.map((kpi, index) => {
             const Icon = kpi.icon;
             
@@ -302,84 +302,66 @@ export default function SuperAdminDashboard() {
             return (
               <Card 
                 key={index} 
-                className="relative h-[106px] border rounded-[18px] transition-all duration-300 hover:translate-y-[-4px] overflow-hidden group"
+                className="relative p-4 sm:p-6 border-0 rounded-[24px] transition-all duration-300 hover:translate-y-[-4px] overflow-hidden group"
                 style={{
-                  background: `${cardStyle.gradient}, rgba(255, 255, 255, 0.65)`,
+                  background: cardStyle.iconBg.replace('0.1', '0.05'), // Use a tint of the color
                   backdropFilter: 'blur(24px)',
-                  border: '1px solid rgba(255,255,255,0.3)',
-                  boxShadow: '0 10px 30px rgba(0,0,0,0.08)',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.background = `${cardStyle.hoverGradient}, rgba(255, 255, 255, 0.65)`;
-                  e.currentTarget.style.boxShadow = '0 15px 40px rgba(0,0,0,0.12)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.background = `${cardStyle.gradient}, rgba(255, 255, 255, 0.65)`;
-                  e.currentTarget.style.boxShadow = '0 10px 30px rgba(0,0,0,0.08)';
                 }}
               >
-                {/* 3D Icon positioned at top right */}
-                <div 
-                  className="absolute right-[24px] top-[28px] w-[52px] h-[52px] flex items-center justify-center rounded-2xl transition-all duration-300 group-hover:scale-105"
-                  style={{
-                    background: cardStyle.iconBg,
-                    boxShadow: `
-                      inset -2px -2px 6px rgba(255,255,255,0.7),
-                      inset 2px 2px 6px rgba(0,0,0,0.06),
-                      ${cardStyle.glow},
-                      4px 4px 12px rgba(0,0,0,0.08),
-                      -2px -2px 8px rgba(255,255,255,0.8)
-                    `,
-                    transform: 'perspective(1000px) rotateX(5deg) rotateY(-5deg)',
-                  }}
-                >
-                  <div
-                    className="w-[46px] h-[46px] rounded-xl flex items-center justify-center"
-                    style={{
-                      background: cardStyle.iconInnerBg,
-                      boxShadow: `
-                        inset -1px -1px 3px rgba(255,255,255,0.5),
-                        inset 1px 1px 3px rgba(0,0,0,0.08)
-                      `,
-                    }}
-                  >
-                    <Icon 
-                      className="w-[26px] h-[26px]" 
-                      style={{ 
-                        color: cardStyle.iconColor, 
-                        strokeWidth: 2.5,
-                        filter: `drop-shadow(1px 1px 2px rgba(0,0,0,0.15))`,
+                <div className="flex flex-col gap-2 sm:gap-4 relative z-10">
+                  <div className="text-[10px] sm:text-sm text-[#64748B] font-bold uppercase tracking-wider opacity-80">
+                    {kpi.label}
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div className="text-[22px] sm:text-[32px] leading-tight font-extrabold text-[#1e293b] tracking-tight">
+                      {kpi.value}
+                    </div>
+
+                    <div 
+                      className="w-10 sm:w-14 h-10 sm:h-14 flex items-center justify-center rounded-full transition-all duration-300 group-hover:scale-110 shadow-lg"
+                      style={{
+                        background: cardStyle.iconBg,
+                        boxShadow: `0 4px 12px ${cardStyle.iconBg}`,
                       }}
-                    />
+                    >
+                      <Icon 
+                        className="w-5 sm:w-7 h-5 sm:h-7" 
+                        style={{ 
+                          color: cardStyle.iconColor, 
+                          strokeWidth: 2.5,
+                        }}
+                      />
+                    </div>
                   </div>
                 </div>
                 
-                {/* Content on left side */}
-                <div className="absolute left-[24px] top-[18px] flex flex-col gap-[8px]">
-                  <div className="text-[30px] leading-[36px] font-medium text-[#1a1a1a] tracking-tight">
-                    {kpi.value}
-                  </div>
-                  <div className="text-[14px] leading-[20px] text-[#6B7280] font-medium">
-                    {kpi.label}
-                  </div>
-                </div>
+                {/* Subtle glow effect */}
+                <div 
+                  className="absolute -right-4 -bottom-4 w-24 h-24 rounded-full blur-3xl opacity-20 pointer-events-none"
+                  style={{ background: cardStyle.iconColor }}
+                />
               </Card>
             );
           })}
         </div>
 
         {/* National Data Access Trends - Full Width */}
-        <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
-          <div className="flex items-center gap-3 mb-8">
-            <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-              <TrendingUp className="w-6 h-6 text-[#EF4444]" />
-            </div>
-            <div>
-              <h3 className="text-xl font-bold text-[#1a1a1a]">National Data Access Trends</h3>
-              <p className="text-sm text-[#666666]">Yearly request analytics (Jan-Dec)</p>
+        <Card className="p-5 md:p-8 bg-white/90 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="w-10 md:w-14 h-10 md:h-14 rounded-2xl bg-[#EF4444]/10 flex items-center justify-center shrink-0">
+                <TrendingUp className="w-5 md:w-7 h-5 md:h-7 text-[#EF4444]" />
+              </div>
+              <div>
+                <h3 className="text-lg md:text-2xl font-bold text-[#1e293b]">National Data Access Trends</h3>
+                <p className="text-xs md:text-sm text-[#64748B] font-medium">Yearly request analytics (Jan-Dec)</p>
+              </div>
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={380}>
+          
+          <div className="w-full h-[300px] md:h-[320px] lg:h-[400px]">
+            <ResponsiveContainer width="100%" height="100%">
             <LineChart 
               id="national-access-trends-chart"
               data={nationalAccessData} 
@@ -458,25 +440,24 @@ export default function SuperAdminDashboard() {
                 isAnimationActive={false}
               />
             </LineChart>
-          </ResponsiveContainer>
+            </ResponsiveContainer>
+          </div>
         </Card>
 
-        {/* Top 5 most used services and Organization Types - 2 Columns */}
-        <div className="grid grid-cols-2 gap-6">
-          {/* Top 5 most used services */}
-          <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
-            <div className="flex items-center justify-between mb-6">
-              <div className="flex items-center gap-3">
-                <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                  <Server className="w-6 h-6 text-[#EF4444]" />
+        {/* Top 7 services and Organization Types - 1 Column on Mobile/Tablet, 2 Columns on Desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Top 7 most used services */}
+          <Card className="p-5 md:p-8 bg-white/90 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10 relative">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-10 md:w-14 h-10 md:h-14 rounded-2xl bg-[#EF4444]/10 flex items-center justify-center shrink-0">
+                  <Server className="w-5 md:w-7 h-5 md:h-7 text-[#EF4444]" />
                 </div>
                 <div>
-                  <h3 className="text-xl font-bold text-[#1a1a1a]">Top 7 most used services</h3>
-                  <p className="text-sm text-[#666666]"></p>
+                  <h3 className="text-lg md:text-2xl font-bold text-[#1e293b]">Top 7 most used <br className="md:hidden" /> services</h3>
                 </div>
               </div>
-              <div className="flex items-center gap-2">
-                
+              <div className="absolute top-0 right-0 md:relative md:top-auto md:right-auto">
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <Button 
@@ -536,20 +517,20 @@ export default function SuperAdminDashboard() {
                 return (
                   <div 
                     key={service.id}
-                    className="flex items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-white hover:shadow-[4px_4px_12px_rgba(163,177,198,0.2),-2px_-2px_8px_rgba(255,255,255,0.8)] transition-all duration-300 hover:translate-x-2"
+                    className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-2xl bg-gradient-to-r from-gray-50 to-white hover:shadow-[4px_4px_12px_rgba(163,177,198,0.2),-2px_-2px_8px_rgba(255,255,255,0.8)] transition-all duration-300 hover:translate-x-1 sm:hover:translate-x-2 gap-3"
                   >
-                    <div className="flex items-center gap-4 flex-1">
-                      <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                        <ServiceIcon className="w-5 h-5 text-[#EF4444]" />
+                    <div className="flex items-center gap-3 md:gap-4 flex-1">
+                      <div className="w-8 h-8 md:w-10 md:h-10 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center shrink-0">
+                        <ServiceIcon className="w-4 h-4 md:w-5 md:h-5 text-[#EF4444]" />
                       </div>
-                      <div>
-                        <div className="font-semibold text-[#1a1a1a]">{service.serviceName}</div>
-                        <div className="text-sm text-[#666666]">{service.type}</div>
+                      <div className="min-w-0">
+                        <div className="font-semibold text-[#1a1a1a] text-sm md:text-base truncate">{service.serviceName}</div>
+                        <div className="text-[11px] md:text-sm text-[#666666]">{service.type}</div>
                       </div>
                     </div>
-                    <div className="flex items-center gap-6">
-                      <div className="text-sm text-[#666666]">{service.lastReview}</div>
-                      <div className="text-xl font-bold text-[#EF4444]">{service.requests}</div>
+                    <div className="flex items-center justify-between sm:justify-end gap-4 md:gap-6 border-t sm:border-t-0 pt-2 sm:pt-0">
+                      <div className="text-[11px] md:text-sm text-[#666666]">{service.lastReview}</div>
+                      <div className="text-lg md:text-xl font-bold text-[#EF4444]">{service.requests}</div>
                     </div>
                   </div>
                 );
@@ -558,17 +539,18 @@ export default function SuperAdminDashboard() {
           </Card>
 
           {/* Organization Types Pie Chart */}
-          <Card className="p-6 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                <Building2 className="w-6 h-6 text-[#EF4444]" />
+          <Card className="p-5 md:p-8 bg-white/90 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <div className="flex items-center gap-3 md:gap-4 mb-8 md:mb-10">
+              <div className="w-10 md:w-14 h-10 md:h-14 rounded-2xl bg-[#EF4444]/10 flex items-center justify-center shrink-0">
+                <Building2 className="w-5 md:w-7 h-5 md:h-7 text-[#EF4444]" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#1a1a1a]">Organization Types</h3>
-                <p className="text-sm text-[#666666]">Distribution overview</p>
+                <h3 className="text-lg md:text-2xl font-bold text-[#1e293b]">Organization Types</h3>
+                <p className="text-xs md:text-sm text-[#64748B] font-medium">Distribution overview</p>
               </div>
             </div>
-            <ResponsiveContainer width="100%" height={380}>
+            <div className="w-full h-[300px] md:h-[320px] lg:h-[400px]">
+              <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <defs>
                   <filter id="pieShadow">
@@ -606,261 +588,276 @@ export default function SuperAdminDashboard() {
                     fontWeight: 500
                   }}
                   iconType="circle"
-                />
-              </PieChart>
+              />
+            </PieChart>
             </ResponsiveContainer>
-          </Card>
-        </div>
-
-        {/* Services Usage Trend - Full Width */}
-        <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h3 className="text-xl font-bold text-[#1a1a1a]">Services Usage Trend</h3>
-              <p className="text-sm text-[#666666]">1-year comparison (Jan-Dec)</p>
-            </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-10 px-4 rounded-xl hover:bg-gray-100"
-                >
-                  <Download className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
-              >
-                <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
-                  Export Options
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-[#E5E5E5]" />
-                <DropdownMenuItem 
-                  onClick={() => handleExportPDF("Services Usage Trend")}
-                  className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
-                >
-                  <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
-                  <span className="text-sm">Download PDF</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
           </div>
-          
-          <ResponsiveContainer width="100%" height={280}>
-            <AreaChart data={topUsedServicesData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
-              <defs>
-                <linearGradient id="servicesUsageColorAverage" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="avg-start" offset="5%" stopColor="#EF4444" stopOpacity={0.3}/>
-                  <stop key="avg-end" offset="95%" stopColor="#EF4444" stopOpacity={0.05}/>
-                </linearGradient>
-                <linearGradient id="servicesUsageColorBaseMap" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="base-start" offset="5%" stopColor="#FF6B6B" stopOpacity={0.3}/>
-                  <stop key="base-end" offset="95%" stopColor="#FF6B6B" stopOpacity={0.05}/>
-                </linearGradient>
-                <linearGradient id="servicesUsageColorImg" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="img-start" offset="5%" stopColor="#FF8787" stopOpacity={0.3}/>
-                  <stop key="img-end" offset="95%" stopColor="#FF8787" stopOpacity={0.05}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid key="grid-area" strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
-              <XAxis 
-                key="x-axis-area"
-                dataKey="month" 
-                stroke="#9ca3af" 
-                fontSize={11}
-                fontWeight={500}
-                axisLine={false}
-                tickLine={false}
-              />
-              <YAxis 
-                key="y-axis-area"
-                stroke="#9ca3af" 
-                fontSize={11}
-                fontWeight={500}
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(value) => {
-                  if (value >= 1000000) return `${value / 1000000}M`;
-                  if (value >= 1000) return `${value / 1000}k`;
-                  return value;
-                }}
-              />
-              <Tooltip content={<CustomChartTooltip />} />
-              <Legend key="legend-area" wrapperStyle={{ fontSize: '11px', fontWeight: 500 }} />
-              <Area 
-                key="area-average"
-                type="monotone" 
-                dataKey="Average" 
-                stroke="#EF4444" 
-                strokeWidth={3}
-                fill="url(#servicesUsageColorAverage)"
-                name="Average"
-                isAnimationActive={false}
-              />
-              <Area 
-                key="area-basemap"
-                type="monotone" 
-                dataKey="BaseMapAraLightGrayWM" 
-                stroke="#FF6B6B" 
-                strokeWidth={3}
-                fill="url(#servicesUsageColorBaseMap)"
-                name="BaseMap"
-                isAnimationActive={false}
-              />
-              <Area 
-                key="area-imgsat"
-                type="monotone" 
-                dataKey="IMGSat50cmWM" 
-                stroke="#FF8787" 
-                strokeWidth={3}
-                fill="url(#servicesUsageColorImg)"
-                name="IMG SAT"
-                isAnimationActive={false}
-              />
-            </AreaChart>
-          </ResponsiveContainer>
         </Card>
+      </div>
 
-        {/* API Analytics Section */}
-        
+        {/* Usage & Analytics Section - 1 Column on Mobile/Tablet, 2 Columns on Desktop */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {/* Services Usage Trend */}
+          <Card className="p-5 md:p-8 bg-white/90 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10 relative">
+              <div className="flex items-center gap-3 md:gap-4">
+                <div className="w-10 md:w-14 h-10 md:h-14 rounded-2xl bg-[#EF4444]/10 flex items-center justify-center shrink-0">
+                  <Activity className="w-5 md:w-7 h-5 md:h-7 text-[#EF4444]" />
+                </div>
+                <div>
+                  <h3 className="text-lg md:text-2xl font-bold text-[#1e293b]">Services Usage Trend</h3>
+                  <p className="text-xs md:text-sm text-[#64748B] font-medium">1-year comparison (Jan-Dec)</p>
+                </div>
+              </div>
+              <div className="absolute top-0 right-0 md:relative md:top-auto md:right-auto">
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="h-10 px-4 rounded-xl hover:bg-gray-100"
+                    >
+                      <Download className="w-4 h-4" />
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent 
+                    align="end" 
+                    className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
+                  >
+                    <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
+                      Export Options
+                    </DropdownMenuLabel>
+                    <DropdownMenuSeparator className="bg-[#E5E5E5]" />
+                    <DropdownMenuItem 
+                      onClick={() => handleExportPDF("Services Usage Trend")}
+                      className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
+                    >
+                      <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
+                      <span className="text-sm">Download PDF</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              </div>
+            </div>
+          
+          <div className="w-full h-[280px] md:h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <AreaChart data={topUsedServicesData} margin={{ top: 10, right: 10, left: 0, bottom: 0 }}>
+                  <defs>
+                    <linearGradient id="servicesUsageColorAverage" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="avg-start" offset="5%" stopColor="#EF4444" stopOpacity={0.3}/>
+                      <stop key="avg-end" offset="95%" stopColor="#EF4444" stopOpacity={0.05}/>
+                    </linearGradient>
+                    <linearGradient id="servicesUsageColorBaseMap" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="base-start" offset="5%" stopColor="#FF6B6B" stopOpacity={0.3}/>
+                      <stop key="base-end" offset="95%" stopColor="#FF6B6B" stopOpacity={0.05}/>
+                    </linearGradient>
+                    <linearGradient id="servicesUsageColorImg" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="img-start" offset="5%" stopColor="#FF8787" stopOpacity={0.3}/>
+                      <stop key="img-end" offset="95%" stopColor="#FF8787" stopOpacity={0.05}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid key="grid-area" strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+                  <XAxis 
+                    key="x-axis-area"
+                    dataKey="month" 
+                    stroke="#9ca3af" 
+                    fontSize={11}
+                    fontWeight={500}
+                    axisLine={false}
+                    tickLine={false}
+                  />
+                  <YAxis 
+                    key="y-axis-area"
+                    stroke="#9ca3af" 
+                    fontSize={11}
+                    fontWeight={500}
+                    axisLine={false}
+                    tickLine={false}
+                    tickFormatter={(value) => {
+                      if (value >= 1000000) return `${value / 1000000}M`;
+                      if (value >= 1000) return `${value / 1000}k`;
+                      return value;
+                    }}
+                  />
+                  <Tooltip content={<CustomChartTooltip />} />
+                  <Legend key="legend-area" wrapperStyle={{ fontSize: '11px', fontWeight: 500 }} />
+                  <Area 
+                    key="area-average"
+                    type="monotone" 
+                    dataKey="Average" 
+                    stroke="#EF4444" 
+                    strokeWidth={3}
+                    fill="url(#servicesUsageColorAverage)"
+                    name="Average"
+                    isAnimationActive={false}
+                  />
+                  <Area 
+                    key="area-basemap"
+                    type="monotone" 
+                    dataKey="BaseMapAraLightGrayWM" 
+                    stroke="#FF6B6B" 
+                    strokeWidth={3}
+                    fill="url(#servicesUsageColorBaseMap)"
+                    name="BaseMap"
+                    isAnimationActive={false}
+                  />
+                  <Area 
+                    key="area-imgsat"
+                    type="monotone" 
+                    dataKey="IMGSat50cmWM" 
+                    stroke="#FF8787" 
+                    strokeWidth={3}
+                    fill="url(#servicesUsageColorImg)"
+                    name="IMG SAT"
+                    isAnimationActive={false}
+                  />
+                </AreaChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
+
+          {/* API Analytics placeholder removed for layout balance */}
 
         {/* Requests by Service Type */}
-        <Card className="p-8 bg-white/90 backdrop-blur-xl border-0 rounded-3xl shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)]">
-          <div className="flex items-center justify-between mb-6">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-[#EF4444]/10 to-[#FF6B6B]/10 flex items-center justify-center">
-                <Activity className="w-6 h-6 text-[#EF4444]" />
+        <Card className="p-5 md:p-8 bg-white/90 backdrop-blur-xl border border-white/40 rounded-3xl shadow-[0_8px_30px_rgb(0,0,0,0.04)]">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 md:mb-10 relative">
+            <div className="flex items-center gap-3 md:gap-4">
+              <div className="w-10 md:w-14 h-10 md:h-14 rounded-2xl bg-[#EF4444]/10 flex items-center justify-center shrink-0">
+                <LayoutGrid className="w-5 md:w-7 h-5 md:h-7 text-[#EF4444]" />
               </div>
               <div>
-                <h3 className="text-xl font-bold text-[#1a1a1a]">Requests by Service Type</h3>
-                <p className="text-sm text-[#666666]">Map, Feature, Geocode, GP servers</p>
+                <h3 className="text-lg md:text-2xl font-bold text-[#1e293b]">Requests by <br className="md:hidden" /> Service Type</h3>
+                <p className="text-xs md:text-sm text-[#64748B] font-medium">Map, Feature, Geocode, GP servers</p>
               </div>
             </div>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  size="sm" 
-                  className="h-10 px-4 rounded-xl hover:bg-gray-100"
+            <div className="absolute top-0 right-0 md:relative md:top-auto md:right-auto">
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    size="sm" 
+                    className="h-10 px-4 rounded-xl hover:bg-gray-100"
+                  >
+                    <Download className="w-4 h-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent 
+                  align="end" 
+                  className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
                 >
-                  <Download className="w-4 h-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent 
-                align="end" 
-                className="w-48 bg-white border border-[#E0E0E0] rounded-xl shadow-lg"
-              >
-                <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
-                  Export Options
-                </DropdownMenuLabel>
-                <DropdownMenuSeparator className="bg-[#E5E5E5]" />
-                <DropdownMenuItem 
-                  onClick={() => handleExportPDF("Requests by Service Type")}
-                  className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
-                >
-                  <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
-                  <span className="text-sm">Download PDF</span>
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                  <DropdownMenuLabel className="text-xs font-bold text-[#EF4444] uppercase tracking-wider px-3 py-2">
+                    Export Options
+                  </DropdownMenuLabel>
+                  <DropdownMenuSeparator className="bg-[#E5E5E5]" />
+                  <DropdownMenuItem 
+                    onClick={() => handleExportPDF("Requests by Service Type")}
+                    className="cursor-pointer hover:bg-red-50/50 rounded-lg mx-1 my-0.5 px-3 py-2"
+                  >
+                    <FileText className="w-4 h-4 mr-2 text-[#EF4444]" />
+                    <span className="text-sm">Download PDF</span>
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
           </div>
           
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart 
-              data={requestsByServiceTypeData} 
-              margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
-            >
-              <defs>
-                <filter id="barShadowReqType">
-                  <feDropShadow key="bar-shadow" dx="0" dy="4" stdDeviation="4" floodOpacity="0.15"/>
-                </filter>
-                <linearGradient id="mapGradReqType" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="map-start" offset="5%" stopColor="#EF4444" stopOpacity={0.9}/>
-                  <stop key="map-end" offset="95%" stopColor="#EF4444" stopOpacity={0.7}/>
-                </linearGradient>
-                <linearGradient id="featureGradReqType" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="feature-start" offset="5%" stopColor="#003F72" stopOpacity={0.9}/>
-                  <stop key="feature-end" offset="95%" stopColor="#003F72" stopOpacity={0.7}/>
-                </linearGradient>
-                <linearGradient id="geocodeGradReqType" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="geocode-start" offset="5%" stopColor="#6B6B6B" stopOpacity={0.9}/>
-                  <stop key="geocode-end" offset="95%" stopColor="#6B6B6B" stopOpacity={0.7}/>
-                </linearGradient>
-                <linearGradient id="gpGradReqType" x1="0" y1="0" x2="0" y2="1">
-                  <stop key="gp-start" offset="5%" stopColor="#B7AFA3" stopOpacity={0.9}/>
-                  <stop key="gp-end" offset="95%" stopColor="#B7AFA3" stopOpacity={0.7}/>
-                </linearGradient>
-              </defs>
-              <CartesianGrid key="grid-line-chart" strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
-              <XAxis 
-                key="x-axis-line"
-                dataKey="month" 
-                stroke="#9ca3af" 
-                fontSize={13}
-                fontWeight={500}
-                axisLine={false}
-                tickLine={false}
-                dy={10}
-              />
-              <YAxis 
-                key="y-axis-line"
-                stroke="#9ca3af" 
-                fontSize={13}
-                fontWeight={500}
-                axisLine={false}
-                tickLine={false}
-                dx={-10}
-              />
-              <Tooltip content={<CustomChartTooltip />} />
-              <Legend 
-                key="legend-line"
-                wrapperStyle={{ 
-                  paddingTop: '20px',
-                  fontSize: '13px',
-                  fontWeight: 500
-                }} 
-              />
-              <Bar 
-                key="bar-mapserver"
-                dataKey="MapServer" 
-                fill="url(#mapGradReqType)" 
-                name="MapServer"
-                radius={[10, 10, 0, 0]}
-                filter="url(#barShadowReqType)"
-                isAnimationActive={false}
-              />
-              <Bar 
-                key="bar-featureserver"
-                dataKey="FeatureServer" 
-                fill="url(#featureGradReqType)" 
-                name="FeatureServer"
-                radius={[10, 10, 0, 0]}
-                filter="url(#barShadowReqType)"
-                isAnimationActive={false}
-              />
-              <Bar 
-                key="bar-geocodeserver"
-                dataKey="GeocodeServer" 
-                fill="url(#geocodeGradReqType)" 
-                name="GeocodeServer"
-                radius={[10, 10, 0, 0]}
-                filter="url(#barShadowReqType)"
-                isAnimationActive={false}
-              />
-              <Bar 
-                key="bar-gpserver"
-                dataKey="GPServer" 
-                fill="url(#gpGradReqType)" 
-                name="GPServer"
-                radius={[10, 10, 0, 0]}
-                filter="url(#barShadowReqType)"
-                isAnimationActive={false}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </Card>
+          <div className="w-full h-[280px] md:h-[350px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart 
+                data={requestsByServiceTypeData} 
+                margin={{ top: 10, right: 30, left: 0, bottom: 0 }}
+              >
+                  <defs>
+                    <filter id="barShadowReqType">
+                      <feDropShadow key="bar-shadow" dx="0" dy="4" stdDeviation="4" floodOpacity="0.15"/>
+                    </filter>
+                    <linearGradient id="mapGradReqType" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="map-start" offset="5%" stopColor="#EF4444" stopOpacity={0.9}/>
+                      <stop key="map-end" offset="95%" stopColor="#EF4444" stopOpacity={0.7}/>
+                    </linearGradient>
+                    <linearGradient id="featureGradReqType" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="feature-start" offset="5%" stopColor="#003F72" stopOpacity={0.9}/>
+                      <stop key="feature-end" offset="95%" stopColor="#003F72" stopOpacity={0.7}/>
+                    </linearGradient>
+                    <linearGradient id="geocodeGradReqType" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="geocode-start" offset="5%" stopColor="#6B6B6B" stopOpacity={0.9}/>
+                      <stop key="geocode-end" offset="95%" stopColor="#6B6B6B" stopOpacity={0.7}/>
+                    </linearGradient>
+                    <linearGradient id="gpGradReqType" x1="0" y1="0" x2="0" y2="1">
+                      <stop key="gp-start" offset="5%" stopColor="#B7AFA3" stopOpacity={0.9}/>
+                      <stop key="gp-end" offset="95%" stopColor="#B7AFA3" stopOpacity={0.7}/>
+                    </linearGradient>
+                  </defs>
+                  <CartesianGrid key="grid-line-chart" strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.5} />
+                  <XAxis 
+                    key="x-axis-line"
+                    dataKey="month" 
+                    stroke="#9ca3af" 
+                    fontSize={13}
+                    fontWeight={500}
+                    axisLine={false}
+                    tickLine={false}
+                    dy={10}
+                  />
+                  <YAxis 
+                    key="y-axis-line"
+                    stroke="#9ca3af" 
+                    fontSize={13}
+                    fontWeight={500}
+                    axisLine={false}
+                    tickLine={false}
+                    dx={-10}
+                  />
+                  <Tooltip content={<CustomChartTooltip />} />
+                  <Legend 
+                    key="legend-line"
+                    wrapperStyle={{ 
+                      paddingTop: '20px',
+                      fontSize: '13px',
+                      fontWeight: 500
+                    }} 
+                  />
+                  <Bar 
+                    key="bar-mapserver"
+                    dataKey="MapServer" 
+                    fill="url(#mapGradReqType)" 
+                    name="MapServer"
+                    radius={[10, 10, 0, 0]}
+                    filter="url(#barShadowReqType)"
+                    isAnimationActive={false}
+                  />
+                  <Bar 
+                    key="bar-featureserver"
+                    dataKey="FeatureServer" 
+                    fill="url(#featureGradReqType)" 
+                    name="FeatureServer"
+                    radius={[10, 10, 0, 0]}
+                    filter="url(#barShadowReqType)"
+                    isAnimationActive={false}
+                  />
+                  <Bar 
+                    key="bar-geocodeserver"
+                    dataKey="GeocodeServer" 
+                    fill="url(#geocodeGradReqType)" 
+                    name="GeocodeServer"
+                    radius={[10, 10, 0, 0]}
+                    filter="url(#barShadowReqType)"
+                    isAnimationActive={false}
+                  />
+                  <Bar 
+                    key="bar-gpserver"
+                    dataKey="GPServer" 
+                    fill="url(#gpGradReqType)" 
+                    name="GPServer"
+                    radius={[10, 10, 0, 0]}
+                    filter="url(#barShadowReqType)"
+                    isAnimationActive={false}
+                  />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </Card>
       </div>
 
       {/* Keep existing dialogs unchanged */}
@@ -875,6 +872,7 @@ export default function SuperAdminDashboard() {
           {/* ... existing dialog content ... */}
         </DialogContent>
       </Dialog>
+      </div>
     </div>
   );
 }

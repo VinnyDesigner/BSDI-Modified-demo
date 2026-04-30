@@ -429,7 +429,7 @@ export default function Departments() {
   };
 
   return (
-    <div className="min-h-screen bg-[#F5F7FA] px-6 py-5">
+    <div className="min-h-screen bg-[#F5F7FA] px-4 md:px-6 py-4 md:py-5">
       <div className="max-w-[1700px] mx-auto space-y-6">
         <PageHeader 
           title="Departments"
@@ -447,7 +447,7 @@ export default function Departments() {
         </PageHeader>
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8 [&_.uppercase]:normal-case">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 mb-8 [&_.uppercase]:normal-case">
           <MetricCard 
             value={stats.total} 
             label="Total Departments" 
@@ -475,18 +475,18 @@ export default function Departments() {
         </div>
 
         {/* Departments Directory */}
-        <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden" style={{ padding: '20px 24px 24px' }}>
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+        <Card className="bg-white border border-[#E5E7EB] rounded-[16px] shadow-[0px_1px_2px_rgba(0,0,0,0.04)] overflow-hidden p-4 md:p-6 md:pb-[24px]">
+          <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
             <div>
               <h3 className="text-lg font-semibold text-[#111827]">Departments Directory</h3>
               <p className="text-sm text-[#6B7280]">Manage and monitor all organizational departments</p>
             </div>
             
-            <div className="flex items-center gap-[12px]">
-              <div className="relative" ref={searchRef}>
+            <div className="flex flex-col md:flex-row items-stretch md:items-center gap-3 w-full lg:w-auto">
+              <div className="relative w-full lg:w-[280px]" ref={searchRef}>
                 <Search className="absolute left-[12px] top-1/2 -translate-y-1/2 w-4 h-4 text-[#9CA3AF] pointer-events-none" />
                 <Input
-                  className="pl-[36px] pr-[12px] h-[36px] w-[240px] border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
+                  className="pl-[36px] pr-[12px] h-[36px] w-full border border-[#E5E7EB] bg-[#F9FAFB] rounded-[10px] text-[14px] focus:border-[#EF4444] transition-all"
                   placeholder="Search"
                   value={tableSearch}
                   onChange={(e) => {
@@ -496,44 +496,52 @@ export default function Departments() {
                 />
               </div>
 
-              <Select defaultValue="all">
-                <SelectTrigger className="w-[160px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                  <SelectValue placeholder="Organization" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Organization</SelectItem>
-                  <SelectItem value="mow">Ministry of Works</SelectItem>
-                  <SelectItem value="upa">Urban Planning Authority</SelectItem>
-                  <SelectItem value="ta">Transport Authority</SelectItem>
-                  <SelectItem value="ea">Environmental Agency</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 sm:flex sm:items-center gap-2 w-full md:w-auto">
+                <div className="flex-1 sm:w-[160px]">
+                  <Select defaultValue="all">
+                    <SelectTrigger className="w-full h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                      <SelectValue placeholder="Organization" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Organization</SelectItem>
+                      <SelectItem value="mow">Ministry of Works</SelectItem>
+                      <SelectItem value="upa">Urban Planning Authority</SelectItem>
+                      <SelectItem value="ta">Transport Authority</SelectItem>
+                      <SelectItem value="ea">Environmental Agency</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Select defaultValue="all">
-                <SelectTrigger className="w-[160px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                  <SelectValue placeholder="Department" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Department</SelectItem>
-                  <SelectItem value="wd">Water Distribution</SelectItem>
-                  <SelectItem value="ed">Electricity Distribution</SelectItem>
-                </SelectContent>
-              </Select>
+                <div className="flex-1 sm:w-[160px]">
+                  <Select defaultValue="all">
+                    <SelectTrigger className="w-full h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                      <SelectValue placeholder="Department" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Department</SelectItem>
+                      <SelectItem value="wd">Water Distribution</SelectItem>
+                      <SelectItem value="ed">Electricity Distribution</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
 
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[140px] h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                </SelectContent>
-              </Select>
+                <div className="col-span-2 sm:col-auto sm:w-[140px]">
+                  <Select value={statusFilter} onValueChange={setStatusFilter}>
+                    <SelectTrigger className="w-full h-[36px] border border-[#E5E7EB] bg-white rounded-[10px] px-[12px] text-[14px]">
+                      <SelectValue placeholder="Status" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="all">Status</SelectItem>
+                      <SelectItem value="active">Active</SelectItem>
+                      <SelectItem value="pending">Pending</SelectItem>
+                    </SelectContent>
+                  </Select>
+                </div>
+              </div>
             </div>
           </div>
-            <div className="overflow-x-auto border border-[#F3F4F6] rounded-xl">
-              <table className="w-full">
+            <div className="overflow-hidden">
+              <table className="w-full hidden md:table border border-[#F3F4F6] rounded-xl">
                 <thead>
                   <tr className="bg-[#F9FAFB] border-b border-[#E5E7EB]">
                     <th className="px-6 py-4 text-left text-[13px] font-semibold text-[#374151] cursor-pointer" onClick={() => handleSort("name")}>
@@ -611,8 +619,86 @@ export default function Departments() {
                   ))}
                 </tbody>
               </table>
+
+              {/* Mobile Card View */}
+              <div className="md:hidden space-y-4">
+                {paginatedDepts.map((dept) => (
+                  <div 
+                    key={dept.id} 
+                    id={`dept-card-${dept.id}`}
+                    className="bg-white border border-[#E5E7EB] rounded-2xl p-5 space-y-4 shadow-sm hover:shadow-md transition-all active:scale-[0.98]"
+                  >
+                    <div className="flex justify-between items-start">
+                      <div className="flex flex-col gap-1">
+                        <h4 className="font-bold text-[#111827] text-base">{dept.name}</h4>
+                        <p className="text-xs text-[#6B7280] flex items-center gap-1">
+                          <Building className="w-3 h-3" /> {dept.org}
+                        </p>
+                      </div>
+                      <Badge variant={getStatusBadgeProps(dept.status).variant}>
+                        {getStatusBadgeProps(dept.status).label}
+                      </Badge>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 py-3 border-y border-[#F3F4F6]">
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Head</p>
+                        <p className="text-sm font-medium text-[#374151]">{dept.head}</p>
+                      </div>
+                      <div className="space-y-1 text-right">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Team Size</p>
+                        <button 
+                          onClick={() => {
+                            setSelectedDeptForSheet(dept);
+                            setUsersSheetOpen(true);
+                          }}
+                          className="text-sm text-[#326594] font-semibold flex items-center justify-end gap-1"
+                        >
+                          <Users className="w-3.5 h-3.5" /> {dept.users}
+                        </button>
+                      </div>
+                      <div className="space-y-1">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Code</p>
+                        <p className="text-sm font-medium text-[#374151]">{dept.code}</p>
+                      </div>
+                      <div className="space-y-1 text-right">
+                        <p className="text-[10px] uppercase tracking-wider font-semibold text-[#9CA3AF]">Created</p>
+                        <p className="text-sm font-medium text-[#374151]">{dept.created}</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-2 pt-2">
+                      <Button 
+                        variant="outline" 
+                        className="flex-1 rounded-xl h-10 gap-2 border-[#E5E7EB] text-[#374151]"
+                        onClick={() => {
+                          setSelectedDept(dept);
+                          setViewDeptOpen(true);
+                        }}
+                      >
+                        <Eye className="w-4 h-4" />
+                        Details
+                      </Button>
+                      {!isReviewer && (
+                        <Button 
+                          variant="outline" 
+                          className="flex-1 rounded-xl h-10 gap-2 border-[#E5E7EB] text-[#374151]"
+                          onClick={() => {
+                            setSelectedDept(dept);
+                            setEditDeptOpen(true);
+                          }}
+                        >
+                          <Edit className="w-4 h-4" />
+                          Edit
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
-            <div className="flex items-center justify-between pt-6 border-t border-[#F3F4F6] mt-6">
+            {/* Desktop Pagination */}
+            <div className="hidden md:flex items-center justify-between pt-6 border-t border-[#F3F4F6] mt-6">
               <span className="text-xs font-medium text-[#6B7280]">
                 Showing <span className="text-[#111827]">{((currentPage - 1) * itemsPerPage) + 1}</span> to <span className="text-[#111827]">{Math.min(currentPage * itemsPerPage, sortedDepts.length)}</span> of <span className="text-[#111827]">{sortedDepts.length}</span> departments
               </span>
@@ -656,11 +742,45 @@ export default function Departments() {
                 </Button>
               </div>
             </div>
+
+            {/* Mobile Pagination */}
+            <div className="flex flex-col items-center justify-center gap-4 pt-6 border-t border-[#F3F4F6] mt-6 md:hidden">
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                  onClick={() => setCurrentPage(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+                <Button
+                  variant="default"
+                  size="sm"
+                  className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+                >
+                  {currentPage}
+                </Button>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                  onClick={() => setCurrentPage(currentPage + 1)}
+                  disabled={currentPage === totalPages || totalPages === 0}
+                >
+                  Next
+                </Button>
+              </div>
+              <div className="text-sm font-medium text-[#6B7280]">
+                Showing <span className="font-bold text-[#111827]">{sortedDepts.length}</span> results
+              </div>
+            </div>
           </Card>
 
       {/* Create Department Dialog */}
       <Dialog open={createDeptOpen} onOpenChange={setCreateDeptOpen}>
-        <DialogContent className="max-w-[480px] w-[480px] h-[500px] p-0 overflow-hidden bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl flex flex-col [&>button]:hidden">
+        <DialogContent className="max-w-[480px] w-[95vw] sm:w-[480px] h-[90vh] sm:h-[500px] p-0 overflow-hidden bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl flex flex-col [&>button]:hidden">
           <div 
             className="absolute top-[16px] right-[16px] w-[32px] h-[32px] rounded-[8px] bg-[#F9FAFB] hover:bg-[#F3F4F6] flex items-center justify-center cursor-pointer transition-colors z-50"
             onClick={() => setCreateDeptOpen(false)}
@@ -752,7 +872,7 @@ export default function Departments() {
 
       {/* Edit Department Dialog */}
       <Dialog open={editDeptOpen} onOpenChange={setEditDeptOpen}>
-        <DialogContent className="max-w-[480px] w-[480px] h-[500px] p-0 overflow-hidden bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl flex flex-col [&>button]:hidden">
+        <DialogContent className="max-w-[480px] w-[95vw] sm:w-[480px] h-[90vh] sm:h-[500px] p-0 overflow-hidden bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl flex flex-col [&>button]:hidden">
           <div 
             className="absolute top-[16px] right-[16px] w-[32px] h-[32px] rounded-[8px] bg-[#F9FAFB] hover:bg-[#F3F4F6] flex items-center justify-center cursor-pointer transition-colors z-50"
             onClick={() => setEditDeptOpen(false)}
@@ -851,7 +971,7 @@ export default function Departments() {
 
       {/* View Department Details Dialog */}
       <Dialog open={viewDeptOpen} onOpenChange={setViewDeptOpen}>
-        <DialogContent className="max-w-[480px] w-[480px] h-[500px] p-0 overflow-hidden bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl flex flex-col [&>button]:hidden">
+        <DialogContent className="max-w-[480px] w-[95vw] sm:w-[480px] h-[90vh] sm:h-[500px] p-0 overflow-hidden bg-white rounded-[16px] border border-[#E5E7EB] shadow-2xl flex flex-col [&>button]:hidden">
           <div 
             className="absolute top-[16px] right-[16px] w-[32px] h-[32px] rounded-[8px] bg-[#F9FAFB] hover:bg-[#F3F4F6] flex items-center justify-center cursor-pointer transition-colors z-50"
             onClick={() => setViewDeptOpen(false)}

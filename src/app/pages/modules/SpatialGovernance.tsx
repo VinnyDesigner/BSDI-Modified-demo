@@ -1007,7 +1007,7 @@ export default function SpatialGovernance() {
         </div>
 
         {/* KPI Cards with Neumorphism */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 gap-6">
           {/* Total Roles */}
           <Card className="relative h-[106px] bg-white/90 backdrop-blur-xl border-0 rounded-[24px] shadow-[8px_8px_24px_rgba(163,177,198,0.3),-8px_-8px_24px_rgba(255,255,255,0.8)] hover:shadow-[12px_12px_32px_rgba(163,177,198,0.4),-12px_-12px_32px_rgba(255,255,255,1)] transition-all duration-300 hover:translate-y-[-4px] overflow-hidden">
             <div className="absolute right-[24px] top-[37px] w-[30px] h-[30px] flex items-center justify-center">
@@ -1056,15 +1056,16 @@ export default function SpatialGovernance() {
                     </div>
                   </div>
                   
-                  {/* Search Bar - Top Right */}
-                  <div className="relative w-64">
+                <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full mt-4">
+                  {/* Search Bar */}
+                  <div className="relative w-full lg:flex-1">
                     <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#999999]" />
                     <Input
                       type="text"
-                      placeholder="Search..."
+                      placeholder="Search boundaries..."
                       value={searchQuery}
                       onChange={(e) => setSearchQuery(e.target.value)}
-                      className="pl-10 pr-10 h-10 border border-[#E0E0E0] rounded-xl bg-[#F5F5F5] focus:bg-white focus:border-[#EF4444] focus:ring-1 focus:ring-[#EF4444] transition-all text-sm"
+                      className="pl-10 pr-10 h-10 w-full border border-[#E0E0E0] rounded-xl bg-[#F5F5F5] focus:bg-white focus:border-[#EF4444] focus:ring-1 focus:ring-[#EF4444] transition-all text-sm"
                     />
                     {searchQuery && (
                       <button
@@ -1075,32 +1076,32 @@ export default function SpatialGovernance() {
                       </button>
                     )}
                   </div>
-                </div>
 
-                {/* Filter Dropdowns */}
-                <div className="flex items-center gap-3">
-                  <Select value={statusFilter} onValueChange={setStatusFilter}>
-                    <SelectTrigger className="w-48 h-10 bg-[#F5F5F5] border border-[#E0E0E0] rounded-xl text-sm">
-                      <SelectValue placeholder="All Statuses" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl">
-                      <SelectItem value="all">All Statuses</SelectItem>
-                      <SelectItem value="Active">Active</SelectItem>
-                      <SelectItem value="Under Review">Under Review</SelectItem>
-                    </SelectContent>
-                  </Select>
+                  {/* Filter Dropdowns */}
+                  <div className="grid grid-cols-2 md:flex items-center gap-3 w-full lg:w-auto">
+                    <Select value={statusFilter} onValueChange={setStatusFilter}>
+                      <SelectTrigger className="w-full md:w-40 h-10 bg-[#F5F5F5] border border-[#E0E0E0] rounded-xl text-sm">
+                        <SelectValue placeholder="All Statuses" />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-xl">
+                        <SelectItem value="all">All Statuses</SelectItem>
+                        <SelectItem value="Active">Active</SelectItem>
+                        <SelectItem value="Under Review">Under Review</SelectItem>
+                      </SelectContent>
+                    </Select>
 
-                  <Select value={typeFilter} onValueChange={setTypeFilter}>
-                    <SelectTrigger className="w-48 h-10 bg-[#F5F5F5] border border-[#E0E0E0] rounded-xl text-sm">
-                      <SelectValue placeholder="All Types" />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-xl">
-                      <SelectItem value="all">All Types</SelectItem>
-                      <SelectItem value="Application">Application</SelectItem>
-                      <SelectItem value="Data">Data</SelectItem>
-                      <SelectItem value="Custom">Custom</SelectItem>
-                    </SelectContent>
-                  </Select>
+                    <Select value={typeFilter} onValueChange={setTypeFilter}>
+                      <SelectTrigger className="w-full md:w-40 h-10 bg-[#F5F5F5] border border-[#E0E0E0] rounded-xl text-sm">
+                        <SelectValue placeholder="All Types" />
+                      </SelectTrigger>
+                      <SelectContent className="rounded-xl">
+                        <SelectItem value="all">All Types</SelectItem>
+                        <SelectItem value="Application">Application</SelectItem>
+                        <SelectItem value="Data">Data</SelectItem>
+                        <SelectItem value="Custom">Custom</SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </div>
                 </div>
               </div>
 
@@ -1199,7 +1200,8 @@ export default function SpatialGovernance() {
 
               {/* Pagination */}
               <div className="px-6 py-4 border-t border-[#E5E5E5] bg-gray-50/30 flex-shrink-0">
-                <div className="flex items-center justify-between text-xs">
+                {/* Desktop Pagination */}
+                <div className="hidden md:flex items-center justify-between text-xs">
                   <div className="text-[#666666]">
                     Showing {entities.filter(entity => {
                       const matchesSearch = entity.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
@@ -1229,6 +1231,44 @@ export default function SpatialGovernance() {
                     >
                       <ChevronRight className="w-3 h-3" />
                     </Button>
+                  </div>
+                </div>
+
+                {/* Mobile Pagination */}
+                <div className="flex flex-col items-center justify-center gap-4 md:hidden">
+                  <div className="flex items-center gap-2">
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                      disabled
+                    >
+                      Previous
+                    </Button>
+                    <Button
+                      variant="default"
+                      size="sm"
+                      className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+                    >
+                      1
+                    </Button>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                      disabled
+                    >
+                      Next
+                    </Button>
+                  </div>
+                  <div className="text-sm font-medium text-[#6B7280]">
+                    Showing <span className="font-bold text-[#111827]">{entities.filter(entity => {
+                      const matchesSearch = entity.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+                                           entity.type.toLowerCase().includes(searchQuery.toLowerCase());
+                      const matchesStatus = statusFilter === "all" || entity.status === statusFilter;
+                      const matchesType = typeFilter === "all" || entity.type === typeFilter;
+                      return matchesSearch && matchesStatus && matchesType;
+                    }).length}</span> results
                   </div>
                 </div>
               </div>

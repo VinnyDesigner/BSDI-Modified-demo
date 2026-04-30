@@ -301,7 +301,7 @@ export default function Roles() {
         </PageHeader>
 
         {/* Standardized Metric Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <MetricCard 
             value={totalRolesCount} 
             label="Total Roles" 
@@ -337,44 +337,46 @@ export default function Roles() {
               <p className="text-[13px] text-[#6B7280]">Manage all user roles and permissions</p>
             </div>
             
-            <div className="flex flex-wrap items-center gap-3">
+            <div className="flex flex-col lg:flex-row lg:items-center gap-4 w-full lg:w-auto">
               {/* Table Search */}
-              <div className="relative">
+              <div className="relative w-full lg:w-64">
                 <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-[#94A3B8]" />
                 <Input
                   type="text"
                   placeholder="Search roles..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-64 h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
+                  className="w-full h-[36px] pl-10 rounded-[10px] border-[#E5E7EB] bg-[#F9FAFB] text-sm focus:border-[#EF4444] transition-all"
                 />
               </div>
 
-              {/* Role Type Filter */}
-              <Select value={roleTypeFilter} onValueChange={setRoleTypeFilter}>
-                <SelectTrigger className="w-[160px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
-                  <SelectValue placeholder="Role Type" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
-                  <SelectItem value="all">Types</SelectItem>
-                  <SelectItem value="System">System</SelectItem>
-                  <SelectItem value="Organization">Organization</SelectItem>
-                  <SelectItem value="Department">Department</SelectItem>
-                  <SelectItem value="Custom">Custom</SelectItem>
-                </SelectContent>
-              </Select>
+              <div className="grid grid-cols-2 md:flex items-center gap-3 w-full lg:w-auto">
+                {/* Role Type Filter */}
+                <Select value={roleTypeFilter} onValueChange={setRoleTypeFilter}>
+                  <SelectTrigger className="w-full md:w-[160px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                    <SelectValue placeholder="Role Type" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">All Types</SelectItem>
+                    <SelectItem value="System">System</SelectItem>
+                    <SelectItem value="Organization">Organization</SelectItem>
+                    <SelectItem value="Department">Department</SelectItem>
+                    <SelectItem value="Custom">Custom</SelectItem>
+                  </SelectContent>
+                </Select>
 
-              {/* Status Filter */}
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[130px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
-                  <SelectValue placeholder="Status" />
-                </SelectTrigger>
-                <SelectContent className="rounded-xl border-[#F3F4F6] shadow-xl">
-                  <SelectItem value="all">Status</SelectItem>
-                  <SelectItem value="active">Active</SelectItem>
-                  <SelectItem value="inactive">Inactive</SelectItem>
-                </SelectContent>
-              </Select>
+                {/* Status Filter */}
+                <Select value={statusFilter} onValueChange={setStatusFilter}>
+                  <SelectTrigger className="w-full md:w-[130px] h-[36px] rounded-[10px] border-[#E5E7EB] bg-white text-sm">
+                    <SelectValue placeholder="Status" />
+                  </SelectTrigger>
+                  <SelectContent className="rounded-[10px] border-[#F1F1F1] shadow-xl">
+                    <SelectItem value="all">All Status</SelectItem>
+                    <SelectItem value="active">Active</SelectItem>
+                    <SelectItem value="inactive">Inactive</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           </div>
 
@@ -478,7 +480,8 @@ export default function Roles() {
           </div>
 
           {/* Pagination (Standardized) */}
-          <div className="flex items-center justify-between mt-6 shrink-0">
+          {/* Desktop Pagination */}
+          <div className="hidden md:flex items-center justify-between mt-6 shrink-0">
             <div className="text-[13px] font-medium text-[#6B7280]">
               Showing {filteredRoles.length} of {filteredRoles.length} Roles
             </div>
@@ -502,6 +505,38 @@ export default function Roles() {
               >
                 <ChevronRight className="w-4 h-4" />
               </Button>
+            </div>
+          </div>
+
+          {/* Mobile Pagination */}
+          <div className="flex flex-col items-center justify-center gap-4 mt-6 shrink-0 md:hidden">
+            <div className="flex items-center gap-2">
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                disabled
+              >
+                Previous
+              </Button>
+              <Button
+                variant="default"
+                size="sm"
+                className="h-9 w-9 p-0 rounded-xl bg-[#EF4444] text-white font-bold"
+              >
+                1
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="h-9 px-4 rounded-xl border-[#E5E7EB] text-[#6B7280] font-medium"
+                disabled
+              >
+                Next
+              </Button>
+            </div>
+            <div className="text-sm font-medium text-[#6B7280]">
+              Showing <span className="font-bold text-[#111827]">{filteredRoles.length}</span> results
             </div>
           </div>
         </Card>

@@ -65,131 +65,142 @@ const userBehaviorMetrics = [
 
 export default function MonitoringDashboard() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-10 py-6">
-      <div className="max-w-[1800px] mx-auto space-y-8">
+    <div className="min-h-screen bg-gradient-to-br from-[#f5f7fa] via-[#e8ecf1] to-[#dfe4ea] px-4 md:px-10 py-4 md:py-6">
+      <div className="max-w-[1800px] mx-auto space-y-6 md:space-y-8">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div className="flex flex-col gap-0.5">
-          <h1 className="text-[26px] font-bold text-[#ED1C24]">Monitoring Dashboard</h1>
-          <p className="text-[#4A5565] text-[14px] font-normal">BSDI Internal Department • Read-Only Oversight</p>
+          <h1 className="text-xl md:text-[26px] font-bold text-[#ED1C24]">Monitoring Dashboard</h1>
+          <p className="text-[#4A5565] text-xs md:text-[14px] font-normal">BSDI Internal Department • Read-Only Oversight</p>
         </div>
       </div>
 
       {/* KPI Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
         {kpiCards.map((kpi, index) => {
           const Icon = kpi.icon;
           return (
             <Card 
               key={index} 
-              className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg hover:shadow-xl transition-all"
+              className="p-4 sm:p-6 bg-white border border-[#B0AAA2]/10 rounded-[24px] shadow-sm hover:shadow-md transition-all flex flex-col gap-2 sm:gap-4"
+              style={{ background: kpi.color + "08" }}
             >
-              <div className="flex items-start justify-between mb-4">
-                <div 
-                  className="w-12 h-12 rounded-xl flex items-center justify-center shadow-md"
-                  style={{ backgroundColor: kpi.color + "15" }}
-                >
-                  <Icon className="w-6 h-6" style={{ color: kpi.color }} />
-                </div>
-                <Badge 
-                  variant="secondary" 
-                  className={`text-xs ${
-                    kpi.change.startsWith('+') 
-                      ? 'bg-green-100 text-green-700' 
-                      : kpi.change.startsWith('-') 
-                      ? 'bg-red-100 text-red-700'
-                      : 'bg-blue-100 text-blue-700'
-                  }`}
-                >
-                  {kpi.change}
-                </Badge>
+              <div className="text-[10px] sm:text-sm text-[#666666] font-bold uppercase tracking-wider opacity-80">
+                {kpi.label}
               </div>
-              <div className="text-2xl font-bold text-[#252628] mb-1">{kpi.value}</div>
-              <div className="text-sm text-[#666666]">{kpi.label}</div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <div className="text-[22px] sm:text-[32px] font-extrabold text-[#252628] leading-tight">{kpi.value}</div>
+                  <Badge 
+                    variant="secondary" 
+                    className={`text-[10px] md:text-xs ${
+                      kpi.change.startsWith('+') 
+                        ? 'bg-green-100 text-green-700' 
+                        : kpi.change.startsWith('-') 
+                        ? 'bg-red-100 text-red-700'
+                        : 'bg-blue-100 text-blue-700'
+                    }`}
+                  >
+                    {kpi.change}
+                  </Badge>
+                </div>
+                <div 
+                  className="w-10 sm:w-14 h-10 sm:h-14 rounded-full flex items-center justify-center shadow-lg shrink-0"
+                  style={{ backgroundColor: kpi.color + "20", color: kpi.color }}
+                >
+                  <Icon className="w-5 sm:w-7 h-5 sm:h-7" />
+                </div>
+              </div>
             </Card>
           );
         })}
       </div>
 
       {/* System Activity Timeline */}
-      <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-        <h3 className="text-lg font-semibold text-[#252628] mb-6 flex items-center gap-2">
+      <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+        <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6 flex items-center gap-2">
           <Activity className="w-5 h-5 text-[#ED1C24]" />
           System Activity Timeline (24 Hours)
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={systemActivityData} id="monitor-line-chart">
-            <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
-            <XAxis dataKey="time" stroke="#666666" />
-            <YAxis stroke="#666666" />
-            <Tooltip content={<CustomChartTooltip />} />
-            <Legend />
-            <Line key="logins-line" type="monotone" dataKey="logins" stroke="#003F72" strokeWidth={3} name="User Logins" />
-            <Line key="requests-line" type="monotone" dataKey="requests" stroke="#ED1C24" strokeWidth={3} name="API Requests" />
-            <Line key="alerts-line" type="monotone" dataKey="alerts" stroke="#666666" strokeWidth={2} strokeDasharray="5 5" name="Security Alerts" />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="h-[250px] md:h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={systemActivityData} id="monitor-line-chart">
+              <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
+              <XAxis dataKey="time" stroke="#666666" fontSize={12} />
+              <YAxis stroke="#666666" fontSize={12} />
+              <Tooltip content={<CustomChartTooltip />} />
+              <Legend />
+              <Line key="logins-line" type="monotone" dataKey="logins" stroke="#003F72" strokeWidth={3} name="User Logins" />
+              <Line key="requests-line" type="monotone" dataKey="requests" stroke="#ED1C24" strokeWidth={3} name="API Requests" />
+              <Line key="alerts-line" type="monotone" dataKey="alerts" stroke="#666666" strokeWidth={2} strokeDasharray="5 5" name="Security Alerts" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </Card>
 
       {/* Charts Row */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
         {/* Security Events */}
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-[#252628] mb-6 flex items-center gap-2">
+        <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6 flex items-center gap-2">
             <Shield className="w-5 h-5 text-[#003F72]" />
             Security Events (This Week)
           </h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={securityEventsData} id="monitor-bar-chart-1">
-              <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
-              <XAxis dataKey="day" stroke="#666666" />
-              <YAxis stroke="#666666" />
-              <Tooltip content={<CustomChartTooltip />} />
-              <Legend />
-              <Bar key="events-bar" dataKey="events" fill="#ED1C24" name="Events" radius={[8, 8, 0, 0]} />
-              <Bar key="resolved-bar" dataKey="resolved" fill="#003F72" name="Resolved" radius={[8, 8, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="h-[250px] md:h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={securityEventsData} id="monitor-bar-chart-1">
+                <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
+                <XAxis dataKey="day" stroke="#666666" fontSize={12} />
+                <YAxis stroke="#666666" fontSize={12} />
+                <Tooltip content={<CustomChartTooltip />} />
+                <Legend />
+                <Bar key="events-bar" dataKey="events" fill="#ED1C24" name="Events" radius={[8, 8, 0, 0]} />
+                <Bar key="resolved-bar" dataKey="resolved" fill="#003F72" name="Resolved" radius={[8, 8, 0, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
 
         {/* Access Requests Monitoring */}
-        <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-          <h3 className="text-lg font-semibold text-[#252628] mb-6 flex items-center gap-2">
+        <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6 flex items-center gap-2">
             <Database className="w-5 h-5 text-[#ED1C24]" />
             Access Requests Monitoring
           </h3>
-          <ResponsiveContainer width="100%" height={280}>
-            <BarChart data={accessRequestsData} layout="vertical" id="monitor-bar-chart-2">
-              <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
-              <XAxis type="number" stroke="#666666" />
-              <YAxis dataKey="category" type="category" stroke="#666666" width={100} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend />
-              <Bar key="approved-bar" dataKey="approved" fill="#003F72" name="Approved" stackId="a" />
-              <Bar key="pending-bar" dataKey="pending" fill="#ED1C24" name="Pending" stackId="a" />
-              <Bar key="denied-bar" dataKey="denied" fill="#666666" name="Denied" stackId="a" radius={[0, 8, 8, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
+          <div className="h-[250px] md:h-[280px]">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={accessRequestsData} layout="vertical" id="monitor-bar-chart-2">
+                <CartesianGrid strokeDasharray="3 3" stroke="#EBECE8" />
+                <XAxis type="number" stroke="#666666" fontSize={12} />
+                <YAxis dataKey="category" type="category" stroke="#666666" width={80} fontSize={10} />
+                <Tooltip content={<CustomChartTooltip />} />
+                <Legend />
+                <Bar key="approved-bar" dataKey="approved" fill="#003F72" name="Approved" stackId="a" />
+                <Bar key="pending-bar" dataKey="pending" fill="#ED1C24" name="Pending" stackId="a" />
+                <Bar key="denied-bar" dataKey="denied" fill="#666666" name="Denied" stackId="a" radius={[0, 8, 8, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </Card>
       </div>
 
       {/* User Behavior Analytics */}
-      <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-        <h3 className="text-lg font-semibold text-[#252628] mb-6 flex items-center gap-2">
+      <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+        <h3 className="text-base md:text-lg font-semibold text-[#252628] mb-4 md:mb-6 flex items-center gap-2">
           <TrendingUp className="w-5 h-5 text-[#003F72]" />
           User Behavior Analytics
         </h3>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
           {userBehaviorMetrics.map((metric, index) => (
             <div 
               key={index} 
               className="p-4 rounded-xl bg-gradient-to-br from-white to-[#EBECE8]/30 border border-[#B0AAA2]/20"
             >
               <div className="flex items-start justify-between mb-2">
-                <span className="text-sm text-[#666666]">{metric.metric}</span>
+                <span className="text-xs text-[#666666]">{metric.metric}</span>
                 <Badge 
                   variant="outline" 
-                  className={`text-xs ${
+                  className={`text-[10px] ${
                     metric.trend === 'up' ? 'border-green-500 text-green-700' :
                     metric.trend === 'down' ? 'border-red-500 text-red-700' :
                     'border-blue-500 text-blue-700'
@@ -198,20 +209,20 @@ export default function MonitoringDashboard() {
                   {metric.trend}
                 </Badge>
               </div>
-              <div className="text-2xl font-bold text-[#252628]">{metric.value}</div>
+              <div className="text-xl font-bold text-[#252628]">{metric.value}</div>
             </div>
           ))}
         </div>
       </Card>
 
       {/* Security Alerts */}
-      <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-[#252628] flex items-center gap-2">
+      <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] flex items-center gap-2">
             <AlertTriangle className="w-5 h-5 text-[#ED1C24]" />
             Security Alerts
           </h3>
-          <Button variant="outline" className="rounded-full border-[#B0AAA2]/30">
+          <Button variant="outline" className="rounded-full border-[#B0AAA2]/30 w-full md:w-auto">
             View All
           </Button>
         </div>
@@ -219,19 +230,19 @@ export default function MonitoringDashboard() {
           {securityAlerts.map((alert) => (
             <div 
               key={alert.id} 
-              className="flex items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white to-[#EBECE8]/50 border border-[#B0AAA2]/20 hover:shadow-md transition-all"
+              className="flex flex-col sm:flex-row sm:items-center justify-between p-4 rounded-xl bg-gradient-to-r from-white to-[#EBECE8]/50 border border-[#B0AAA2]/20 hover:shadow-md transition-all gap-4"
             >
-              <div className="flex items-center gap-4 flex-1">
-                <div className={`w-2 h-2 rounded-full ${
+              <div className="flex items-start gap-4 flex-1">
+                <div className={`mt-1.5 w-2 h-2 rounded-full shrink-0 ${
                   alert.severity === 'high' ? 'bg-[#ED1C24]' : 
                   alert.severity === 'medium' ? 'bg-[#003F72]' : 'bg-[#B0AAA2]'
                 }`}></div>
                 <div className="flex-1">
-                  <div className="flex items-center gap-3 mb-1">
-                    <span className="font-semibold text-[#252628]">{alert.type}</span>
+                  <div className="flex flex-wrap items-center gap-2 mb-1">
+                    <span className="font-semibold text-[#252628] text-sm md:text-base">{alert.type}</span>
                     <Badge 
                       variant="secondary" 
-                      className={`text-xs ${
+                      className={`text-[10px] md:text-xs ${
                         alert.severity === 'high' ? 'bg-[#ED1C24] text-white' : 
                         alert.severity === 'medium' ? 'bg-[#003F72] text-white' : 'bg-[#B0AAA2] text-white'
                       }`}
@@ -240,19 +251,19 @@ export default function MonitoringDashboard() {
                     </Badge>
                     <Badge 
                       variant="outline" 
-                      className={`text-xs ${
+                      className={`text-[10px] md:text-xs ${
                         alert.status === 'resolved' ? 'border-green-500 text-green-700' : 'border-orange-500 text-orange-700'
                       }`}
                     >
                       {alert.status}
                     </Badge>
                   </div>
-                  <p className="text-sm text-[#666666]">
+                  <p className="text-xs md:text-sm text-[#666666]">
                     Source: {alert.source} • {alert.time}
                   </p>
                 </div>
               </div>
-              <Button size="sm" variant="outline" className="rounded-full border-[#B0AAA2]/30">
+              <Button size="sm" variant="outline" className="rounded-full border-[#B0AAA2]/30 w-full sm:w-auto">
                 Investigate
               </Button>
             </div>
@@ -261,18 +272,18 @@ export default function MonitoringDashboard() {
       </Card>
 
       {/* Audit Logs */}
-      <Card className="p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
-        <div className="flex items-center justify-between mb-6">
-          <h3 className="text-lg font-semibold text-[#252628] flex items-center gap-2">
+      <Card className="p-5 md:p-6 bg-white/80 backdrop-blur-sm border border-[#B0AAA2]/20 rounded-2xl shadow-lg">
+        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+          <h3 className="text-base md:text-lg font-semibold text-[#252628] flex items-center gap-2">
             <FileCheck className="w-5 h-5 text-[#003F72]" />
             Recent Audit Logs
           </h3>
-          <Button variant="outline" className="rounded-full border-[#B0AAA2]/30">
+          <Button variant="outline" className="rounded-full border-[#B0AAA2]/30 w-full md:w-auto">
             View All
           </Button>
         </div>
-        <div className="overflow-x-auto">
-          <table className="w-full">
+        <div className="overflow-hidden">
+          <table className="w-full hidden md:table">
             <thead>
               <tr className="border-b border-[#B0AAA2]/30">
                 <th className="text-left py-3 px-4 text-sm font-semibold text-[#666666]">Action</th>
@@ -303,6 +314,35 @@ export default function MonitoringDashboard() {
               ))}
             </tbody>
           </table>
+
+          {/* Mobile Audit Logs View */}
+          <div className="md:hidden space-y-4">
+            {recentAuditLogs.map((log) => (
+              <div 
+                key={log.id}
+                className="p-4 rounded-xl border border-[#B0AAA2]/20 bg-white/50 space-y-3"
+              >
+                <div className="flex justify-between items-start">
+                  <div className="flex flex-col">
+                    <span className="font-semibold text-[#252628] text-sm">{log.action}</span>
+                    <span className="text-xs text-[#666666] font-mono">{log.user}</span>
+                  </div>
+                  <Badge 
+                    variant="secondary" 
+                    className={`text-[10px] ${
+                      log.status === 'success' ? 'bg-[#003F72] text-white' : 'bg-[#ED1C24] text-white'
+                    }`}
+                  >
+                    {log.status}
+                  </Badge>
+                </div>
+                <div className="flex justify-between items-center text-[11px] text-[#666666] pt-2 border-t border-[#B0AAA2]/10">
+                  <span className="font-mono">{log.ip}</span>
+                  <span>{log.time}</span>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </Card>
       </div>
